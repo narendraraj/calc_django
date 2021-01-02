@@ -5,7 +5,7 @@ from .models import CrystalData
 
 
 class CrystalDataAdmin(admin.ModelAdmin):
-    list_display = ('crystal_system', 'cell_lenght_a', 'cell_lenght_b',
+    list_display = ('crystal_formula', 'crystal_system', 'crystal_name','cell_lenght_a', 'cell_lenght_b',
                     'cell_lenght_c','cell_angle_alpha', 'cell_angle_beta', 'cell_angle_gamma')
 
 
