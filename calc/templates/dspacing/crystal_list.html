@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} list of crystals {% endblock title %}
+
+
+{% block content %}
+
+
+<!-- {{object_list|linenumbers}} -->
+
+<table style="width:80%" >
+    <td><b> ID </b></td>
+    <td><b> Crystal formula </b> </td>
+    <td><b> Crystal name </b></td>
+    <td><b> Crystal_system </b> </td>
+    <td><b> Cell lenght a </b></td>
+    <td><b> Cell lenght b </b></td>
+    <td><b> Cell lenght c </b></td> 
+
+
+    {% for instance in object_list %}
+    <tr>
+        <td>{{ instance.id }}</td>
+        <td>{{ instance.crystal_formula }}</td>
+        <td>{{ instance.crystal_name }}</td>
+        <td>{{ instance.crystal_system }}</td>
+        <td>{{ instance.cell_lenght_a}}</td>
+        <td>{{ instance.cell_lenght_b}}</td>
+        <td>{{ instance.cell_lenght_c}}</td>
+    </tr>
+        
+
+    {% endfor %}
+
+</table>
+
+<!-- http://127.0.0.1:8000/detail-view?id=1 -->
+
+    {% endblock  %}

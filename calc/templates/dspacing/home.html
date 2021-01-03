@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
-    
-    
-    {% block content %}
-    <h1>Hello world</h1>
-    <p> This is home page </p>
-
-    
-  
 
 
-   
+{% block content %}
+
+<h1>Hello world</h1>
+<p> This is home page </p>
+
 <h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
 <p> <strong> Unit cell length: </strong></p>
-<p>  a = {{object.cell_lenght_a}} nm, b = {{object.cell_lenght_b}} nm,  c = {{object.cell_lenght_c}} nm </p>
+<p> a = {{object.cell_lenght_a}} nm, b = {{object.cell_lenght_b}} nm, c = {{object.cell_lenght_c}} nm </p>
 
 <p> <strong> Unit cell Angle: </strong></p>
-<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p> 
-
+<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
 
 {% endblock %}
 
 
-   
+
+
+
+
+
+
 

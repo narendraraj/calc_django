@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h1>This test hkl for loop </h1>
+
+
+{{ cubic_result }}
+
+{% for h in h_list %}
+{% for k in k_list %}
+{% for l in l_list %}
+<p>{{h}} {{k}} {{l}} </p>
+{% endfor %}
+{% endfor %}
+
+{% endfor %}
+
+{% endblock %}

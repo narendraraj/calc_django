@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h1>This test hkl for loop </h1>
+
+
+
+
+<h2>{{crystal_formula}} <br> {{crystal_name}} <br> {{crystal_system|upper}}</h2>
+
+<p> <strong> Unit cell length: </strong></p>
+<p> a = {{cell_lenght_a}} nm, b = {{cell_lenght_b}} nm, c = {{cell_lenght_c}} nm </p>
+
+<p> <strong> Unit cell Angle: </strong></p>
+<p> Alpha = {{cell_angle_alpha}}, Beta = {{cell_angle_beta}}, Gamma = {{cell_angle_gamma}}</p>
+
+
+<table style="width:30%">
+
+    {% for item in list_of_results %}
+
+    <tr>        
+        <td> {{item.0}} </td>
+        <td> {{item.1}} </td>
+        <td> {{item.2}} </td>
+        <td> {{item.3}} </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+<!-- d(1 0 0) = 0.5312
+d(1 1 0) = -->
+
+
+{% endblock %}
