@@ -8,27 +8,38 @@
 
 <!-- {{object_list|linenumbers}} -->
 
-<table style="width:80%" >
-    <td><b> ID </b></td>
-    <td><b> Crystal formula </b> </td>
-    <td><b> Crystal name </b></td>
-    <td><b> Crystal_system </b> </td>
-    <td><b> Cell lenght a </b></td>
-    <td><b> Cell lenght b </b></td>
-    <td><b> Cell lenght c </b></td> 
+<table style="width:90%">
+    <tr>
+        <td><b> Id </b></td>
+        <td><b> Crystal formula </b> </td>
+        <td><b> Crystal name </b></td>
+        <td><b> Crystal system </b> </td>
+        <td><b> Cell length a (nm) </b></td>
+        <td><b> Cell length b (nm) </b></td>
+        <td><b> Cell length c (nm)</b></td>
+        <td><b> Angle &alpha; </b></td>
+        <td><b> Angle &beta; </b></td>
+        <td><b> Angle &gamma; </b></td>
 
+    </tr>
 
     {% for instance in object_list %}
     <tr>
-        <td>{{ instance.id }}</td>
+        <td><a href="{{ instance.id }}">{{ instance.id }}</a></td>
+        <!-- <td><a href="{{ instance.crystal_formula }}">{{ instance.crystal_formula }}</a></td> -->
         <td>{{ instance.crystal_formula }}</td>
         <td>{{ instance.crystal_name }}</td>
         <td>{{ instance.crystal_system }}</td>
         <td>{{ instance.cell_lenght_a}}</td>
         <td>{{ instance.cell_lenght_b}}</td>
         <td>{{ instance.cell_lenght_c}}</td>
+        <td>{{instance.cell_angle_alpha}}</td>
+        <td>{{instance.cell_angle_beta}}</td>
+        <td>{{instance.cell_angle_gamma}}</td>
+
+
+
     </tr>
-        
 
     {% endfor %}
 
@@ -36,4 +47,4 @@
 
 <!-- http://127.0.0.1:8000/detail-view?id=1 -->
 
-    {% endblock  %}
+{% endblock  %}

@@ -108,6 +108,9 @@ def hkl_crystal_view(request):
         'cell_lenght_a': info.cell_lenght_a,
         'cell_lenght_b': info.cell_lenght_b,
         'cell_lenght_c': info.cell_lenght_c,
+        'cell_angle_alpha': info.cell_angle_alpha,
+        'cell_angle_beta': info.cell_angle_beta,
+        'cell_angle_gamma': info.cell_angle_gamma,
         # 'cubic_result': cubic_result,
         'list_of_results': list_of_results
     }
@@ -118,6 +121,7 @@ def hkl_crystal_view(request):
 def result_hkl_view_by_id(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
+    # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
     list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
     crystal_structure = info.crystal_system
     h_range = [1, 2, 3]
@@ -143,6 +147,9 @@ def result_hkl_view_by_id(request, crystal_id):
         'cell_lenght_a': info.cell_lenght_a,
         'cell_lenght_b': info.cell_lenght_b,
         'cell_lenght_c': info.cell_lenght_c,
+        'cell_angle_alpha': info.cell_angle_alpha,
+        'cell_angle_beta': info.cell_angle_beta,
+        'cell_angle_gamma': info.cell_angle_gamma,
         # 'cubic_result': cubic_result,
         'list_of_results': list_of_results
     }

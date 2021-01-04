@@ -11,9 +11,9 @@ class CrystalData(models.Model):
     cell_lenght_a = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
     cell_lenght_b = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
     cell_lenght_c = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
-    cell_angle_alpha = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
-    cell_angle_beta = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
-    cell_angle_gamma = models.DecimalField(max_digits = 8, decimal_places = 4, blank = True, null = True)
+    cell_angle_alpha = models.DecimalField(max_digits = 8, decimal_places = 2, blank = True, null = True)
+    cell_angle_beta = models.DecimalField(max_digits = 8, decimal_places = 2, blank = True, null = True)
+    cell_angle_gamma = models.DecimalField(max_digits = 8, decimal_places = 2, blank = True, null = True)
 
     # space_group_name = models.CharField(null = True, max_length=25)
     # space_group_IT_number   = models.IntegerField(null=True)

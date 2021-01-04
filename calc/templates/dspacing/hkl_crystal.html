@@ -4,18 +4,19 @@
 {% block content %}
 
 
-<h1>This test hkl for loop </h1>
+<h1>d-spacing Results </h1>
 
 
 
 
-<h2>{{crystal_formula}} <br> {{crystal_name}} <br> {{crystal_system|upper}}</h2>
+<h2>{{crystal_formula}} - {{crystal_name}} <br> {{crystal_system|upper}}</h2>
 
 <p> <strong> Unit cell length: </strong></p>
-<p> a = {{cell_lenght_a}} nm, b = {{cell_lenght_b}} nm, c = {{cell_lenght_c}} nm </p>
+<p> a = {{cell_lenght_a}} nm <br> b = {{cell_lenght_b}} nm <br> c = {{cell_lenght_c}} nm </p>
 
 <p> <strong> Unit cell Angle: </strong></p>
-<p> Alpha = {{cell_angle_alpha}}, Beta = {{cell_angle_beta}}, Gamma = {{cell_angle_gamma}}</p>
+<p> &alpha; = {{cell_angle_alpha}} <sup>o</sup> <br> &beta; = {{cell_angle_beta}} <sup>o</sup> <br> &gamma; =
+    {{cell_angle_gamma}} <sup>o</sup></p>
 
 
 <table style="width:30%">
