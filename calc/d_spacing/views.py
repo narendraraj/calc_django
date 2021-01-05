@@ -9,14 +9,20 @@ from .forms import CrystalDataForm
 
 # Create your views here.
 
-info = CrystalData.objects.get(id=10)
+info = CrystalData.objects.get(id=10) # pulled object from database for testing purpose as global varibale info 
 
 
 def crystal_data_create_view(request):
+    """
+    A view to create the form for to input crystal (materials) structure infroamtion and saves it to the database.    
+    calss CryatalDataForm is called from forms.py.
+    This function uses POST method.
+
+    """
+
     form = CrystalDataForm(request.POST or None)
     if form.is_valid():
-        form.save()
-        # print(form)
+        form.save()        
         form = CrystalDataForm()
 
     context = {
