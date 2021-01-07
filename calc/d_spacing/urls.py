@@ -11,5 +11,8 @@ urlpatterns = [
     path('hkl-crystal/', views.hkl_crystal_view, name='hkl-crystal'),
 
     path('home/', views.home_view, name='home'),
-    path('forms/', views.crystal_data_create_view, name='submit')
+    path('forms/', views.crystal_data_create_view, name='submit'),
+    path('database/', views.database_view, name='database'),
+    path('database/<int:crystal_id>/', views.result_hkl_view_by_id, name='list'),
+
 ]

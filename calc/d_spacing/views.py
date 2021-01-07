@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 
 from .models import CrystalData
 from .forms import CrystalDataForm
+from django.template.defaultfilters import lower
 
 # Create your views here.
 
@@ -14,8 +15,9 @@ info = CrystalData.objects.get(id=10) # pulled object from database for testing 
 
 def crystal_data_create_view(request):
     """
+
     A view to create the form for to input crystal (materials) structure infroamtion and saves it to the database.    
-    calss CryatalDataForm is called from forms.py.
+    class CryatalDataForm is called from forms.py.
     This function uses POST method.
 
     """
@@ -64,6 +66,25 @@ def list_view(request):
     return render(request, "crystal_list.html", context)
 
 
+def database_view(request):
+    info = CrystalData.objects.all()
+    context = {
+
+        "object_list": info
+    }
+    return render(request, "database_view.html", context)
+
+
+
+
+
+
+
+
+
+
+
+
 def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     h = list_of_hkl[0]
     k = list_of_hkl[1]
@@ -73,9 +94,9 @@ def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     b = float(list_of_abc[1])
     c = float(list_of_abc[2])
 
-    if crystal_structure == 'cubic':
+    if  lower(crystal_structure) == 'cubic':
         result = a/(math.sqrt((h ** 2) + (k ** 2) + (l ** 2)))
-    if crystal_structure == 'hexagonal':
+    if  lower(crystal_structure) == 'hexagonal':
         result = (math.sqrt((4 / 3) * ((h ** 2) + (h * k) + (k ** 2)
                                        ) / (a ** 2)) + math.sqrt((l ** 2) / (c ** 2))) ** -1
     if crystal_structure == 'orthorhombic':
@@ -136,7 +157,8 @@ def result_hkl_view_by_id(request, crystal_id):
 
     list_of_results = []
 
-    for h in h_range:
+    # for h in h_range:
+    for h in range(1,4):
         for k in k_range:
             for l in l_range:
                 result = get_d_result(
