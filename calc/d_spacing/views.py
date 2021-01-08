@@ -10,7 +10,8 @@ from django.template.defaultfilters import lower
 
 # Create your views here.
 
-info = CrystalData.objects.get(id=10) # pulled object from database for testing purpose as global varibale info 
+# pulled object from database for testing purpose as global varibale info
+info = CrystalData.objects.get(id=10)
 
 
 def crystal_data_create_view(request):
@@ -24,7 +25,7 @@ def crystal_data_create_view(request):
 
     form = CrystalDataForm(request.POST or None)
     if form.is_valid():
-        form.save()        
+        form.save()
         form = CrystalDataForm()
 
     context = {
@@ -75,16 +76,6 @@ def database_view(request):
     return render(request, "database_view.html", context)
 
 
-
-
-
-
-
-
-
-
-
-
 def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     h = list_of_hkl[0]
     k = list_of_hkl[1]
@@ -94,9 +85,9 @@ def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     b = float(list_of_abc[1])
     c = float(list_of_abc[2])
 
-    if  lower(crystal_structure) == 'cubic':
+    if lower(crystal_structure) == 'cubic':
         result = a/(math.sqrt((h ** 2) + (k ** 2) + (l ** 2)))
-    if  lower(crystal_structure) == 'hexagonal':
+    if lower(crystal_structure) == 'hexagonal':
         result = (math.sqrt((4 / 3) * ((h ** 2) + (h * k) + (k ** 2)
                                        ) / (a ** 2)) + math.sqrt((l ** 2) / (c ** 2))) ** -1
     if crystal_structure == 'orthorhombic':
@@ -158,7 +149,7 @@ def result_hkl_view_by_id(request, crystal_id):
     list_of_results = []
 
     # for h in h_range:
-    for h in range(1,4):
+    for h in range(1, 4):
         for k in k_range:
             for l in l_range:
                 result = get_d_result(
@@ -169,6 +160,7 @@ def result_hkl_view_by_id(request, crystal_id):
                 list_of_results.append([h, k, l, result])
 
     context = {
+        'crystal_id': info.id,
         'crystal_name': info.crystal_name,
         'crystal_formula': info.crystal_formula,
         'crystal_system': info.crystal_system,
