@@ -13,7 +13,7 @@
     <!-- <form method='POST'>  -->
     <div class="flex h-auto bg-white py-28 ">
 
-        <div class="flex-wrap h-auto mx-auto shadow-md bg-gray-50 contewnt-center ">
+        <div class="flex-wrap h-auto mx-auto bg-gray-200 shadow-md contewnt-center ">
 
             <div class="flex p-10 pt-5 mx-auto border-collapse border-indigo-500 rounded-3xl" style="width:auto;">
                 <div class="flex-1 ">
@@ -26,7 +26,7 @@
                             <label for="id_crystal_formula"></label>
 
                             <input id="id_crystal_formula" type="text" name="crystal_formula" maxlength="25"
-                                class="w-full p-2 px-3 text-sm text-gray-600 hover:border-indigo-500 hover:text-white "
+                                class="w-full p-2 px-3 text-sm text-gray-800 focus-within:bg-indigo-500 focus:text-white"
                                 type="text " placeholder="Example- GaN" required>
                         </span>
                     </div>
@@ -37,9 +37,10 @@
                                 class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28 ">Material
                                 Name</span>
                             <label for="id_crystal_name"></label>
-                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder="Gallium Nitrite">
+                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name" required=" "
+                                placeholder="Gallium Nitrite"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
                         </span>
                     </div>
 
@@ -51,8 +52,8 @@
                                 Structure</span>
                             <label for="id_crystal_system"></label>
                             <input type="text" name="crystal_system" maxlength="25" required="" id="id_crystal_system"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder="Hexagonal">
+                                placeholder="Hexagonal"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
                         </span>
 
                     </div>
@@ -73,21 +74,24 @@
 
                             <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">a</span>
                             <label for="id_cell_lenght_a"></label>
-                            <input type="number" name="cell_lenght_a" step="0.0001" id="id_cell_lenght_a"
-                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 0.5432">
+                            <input type="number" name="cell_lenght_a" step="0.0001" id="id_cell_lenght_a" required=""
+                                placeholder=" 0.5432"
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
 
                             <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">b</span>
                             <label for="id_cell_lenght_b"></label>
-                            <input type="number" name="cell_lenght_b" step="0.0001" id="id_cell_lenght_b"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 0.5432">
+                            <input type="number" name="cell_lenght_b" step="0.0001" id="id_cell_lenght_b" required=""
+                                placeholder=" 0.5432"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
 
                             <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">c</span>
                             <label for="id_cell_lenght_c"></label>
-                            <input type="number" name="cell_lenght_c" step="0.0001" id="id_cell_lenght_c"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 1.0500">
+                            <input type="number" name="cell_lenght_c" step="0.0001" id="id_cell_lenght_c" required=""
+                                placeholder=" 1.0500"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
                         </span>
 
 
@@ -111,22 +115,25 @@
                             </span>
                             <label for="id_cell_angle_alpha"></label>
                             <input type="number" name="cell_angle_alpha" step="0.01" id="id_cell_angle_alpha"
-                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 90">
+                                placeholder=" 90" required=""
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
 
                             <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&beta;
                             </span>
                             <label for="id_cell_angle_beta"></label>
-                            <input type="number" name="cell_angle_beta" step="0.01" id="id_cell_angle_beta"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 90">
+                            <input type="number" name="cell_angle_beta" step="0.01" id="id_cell_angle_beta" required=""
+                                placeholder=" 90"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white ">
+
 
                             <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&gamma;
                             </span>
                             <label for="id_cell_angle_gamma"></label>
                             <input type="number" name="cell_angle_gamma" step="0.01" id="id_cell_angle_gamma"
-                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field" type="text"
-                                placeholder=" 120">
+                                placeholder="90" required=""
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
                         </span>
 
 
