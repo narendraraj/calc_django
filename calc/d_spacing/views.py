@@ -2,7 +2,7 @@
 import math
 # import decimal
 from django.http import HttpResponse, request, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import CrystalData
 from .forms import CrystalDataForm
@@ -33,6 +33,40 @@ def crystal_data_create_view(request):
         'form': form
     }
     return render(request, "crystal_data_create.html", context)
+
+
+def update_crystal_data_view(request, crystal_id):
+    crystal_id = int(crystal_id)
+    try:
+        crystal_detail = get_object_or_404(CrystalData, id=crystal_id)
+
+    except CrystalData.DoesNotExist:
+        return redirect('database')
+
+    crystal_update = CrystalDataForm(
+        request.POST or None, instance=crystal_detail)
+
+    if crystal_update.is_valid():
+        crystal_update.save()
+        return redirect('database')
+
+    context = {
+        'crystal_update': crystal_update
+    }
+
+    return render(request, 'update_crystal_data.html', context)
+
+
+def delete_crystal_data_view(request, crystal_id):
+    crystal_id = int(crystal_id)
+    try:
+        crystal_detail = get_object_or_404(CrystalData, id=crystal_id)
+
+    except CrystalData.DoesNotExist:
+        return redirect('database')
+
+    crystal_detail.delete()
+    return redirect('database')
 
 
 # def home_view(request*args, **kwargs):
