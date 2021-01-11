@@ -9,4 +9,5 @@ out
 gen
 db.sqlite3
 security_key.txt
+*.pptx
 

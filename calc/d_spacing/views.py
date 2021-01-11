@@ -10,8 +10,32 @@ from django.template.defaultfilters import lower
 
 # Create your views here.
 
-# pulled object from database for testing purpose as global varibale info
-info = CrystalData.objects.get(id=10)
+# pulled object from database for testing purpose as global varibale 'info'
+# info = CrystalData.objects.get(id=10)
+
+# def home_view(request*args, **kwargs):
+
+
+def home_view(request):
+    # print(args, kwargs)
+    # print(request.user)
+    info = CrystalData.objects.get(id=11)
+
+    context = {
+
+        "object": info
+    }
+    return render(request, "home.html", context)
+
+    # context = {
+    #     'crystal_system': info.crystal_system,
+    #     'cell_lenght_a': info.cell_lenght_a,
+    #     'cell_lenght_b': info.cell_lenght_b,
+    #     'cell_lenght_c': info.cell_lenght_c,
+    #     'cell_angle_alpha': info.cell_angle_alpha,
+    #     'cell_angle_beta': info.cell_angle_beta,
+    #     'cell_angle_gamma': info.cell_angle_gamma
+    # }
 
 
 def crystal_data_create_view(request):
@@ -36,61 +60,85 @@ def crystal_data_create_view(request):
 
 
 def update_crystal_data_view(request, crystal_id):
-    crystal_id = int(crystal_id)
-    try:
-        crystal_detail = get_object_or_404(CrystalData, id=crystal_id)
+    # print(args, kwargs)
+    # print(request.user)
+    info_update = CrystalData.objects.get(id= crystal_id)
+    form = CrystalDataForm(instance=info_update)
 
-    except CrystalData.DoesNotExist:
-        return redirect('database')
-
-    crystal_update = CrystalDataForm(
-        request.POST or None, instance=crystal_detail)
-
-    if crystal_update.is_valid():
-        crystal_update.save()
-        return redirect('database')
+    if request.method == 'POST':
+        form = CrystalDataForm(request.POST, instance= info_update)
+        if form.is_valid():
+            form.save()
+           
+            return  redirect('/database/')
 
     context = {
-        'crystal_update': crystal_update
+
+        'form': form,
+        'crystal_id': crystal_id
+
     }
 
     return render(request, 'update_crystal_data.html', context)
 
 
-def delete_crystal_data_view(request, crystal_id):
-    crystal_id = int(crystal_id)
-    try:
-        crystal_detail = get_object_or_404(CrystalData, id=crystal_id)
+# def update_crystal_data_view(request, crystal_id):
+#     # print(args, kwargs)
+#     # print(request.user)
+#     info_delete = CrystalData.objects.get(id=crystal_id)
+#     form = CrystalDataForm(instance=info_delete)
 
-    except CrystalData.DoesNotExist:
-        return redirect('database')
+#     if request.method == 'POST':
+#         # print('Printing POST:', request.POST)
+#         form = CrystalDataForm(request.POST, instance=info_delete)
+#         if form.is_valid():
+#             form.save()            
+#             return redirect('/database/')
 
-    crystal_detail.delete()
-    return redirect('database')
+#     context = {
+
+#         'form': form,
+#         'crystal_id': crystal_id
 
 
-# def home_view(request*args, **kwargs):
+#     }
 
-def home_view(request):
-    # print(args, kwargs)
-    # print(request.user)
-    # info = CrystalData.objects.get(id=11)
-    context = {
+#     return render(request, 'update_crystal_data.html', context)
 
-        "object": info
-    }
-    return render(request, "home.html", context)
 
-    # context = {
-    #     'crystal_system': info.crystal_system,
-    #     'cell_lenght_a': info.cell_lenght_a,
-    #     'cell_lenght_b': info.cell_lenght_b,
-    #     'cell_lenght_c': info.cell_lenght_c,
-    #     'cell_angle_alpha': info.cell_angle_alpha,
-    #     'cell_angle_beta': info.cell_angle_beta,
-    #     'cell_angle_gamma': info.cell_angle_gamma
-    # }
+# def update_crystal_data_view(request, update_id):
+#     # print(args, kwargs)
+#     # print(request.user)
+#     update = CrystalData.objects.get(id= update_id)
+#     form = CrystalDataForm(instance=update)
 
+#     if request.method == 'POST':
+#         form = CrystalDataForm(request.POST, instance= update)
+#         if form.is_valid():
+#             form.save()
+#             form = CrystalDataForm()
+#             # return redirect('database/')
+
+#     context = {
+
+#         'form' : form
+
+
+#     }
+
+
+#     return render(request, 'update_crystal_data.html', context)
+
+
+def delete_crystal_data_view(request,crystal_id ):    
+    crystal_object = get_object_or_404(CrystalData, id=crystal_id)
+    # form = CrystalDataForm(request.POST,instance=info )
+
+    if crystal_object:
+        crystal_object.delete()
+    return redirect('/database/')
+    
+       
 
 def list_view(request):
     info = CrystalData.objects.all()
@@ -133,8 +181,51 @@ def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     return round(result, 4)
 
 
+
+
+def result_hkl_view_by_id(request, crystal_id):
+    # info = CrystalData.objects.get(id=id)
+    info = get_object_or_404(CrystalData, id=crystal_id)
+    # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
+    list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
+    crystal_structure = info.crystal_system
+    h_range = [1, 2, 3]
+    k_range = [0, 1, 2, 3]
+    l_range = [0, 1, 2, 3]
+
+    list_of_results = []
+
+    # for h in h_range:
+    for h in range(1, 4):
+        for k in k_range:
+            for l in l_range:
+                result = get_d_result(
+                    crystal_structure, list_of_abc, [h, k, l])
+                # cubic_result = info.cell_lenght_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
+                # d_results(h,k,l)
+                # list_of_results.append([h, k, l, cubic_result])
+                list_of_results.append([h, k, l, result])
+
+    context = {
+        'crystal_id': crystal_id,
+        'crystal_name': info.crystal_name,
+        'crystal_formula': info.crystal_formula,
+        'crystal_system': info.crystal_system,
+        'cell_lenght_a': info.cell_lenght_a,
+        'cell_lenght_b': info.cell_lenght_b,
+        'cell_lenght_c': info.cell_lenght_c,
+        'cell_angle_alpha': info.cell_angle_alpha,
+        'cell_angle_beta': info.cell_angle_beta,
+        'cell_angle_gamma': info.cell_angle_gamma,
+        # 'cubic_result': cubic_result,
+        'list_of_results': list_of_results
+    }
+
+    return render(request, "result_hkl_view_by_id.html", context)
+
+
 def hkl_crystal_view(request):
-    # info = CrystalData.objects.get(id=11)
+    info = CrystalData.objects.get(id=11)  # for specific id
     list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
     crystal_structure = info.crystal_system
     h_range = [1, 2, 3]
@@ -168,58 +259,3 @@ def hkl_crystal_view(request):
     }
 
     return render(request, "hkl_crystal.html", context)
-
-
-def result_hkl_view_by_id(request, crystal_id):
-    # info = CrystalData.objects.get(id=id)
-    info = get_object_or_404(CrystalData, id=crystal_id)
-    # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
-    list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
-    crystal_structure = info.crystal_system
-    h_range = [1, 2, 3]
-    k_range = [0, 1, 2, 3]
-    l_range = [0, 1, 2, 3]
-
-    list_of_results = []
-
-    # for h in h_range:
-    for h in range(1, 4):
-        for k in k_range:
-            for l in l_range:
-                result = get_d_result(
-                    crystal_structure, list_of_abc, [h, k, l])
-                # cubic_result = info.cell_lenght_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
-                # d_results(h,k,l)
-                # list_of_results.append([h, k, l, cubic_result])
-                list_of_results.append([h, k, l, result])
-
-    context = {
-        'crystal_id': info.id,
-        'crystal_name': info.crystal_name,
-        'crystal_formula': info.crystal_formula,
-        'crystal_system': info.crystal_system,
-        'cell_lenght_a': info.cell_lenght_a,
-        'cell_lenght_b': info.cell_lenght_b,
-        'cell_lenght_c': info.cell_lenght_c,
-        'cell_angle_alpha': info.cell_angle_alpha,
-        'cell_angle_beta': info.cell_angle_beta,
-        'cell_angle_gamma': info.cell_angle_gamma,
-        # 'cubic_result': cubic_result,
-        'list_of_results': list_of_results
-    }
-
-    return render(request, "hkl_crystal.html", context)
-
-# def cubic(request):
-
-#     cubic_result = ('cell_lenght_a' / (math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
-
-#     context = {
-#         'cubic_result' : cubic_result,
-
-#     }
-
-#     return render(request, "", context)
-
-
-# cubic_result = (a / (math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))

@@ -15,4 +15,21 @@
 
 <h2>Yes! it is working </h2>
 
+
+<form action="/home/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <label for="your_name"></label>
+    <input id="your_name" type="Submit" name="your_name" value="Update">
+
+</form>
+
+<div class="container mx-auto">
+
+<button>
+    <a href=" " class="px-4 py-3 transition duration-300 ease-in-out bg-blue-500 text -white mr-6font-bold hover:bg-blue-600">
+        Click here
+    </a>
+</button>
+
+</div>
+
 {% endblock %}

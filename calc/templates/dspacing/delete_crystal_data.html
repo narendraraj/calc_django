@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1> Delete crystal data</h1>
+
+
+<!-- <p> This is home page, just trying to pull some data objects from database </p>
+
+<h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
+<p> <strong> Unit cell length: </strong></p>
+<p> a = {{object.cell_lenght_a}} nm, b = {{object.cell_lenght_b}} nm, c = {{object.cell_lenght_c}} nm </p>
+
+<p> <strong> Unit cell Angle: </strong></p>
+<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
+
+<h2>Yes! it is working </h2> -->
+<div>
+
+    <form action="/delte/{{crystal_id}}/" method="POST"> {% csrf_token %}
+
+        <p class= "text-sm">
+            Do you want to delte the Material "{{object_list.crystal_name}}" ?
+         </p>      
+
+
+        <input  type="Submit"  value=" Yes delete"> <a href='../'>Cancel</a>
+    </form>
+
+    
+
+
+
+{% endblock %}

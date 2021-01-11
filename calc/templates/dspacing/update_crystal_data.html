@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Hello world</h1>
+
+This is thst page to update the data
+<!-- <p> This is home page, just trying to pull some data objects from database </p>
+
+<h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
+<p> <strong> Unit cell length: </strong></p>
+<p> a = {{object.cell_lenght_a}} nm, b = {{object.cell_lenght_b}} nm, c = {{object.cell_lenght_c}} nm </p>
+
+<p> <strong> Unit cell Angle: </strong></p>
+<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
+
+<h2>Yes! it is working </h2> -->
+<div>
+
+    <form action="/update/{{crystal_id}}/" method="POST"> {% csrf_token %}
+
+        {{form.as_ul}}
+
+
+        <input id="your_name" type="Submit" name="your_name" value="Update & Save">
+
+        
+    </form>
+
+    <a href="/delete/{{crystal_id}}/">Delete</a>
+</div>
+
+
+<!-- 
+<form action="/update" method="POST"> {% csrf_token %}
+
+    
+    <div class="flex h-auto bg-white py-28 ">
+
+        <div class="flex-wrap h-auto mx-auto bg-gray-200 shadow-md contewnt-center ">
+
+            <div class="flex p-10 pt-5 mx-auto border-collapse border-indigo-500 rounded-3xl" style="width:auto;">
+                <div class="flex-1 ">
+                    <div>
+                        <span class="flex mb-5 text-xs shadow-md ">
+                            <span
+                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28">Material
+                                Formula</span>
+
+                            <label for="id_crystal_formula"></label>
+
+                            <input id="id_crystal_formula" type="text" name="crystal_formula" maxlength="25"
+                                class="w-full p-2 px-3 text-sm text-gray-800 focus-within:bg-indigo-500 focus:text-white"
+                                type="text ">
+                        </span>
+                    </div>
+
+                    <div>
+                        <span class="flex mb-5 text-xs shadow-md">
+                            <span
+                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28 ">Material
+                                Name</span>
+                            <label for="id_crystal_name"></label>
+                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+                    </div>
+
+                    <div>
+
+                        <span class="flex mb-5 text-xs shadow-md">
+                            <span
+                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28">Crystal
+                                Structure</span>
+                            <label for="id_crystal_system"></label>
+                            <input type="text" name="crystal_system" maxlength="25" id="id_crystal_system"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div>
+                        <div class="p-3 px-2 font-bold text-center text-gray-200 align-middle bg-indigo-500 rounded-md">
+                            Unit Cell length
+                            (nm)
+                        </div>
+
+                        <span class="flex mb-2 text-sm shadow-md"></span>
+
+
+                        <span class="flex content-center px-2 py-1 mb-5 text-sm shadow-md">
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">a</span>
+                            <label for="id_cell_lenght_a"></label>
+                            <input type="number" name="cell_lenght_a" step="0.0001" id="id_cell_lenght_a"
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">b</span>
+                            <label for="id_cell_lenght_b"></label>
+                            <input type="number" name="cell_lenght_b" step="0.0001" id="id_cell_lenght_b"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">c</span>
+                            <label for="id_cell_lenght_c"></label>
+                            <input type="number" name="cell_lenght_c" step="0.0001" id="id_cell_lenght_c"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+
+
+                        </span>
+
+                    </div>
+
+                    <div class="content-center">
+
+
+                        <div class="p-3 px-2 font-bold text-center text-gray-200 align-middle bg-indigo-500 rounded-md">
+                            Unit Cell Angle
+                            (deg)
+                        </div>
+
+                        <span class="flex mb-2 text-sm shadow-md"></span>
+
+                        <span class="flex content-center px-2 py-1 mb-5 text-sm shadow-md">
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&alpha;
+                            </span>
+                            <label for="id_cell_angle_alpha"></label>
+                            <input type="number" name="cell_angle_alpha"  id="id_cell_angle_alpha"
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&beta;
+                            </span>
+                            <label for="id_cell_angle_beta"></label>
+                            <input type="number" name="cell_angle_beta"  id="id_cell_angle_beta"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white ">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&gamma;
+                            </span>
+                            <label for="id_cell_angle_gamma"></label>
+                            
+                            <input 
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+
+
+                        </span>
+
+                    </div>
+
+
+                    
+
+                        
+                        <input id="your_name" type="Submit" name="your_name" value="Update & Save"
+                            class="block w-full p-3 px-4 mt-3 text-lg font-bold text-center text-indigo-500 border-2 border-indigo-500 rounded cursor-pointer hover:bg-indigo-500 hover:text-gray-100">
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form> -->
+
+
+
+
+<!-- enctype="multipart/form-data" -->
+
+{% endblock %}

@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %} list of crystals {% endblock title %}
+
 
 
 {% block content %}
 
 
-<!-- {{object_list|linenumbers}} -->
+<!-- {{object_list}} -->
+
 
 <table style="width:90%">
     <tr>
@@ -23,19 +24,19 @@
 
     </tr>
 
-    {% for instance in object_list %}
+    {% for object in object_list %}
     <tr>
-        <td><a href="{{ instance.id }}">{{ instance.id }}</a></td>
-        <!-- <td><a href="{{ instance.crystal_formula }}">{{ instance.crystal_formula }}</a></td> -->
-        <td><a href="{{ instance.id }}">{{ instance.crystal_formula }}</a></td>
-        <td><a href="{{ instance.id }}">{{ instance.crystal_name }}</a></td>
-        <td>{{ instance.crystal_system }}</td>
-        <td>{{ instance.cell_lenght_a}}</td>
-        <td>{{ instance.cell_lenght_b}}</td>
-        <td>{{ instance.cell_lenght_c}}</td>
-        <td>{{instance.cell_angle_alpha}}</td>
-        <td>{{instance.cell_angle_beta}}</td>
-        <td>{{instance.cell_angle_gamma}}</td>
+        <td><a href="{{ object.id }}">{{ object.id }}</a></td>
+        <!-- <td><a href="{{  object.crystal_formula }}">{{  object.crystal_formula }}</a></td> -->
+        <td><a href="">{{ object.crystal_formula }}</a></td>
+        <td><a href="">{{  object.crystal_name }}</a></td>
+        <td>{{  object.crystal_system }}</td>
+        <td>{{  object.cell_lenght_a}}</td>
+        <td>{{  object.cell_lenght_b}}</td>
+        <td>{{  object.cell_lenght_c}}</td>
+        <td>{{ object.cell_angle_alpha}}</td>
+        <td>{{ object.cell_angle_beta}}</td>
+        <td>{{ object.cell_angle_gamma}}</td>
 
 
 
@@ -44,6 +45,23 @@
     {% endfor %}
 
 </table>
+
+
+
+</form>
+<!-- 
+<form action="list/" method="POST"> {% csrf_token %}
+
+    <p class= "text-sm">
+        Do you want to delte the Material "{{object_list.crystal_name}}" ?
+     </p>      
+
+
+    <input  type="Submit"  value=" Yes object"> <a href='../'>Cancel</a>
+</form> -->
+
+
+
 
 <!-- http://127.0.0.1:8000/detail-view?id=1 -->
 
