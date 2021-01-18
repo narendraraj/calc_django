@@ -29,9 +29,9 @@ def home_view(request):
 
     # context = {
     #     'crystal_system': info.crystal_system,
-    #     'cell_lenght_a': info.cell_lenght_a,
-    #     'cell_lenght_b': info.cell_lenght_b,
-    #     'cell_lenght_c': info.cell_lenght_c,
+    #     'cell_length_a': info.cell_length_a,
+    #     'cell_length_b': info.cell_length_b,
+    #     'cell_length_c': info.cell_length_c,
     #     'cell_angle_alpha': info.cell_angle_alpha,
     #     'cell_angle_beta': info.cell_angle_beta,
     #     'cell_angle_gamma': info.cell_angle_gamma
@@ -187,7 +187,7 @@ def result_hkl_view_by_id(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
     # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
-    list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
+    list_of_abc = [info.cell_length_a, info.cell_length_b, info.cell_length_c]
     crystal_structure = info.crystal_system
     h_range = [1, 2, 3]
     k_range = [0, 1, 2, 3]
@@ -201,7 +201,7 @@ def result_hkl_view_by_id(request, crystal_id):
             for l in l_range:
                 result = get_d_result(
                     crystal_structure, list_of_abc, [h, k, l])
-                # cubic_result = info.cell_lenght_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
+                # cubic_result = info.cell_length_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
                 # d_results(h,k,l)
                 # list_of_results.append([h, k, l, cubic_result])
                 list_of_results.append([h, k, l, result])
@@ -211,9 +211,9 @@ def result_hkl_view_by_id(request, crystal_id):
         'crystal_name': info.crystal_name,
         'crystal_formula': info.crystal_formula,
         'crystal_system': info.crystal_system,
-        'cell_lenght_a': info.cell_lenght_a,
-        'cell_lenght_b': info.cell_lenght_b,
-        'cell_lenght_c': info.cell_lenght_c,
+        'cell_length_a': info.cell_length_a,
+        'cell_length_b': info.cell_length_b,
+        'cell_length_c': info.cell_length_c,
         'cell_angle_alpha': info.cell_angle_alpha,
         'cell_angle_beta': info.cell_angle_beta,
         'cell_angle_gamma': info.cell_angle_gamma,
@@ -226,7 +226,7 @@ def result_hkl_view_by_id(request, crystal_id):
 
 def hkl_crystal_view(request):
     info = CrystalData.objects.get(id=11)  # for specific id
-    list_of_abc = [info.cell_lenght_a, info.cell_lenght_b, info.cell_lenght_c]
+    list_of_abc = [info.cell_length_a, info.cell_length_b, info.cell_length_c]
     crystal_structure = info.crystal_system
     h_range = [1, 2, 3]
     k_range = [0, 1, 2, 3]
@@ -239,7 +239,7 @@ def hkl_crystal_view(request):
             for l in l_range:
                 result = get_d_result(
                     crystal_structure, list_of_abc, [h, k, l])
-                # cubic_result = info.cell_lenght_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
+                # cubic_result = info.cell_length_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
                 # d_results(h,k,l)
                 # list_of_results.append([h, k, l, cubic_result])
                 list_of_results.append([h, k, l, result])
@@ -248,9 +248,9 @@ def hkl_crystal_view(request):
         'crystal_name': info.crystal_name,
         'crystal_formula': info.crystal_formula,
         'crystal_system': info.crystal_system,
-        'cell_lenght_a': info.cell_lenght_a,
-        'cell_lenght_b': info.cell_lenght_b,
-        'cell_lenght_c': info.cell_lenght_c,
+        'cell_length_a': info.cell_length_a,
+        'cell_length_b': info.cell_length_b,
+        'cell_length_c': info.cell_length_c,
         'cell_angle_alpha': info.cell_angle_alpha,
         'cell_angle_beta': info.cell_angle_beta,
         'cell_angle_gamma': info.cell_angle_gamma,
