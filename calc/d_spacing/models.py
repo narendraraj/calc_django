@@ -29,6 +29,9 @@ class CrystalData(models.Model):
     # space_group_name = models.CharField(null = True, max_length=25)
     # space_group_IT_number   = models.IntegerField(null=True)
 
+    # class Meta:
+    #   unique_together = ['cell_length_a', 'cell_length_c', 'cell_length_c']  
+
     def __str__(self):
         return self.crystal_system
 
