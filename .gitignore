@@ -9,4 +9,7 @@ out
 gen
 db.sqlite3
 security_key.txt
+*.pptx
+__pycache__/
+*.pyc
 

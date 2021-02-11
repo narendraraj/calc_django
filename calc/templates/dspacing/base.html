@@ -1,25 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     <title>dspacing</title>
 </head>
 
 
 <body>
 
-    {% include 'navbar.html' %}
+
+    <div class="bg-white bg-pacity-100">
+
+
+
+
+        {% include 'navbar.html' %}
+
+
+    </div>
+
+
+
+
 
 
     {% block content %}
+
     replace me
     {% endblock %}
 
 </body>
-
-
-
-
-
 
 </html>
