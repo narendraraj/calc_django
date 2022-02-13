@@ -9,7 +9,7 @@ from .forms import CrystalDataForm
 
 # Create your views here.
 
-info = CrystalData.objects.get(id=10)
+info = CrystalData.objects.get(id=1)
 
 
 def crystal_data_create_view(request):
@@ -94,8 +94,7 @@ def hkl_crystal_view(request):
     for h in h_range:
         for k in k_range:
             for l in l_range:
-                result = get_d_result(
-                    crystal_structure, list_of_abc, [h, k, l])
+                result = get_d_result(crystal_structure, list_of_abc, [h, k, l])
                 # cubic_result = info.cell_lenght_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
                 # d_results(h,k,l)
                 # list_of_results.append([h, k, l, cubic_result])
