@@ -19,11 +19,11 @@ from django.template.defaultfilters import lower
 def home_view(request):
     # print(args, kwargs)
     # print(request.user)
-    info = CrystalData.objects.get(id=11)
+    # info = CrystalData.objects.get(id=1)
 
     context = {
 
-        "object": info
+        "object": ""
     }
     return render(request, "home.html", context)
 
