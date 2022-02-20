@@ -3,6 +3,7 @@ import math
 # import decimal
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 
 from .models import CrystalData
 from .forms import CrystalDataForm
@@ -12,9 +13,22 @@ from django.template.defaultfilters import lower
 
 # pulled object from database for testing purpose as global varibale 'info'
 # info = CrystalData.objects.get(id=10)
-
-# def home_view(request*args, **kwargs):
-
+def search_view(request):
+    
+    query = request.GET.get('q') # this is a dictionary
+    
+    qs = CrystalData.objects.all()
+    if query is not None:
+        lookups =Q(id__icontains = query) | Q(crystal_formula__icontains = query) | Q(crystal_name__icontains=query) | Q(crystal_system__icontains=query)
+        qs = CrystalData.objects.filter(lookups)
+          
+    
+    context = {
+        "object_list": qs
+        
+    }
+    
+    return render(request, "search.html", context )
 
 def home_view(request):
     # print(args, kwargs)

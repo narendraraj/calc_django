@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home_view, name='home'),
+    path('database/', views.search_view, name='search'),
     path('home/', views.home_view, name='home'),
     path('list/', views.list_view, name='list'),
     path('list/<int:crystal_id>/', views.result_hkl_view_by_id, name='list'),

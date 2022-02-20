@@ -1,39 +1,70 @@
 {% extends 'base.html' %}
 
-
-
-
-{% block title %} list of crystals {% endblock title %}
-
+{% block title %} search results {% endblock title %}
 {% block content %}
+
+<h1>Search page</h1>
+<p>  </p>
+<div>
+
+
+
+    {% comment %} <div class="inline-block w-full px-12 py-6 overflow-hidden align-middle bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
+        <div class="flex justify-center">  
+            <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded lg:px-6">
+                <div class="relative flex flex-wrap items-stretch w-full h-full mb-6">
+                    <form action='/database/' method='GET'>
+                            <input type='text' name='q' />
+                            <input type='submit' />
+                    </form >
+                </div>
+            </div>
+        </div>
+    </div {% endcomment %}
+        
+    <form action='/database/' method='GET'>
+        <div class="inline-block w-full px-12 py-6 overflow-hidden align-middle bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
+                <div class="flex justify-center">
+                    <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded border-blue-500 lg:px-6">
+
+                        <div class="relative flex flex-wrap items-stretch w-full h-full mb-6">
+                            <div class="flex">
+                                <span
+                                    class="flex items-center py-2 text-sm leading-normal whitespace-no-wrap bg-transparent border border-r-0 border-none rounded rounded-r-none lg:px-3 text-grey-dark">
+                                    <svg width="18" height="18" class="w-2 lg:w-auto" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z"
+                                            stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </div>
+                            
+                                <input type="text" action = '/database/' method= 'GET' name = 'q' 
+                                class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-gray-500 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xs lg:text-base"
+                                placeholder="Search" >
+                                
+
+                                                               
+                        </div>               
+                    </div>
+                
+                    
+                    <input type = 'submit' value = "Search" class="px-6 py-2 border  border-blue-500 transition duration-300 ease-in-out bg-gray-400 rounded-sm text-gray-900 mr-6font-bold  hover:bg-blue-600 hover:text-gray-100">
+                </div>
+            </div>
+        
+    </form>
+        </div>
+  
+
+
+
 
 <!-- component  serach bar-->
 <div class="py-2 pr-10 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 
-    {% comment %} <div
-        class="inline-block w-full px-12 py-4 overflow-hidden align-middle bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
-        <div class="flex justify-between">
-            <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded lg:px-6">
-                <div class="relative flex flex-wrap items-stretch w-full h-full mb-6">
-                    <div class="flex">
-                        <span
-                            class="flex items-center py-2 text-sm leading-normal whitespace-no-wrap bg-transparent border border-r-0 border-none rounded rounded-r-none lg:px-3 text-grey-dark">
-                            <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none">
-                                <path
-                                    d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z"
-                                    stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </div>
-                    <input type="text"
-                        class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-gray-500 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xs lg:text-base"
-                        placeholder="Search">
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
 
 
 
@@ -87,7 +118,7 @@
 
             <tbody class="bg-white"></tbody>
 
-            {% for instance in object_list %}
+            {% for object in object_list %}
 
 
 
@@ -95,7 +126,7 @@
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a href="{{ instance.id }}">{{ instance.id }}</a>
+                    <div class="text-sm leading-4 text-gray-800"><a href="{{ object.id }}">{{ object.id }}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -105,7 +136,7 @@
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
                     <div class="text-sm leading-4 text-gray-800"><a
-                            href="{{ instance.id }}">{{ instance.crystal_formula }}</a>
+                            href="{{ object.id }}">{{ object.crystal_formula }}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -116,7 +147,7 @@
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
                     <div class="text-sm leading-4 text-gray-800"><a
-                            href="{{ instance.id }}">{{ instance.crystal_name }}</a>
+                            href="{{ object.id }}">{{ object.crystal_name }}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -125,21 +156,21 @@
                 <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
                     <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-red-600">
                         <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full opacity-50"></span>
-                        <span class="relative text-xs"> {{ instance.crystal_system | upper}}</span>
+                        <span class="relative text-xs"> {{ object.crystal_system | upper}}</span>
                     </span>
                 </td>
 
 
                 <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    a = {{ instance.cell_length_a}}<br>
-                    b = {{ instance.cell_length_b}}<br>
-                    c = {{ instance.cell_length_c}}
+                    a = {{ object.cell_length_a}}<br>
+                    b = {{ object.cell_length_b}}<br>
+                    c = {{ object.cell_length_c}}
                 </td>
 
                 <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    &alpha; = {{instance.cell_angle_alpha}}<br>
-                    &beta; = {{instance.cell_angle_beta}}<br>
-                    &gamma; = {{instance.cell_angle_gamma}}
+                    &alpha; = {{object.cell_angle_alpha}}<br>
+                    &beta; = {{object.cell_angle_beta}}<br>
+                    &gamma; = {{object.cell_angle_gamma}}
                 </td>
 
 
@@ -147,7 +178,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{{ instance.id }}">Get d Values</a>
+                        <a href="{{ object.id }}">Get d Values</a>
 
                     </button>
                 </td>
@@ -156,7 +187,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href=" /update/{{ instance.id }}">Edit</a>
+                        <a href=" /update/{{ object.id }}">Edit</a>
 
                     </button>
                 </td>
@@ -165,7 +196,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href=" /delete/{{ instance.id }}">Delete</a>
+                        <a href=" /delete/{{ object.id }}">Delete</a>
 
                     </button>
                 </td> -->
@@ -176,7 +207,7 @@
                 </tbody>
         </table>
 
-
+{% comment %} 
         <div class="mt-4 sm:flex-1 sm:flex sm:items-center sm:justify-between work-sans">
             <div>
                 <p class="text-sm leading-5 text-blue-700">
@@ -230,7 +261,7 @@
                 </nav>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 </div>
 
 
@@ -241,49 +272,4 @@
 {% endblock  %}
 
 
-<!-- <div>
-            {{object_list|linenumbers}}
 
-            <table style="width:90%">
-                <tr>
-                    <td><b> Id </b></td>
-                    <td><b> Crystal formula </b> </td>
-                    <td><b> Crystal name </b></td>
-                    <td><b> Crystal system </b> </td>
-                    <td><b> Cell length a (nm) </b></td>
-                    <td><b> Cell length b (nm) </b></td>
-                    <td><b> Cell length c (nm)</b></td>
-                    <td><b> Angle &alpha; </b></td>
-                    <td><b> Angle &beta; </b></td>
-                    <td><b> Angle &gamma; </b></td>
-
-                </tr>
-
-                {% for instance in object_list %}
-                <tr>
-                    <td><a href="{{ instance.id }}">{{ instance.id }}</a></td>
-                    <td><a href="{{ instance.crystal_formula }}">{{ instance.crystal_formula }}</a></td> -->
-<!-- <td><a href="{{ instance.id }}">{{ instance.crystal_formula }}</a></td>
-                    <td><a href="{{ instance.id }}">{{ instance.crystal_name }}</a></td>
-                    <td>{{ instance.crystal_system }}</td>
-                    <td>{{ instance.cell_length_a}}</td>
-                    <td>{{ instance.cell_length_b}}</td>
-                    <td>{{ instance.cell_length_c}}</td>
-                    <td>{{instance.cell_angle_alpha}}</td>
-                    <td>{{instance.cell_angle_beta}}</td>
-                    <td>{{instance.cell_angle_gamma}}</td>
-
-
-
-                </tr>
-
-                {% endfor %}
-
-            </table> -->
-<!-- </div> --> -->
-<!-- http://127.0.0.1:8000/detail-view?id=1  -->
-
-
-
-
-<!-- </tr>
