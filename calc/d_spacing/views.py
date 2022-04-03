@@ -13,7 +13,7 @@ from django.template.defaultfilters import lower
 
 # pulled object from database for testing purpose as global varibale 'info'
 # info = CrystalData.objects.get(id=10)
-def search_view(request):
+def database_search_view(request):
     
     query = request.GET.get('q') # this is a dictionary
     
@@ -28,7 +28,7 @@ def search_view(request):
         
     }
     
-    return render(request, "search.html", context )
+    return render(request, "database_search.html", context )
 
 def home_view(request):
     # print(args, kwargs)
