@@ -17,11 +17,7 @@ from .models import CrystalData
 from .forms import  CrystalDataForm, CifCrystalDataForm
 
 
-<<<<<<< HEAD
-info = CrystalData.objects.get(id=1)
-=======
 from django.template.defaultfilters import lower
->>>>>>> work-branch
 
 from gemmi import cif
 import requests
