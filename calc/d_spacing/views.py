@@ -217,7 +217,7 @@ def upload_cif_file(request):
     if request.method == 'POST':
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)      
         if form.is_valid():
-            form.save()
+            form.save()            
             messages.success(request," CIF file is successfuly uploaded ")
             return HttpResponseRedirect('/database-search/')
     else:
