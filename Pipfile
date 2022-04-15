@@ -8,6 +8,10 @@ verify_ssl = true
 [packages]
 django = "==3.1.4"
 ipython = "*"
+crispy-tailwind = "*"
+gemmi = "*"
+django-extensions = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"

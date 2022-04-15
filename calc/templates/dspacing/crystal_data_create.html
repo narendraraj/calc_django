@@ -1,14 +1,181 @@
 {% extends 'base.html' %}
-    
-    
+
+
 {% block content %}
 
-<form method ='POST'> {% csrf_token %}
+<!--  
+<form method='POST'> {% csrf_token %}
 
-{{ form.as_p }}
+    {{ form.as_p }} -->
 
-<input type= 'submit' value ='Add'/>
+<form action="/forms/" method="POST" enctype="multipart/form-data"> {% csrf_token %}
 
+    <!-- <form method='POST'>  -->
+    <div class="flex h-auto bg-white py-28 ">
+
+        <div class="flex-wrap h-auto mx-auto bg-gray-200 shadow-md contewnt-center ">
+
+            <div class="flex p-10 pt-5 mx-auto border-collapse border-indigo-500 rounded-3xl" style="width:auto;">
+                <div class="flex-1 ">
+
+                    <div class="flex p-3  items-center justify-center bg-grey-lighter">
+                        <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                            </svg>
+                            <span class="mt-2 text-base leading-normal">Select a CIF file</span>
+                            <input type='file' name="cif_file" class="hidden" />
+                        </label>
+                    </div>
+
+                    
+
+                    
+
+                    <div>
+                        <span class="flex mb-5 text-xs shadow-md">
+                            <span
+                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28 ">Material
+                                Name</span>
+                            <label for="id_crystal_name"></label>
+                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name" 
+                                placeholder="Gallium Nitrite"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+                    </div>
+
+                    <div>
+
+                        <span class="flex mb-5 text-xs shadow-md">
+                            <span
+                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28">Crystal
+                                Structure</span>
+                            <label for="id_crystal_system"></label>
+                            <input type="text" name="crystal_system" maxlength="25" required="" id="id_crystal_system"
+                                placeholder="Hexagonal"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div>
+                        <div class="p-3 px-2 font-bold text-center text-gray-200 align-middle bg-indigo-500 rounded-md">
+                            Unit Cell length
+                            (nm)
+                        </div>
+
+                        <span class="flex mb-2 text-sm shadow-md"></span>
+
+
+                        <span class="flex content-center px-2 py-1 mb-5 text-sm shadow-md">
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">a</span>
+                            <label for="id_cell_length_a"></label>
+                            <input type="number" name="cell_length_a" step="0.0001" id="id_cell_length_a" required=""
+                                placeholder=" 0.5432"
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">b</span>
+                            <label for="id_cell_length_b"></label>
+                            <input type="number" name="cell_length_b" step="0.0001" id="id_cell_length_b" required=""
+                                placeholder=" 0.5432"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">c</span>
+                            <label for="id_cell_length_c"></label>
+                            <input type="number" name="cell_length_c" step="0.0001" id="id_cell_length_c" required=""
+                                placeholder=" 1.0500"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+
+
+                        </span>
+
+                    </div>
+
+                    <div class="content-center">
+
+
+                        <div class="p-3 px-2 font-bold text-center text-gray-200 align-middle bg-indigo-500 rounded-md">
+                            Unit Cell Angle
+                            (deg)
+                        </div>
+
+                        <span class="flex mb-2 text-sm shadow-md"></span>
+
+                        <span class="flex content-center px-2 py-1 mb-5 text-sm shadow-md">
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&alpha;
+                            </span>
+                            <label for="id_cell_angle_alpha"></label>
+                            <input type="number" name="cell_angle_alpha" step="0.01" id="id_cell_angle_alpha"
+                                placeholder=" 90" required=""
+                                class="w-full p-2 px-2 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&beta;
+                            </span>
+                            <label for="id_cell_angle_beta"></label>
+                            <input type="number" name="cell_angle_beta" step="0.01" id="id_cell_angle_beta" required=""
+                                placeholder=" 90"
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white ">
+
+
+                            <span class="p-3 px-2 font-bold text-center text-gray-200 bg-indigo-500 rounded-l">&gamma;
+                            </span>
+                            <label for="id_cell_angle_gamma"></label>
+                            <input type="number" name="cell_angle_gamma" step="0.01" id="id_cell_angle_gamma"
+                                placeholder="90" required=""
+                                class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
+
+                        </span>
+
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- <div id="your_name" type="Submit" name="your_name" value="" class="block p-3 px-4 mt-3 text-lg font-bold text-center text-indigo-500 border-2 border-indigo-500 rounded cursor-pointer hover:bg-indigo-500 hover:text-gray-100"> -->
+                    <div>
+
+                        <!-- <label for="your_name"> </label> -->
+                        <input type="Submit"
+                            class="block w-full p-3 px-4 mt-3 text-lg font-bold text-center text-indigo-500 border-2 border-indigo-500 rounded cursor-pointer hover:bg-indigo-500 hover:text-gray-100">
+
+
+                        <!-- <form action="/forms/" method="post"> -->
+                        <!-- <label for="your_name"></label> -->
+
+                        <!-- <input id="your_name" type="Submit" name="your_name" value=""> -->
+
+                        <!-- </form> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
+
+
+
+
+
+<!-- <form method ='POST'> {% csrf_token %}
+
+{{ form }} -->
+
+
+
+
+
 
 {% endblock %}

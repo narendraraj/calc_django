@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block content %}
+
+
+
+Update page
+<!-- <p> This is home page, just trying to pull some data objects from database </p>
+
+<h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
+<p> <strong> Unit cell length: </strong></p>
+<p> a = {{object.cell_length_a}} nm, b = {{object.cell_length_b}} nm, c = {{object.cell_length_c}} nm </p>
+
+<p> <strong> Unit cell Angle: </strong></p>
+<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
+
+<h2>Yes! it is working </h2> -->
+<div class = " flex container justify-center ">
+
+    <div class = " text-2xl text-blue-600 "> 
+
+        Edit & Update 
+    </div>
+
+    <div class= "py-20" >
+        <form action="" method="POST" enctype="multipart/form-data">        
+
+            {% csrf_token %}     
+
+              
+            {{ form|crispy }} 
+                
+          
+
+
+            <div class = "flex justify-center py-5" >
+
+                    <button type = "submit" action= "" class=" px-2 py-2 justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none "> Update & Save       
+                        <a href = ></a>
+                    </button>
+                
+            {% comment %} </div>
+
+            <div class = "flex justify-center"> {% endcomment %}
+
+                    <button type = "submit" action="" class=" px-2 py-2  justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Cancel       
+                        <a href = "/database-search/"></a>
+                    </button>
+
+            </div>  
+
+            
+        </form>
+    </div>
+
+ 
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

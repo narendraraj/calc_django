@@ -10,4 +10,7 @@ gen
 
 
 security_key.txt
+*.pptx
+__pycache__/
+*.pyc
 

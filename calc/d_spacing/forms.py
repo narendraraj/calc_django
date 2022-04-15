@@ -8,13 +8,35 @@ class CrystalDataForm(forms.ModelForm):
         model = CrystalData
         fields = '__all__'
         # fields = [
-        #     'crytal_formula',
+        #     'crystal_formula',
         #     'crystal_name',
         #     'crystal_system',
-        #     'cell_lenght_a',
-        #     'cell_lenght_b',
-        #     'cell_lenght_c',
+        #     'cell_length_a',
+        #     'cell_length_b',
+        #     'cell_length_c',
         #     'cell_angle_alpha',
         #     'cell_angle_beta',
-        #     'cell_angle_gamma'
-        # ]
+        #     'cell_angle_gamma',
+            # 'cif_file', 
+            
+        # ]     
+                
+class CifCrystalDataForm(forms.ModelForm):
+    class Meta:
+        model = CrystalData
+        # fields = '__all__'
+        fields = [
+        #     'crystal_formula',
+        #     'crystal_name',
+        #     'crystal_system',
+        #     'cell_length_a',
+        #     'cell_length_b',
+        #     'cell_length_c',
+        #     'cell_angle_alpha',
+        #     'cell_angle_beta',
+        #     'cell_angle_gamma',
+            'cif_file', 
+            
+        ]     
+                
+ 
