@@ -8,7 +8,7 @@
 
     {{ form.as_p }} -->
 
-<form action="/forms/" method="post"> {% csrf_token %}
+<form action="/forms/" method="POST" enctype="multipart/form-data"> {% csrf_token %}
 
     <!-- <form method='POST'>  -->
     <div class="flex h-auto bg-white py-28 ">
@@ -17,19 +17,20 @@
 
             <div class="flex p-10 pt-5 mx-auto border-collapse border-indigo-500 rounded-3xl" style="width:auto;">
                 <div class="flex-1 ">
-                    <div>
-                        <span class="flex mb-5 text-xs shadow-md ">
-                            <span
-                                class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28">Material
-                                Formula</span>
 
-                            <label for="id_crystal_formula"></label>
-
-                            <input id="id_crystal_formula" type="text" name="crystal_formula" maxlength="25"
-                                class="w-full p-2 px-3 text-sm text-gray-800 focus-within:bg-indigo-500 focus:text-white"
-                                type="text " placeholder="Example- GaN" required>
-                        </span>
+                    <div class="flex p-3  items-center justify-center bg-grey-lighter">
+                        <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                            </svg>
+                            <span class="mt-2 text-base leading-normal">Select a CIF file</span>
+                            <input type='file' name="cif_file" class="hidden" />
+                        </label>
                     </div>
+
+                    
+
+                    
 
                     <div>
                         <span class="flex mb-5 text-xs shadow-md">
@@ -37,7 +38,7 @@
                                 class="p-3 px-5 font-bold text-center text-gray-200 bg-indigo-500 rounded-l w-28 ">Material
                                 Name</span>
                             <label for="id_crystal_name"></label>
-                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name" required=" "
+                            <input type="text" name="crystal_name" maxlength="125" id="id_crystal_name" 
                                 placeholder="Gallium Nitrite"
                                 class="w-full p-2 px-3 text-sm text-gray-600 rounded-r field focus-within:bg-indigo-500 focus:text-white">
 

@@ -16,14 +16,37 @@
 <h2>Yes! it is working </h2> -->
 <div>
 
-    <form action="/delte/{{crystal_id}}/" method="POST"> {% csrf_token %}
+    <form action="." method="POST"> {% csrf_token %}
 
-        <p class= "text-sm">
-            Do you want to delte the Material "{{object_list.crystal_name}}" ?
-         </p>      
+        <p class= "text-lg"> </p>                                                
+                        
+                        
+                        
+            
 
 
-        <input  type="Submit"  value=" Yes delete"> <a href='../'>Cancel</a>
+        <div class = "flex flex-shrink text-lg px-52 py-36 text-center">
+        
+            Do you want to delete the Material "{{object.crystal_name}} , {{object.cif_file}}" ?
+            
+            
+            <div class="  py-20 leading-2 text-left whitespace-no-wrap text-lg">
+               
+
+                <button type = ""Submit"" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Delete        
+                
+                </button>          
+
+                <button  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
+            
+                    <a href="/database-search/">Cancel</a>
+            
+                </button>
+            </div>
+        </div>
+
+
+        </div>
     </form>
 
     

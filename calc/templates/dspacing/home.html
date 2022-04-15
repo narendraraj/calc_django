@@ -3,33 +3,35 @@
 
 {% block content %}
 
-<h1>Hello world</h1>
-<p> This is home page, just trying to pull some data objects from database </p>
+<div>
+    <h1>Home page</h1>
+    <p> This is home page, just trying to pull some data objects from database </p>
 
-<h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
-<p> <strong> Unit cell length: </strong></p>
-<p> a = {{object.cell_length_a}} nm, b = {{object.cell_length_b}} nm, c = {{object.cell_length_c}} nm </p>
+    {% comment %} <h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
+    <p> <strong> Unit cell length: </strong></p>
+    <p> a = {{object.cell_length_a}} nm, b = {{object.cell_length_b}} nm, c = {{object.cell_length_c}} nm </p>
 
-<p> <strong> Unit cell Angle: </strong></p>
-<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
+    <p> <strong> Unit cell Angle: </strong></p>
+    <p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p> {% endcomment %}
 
-<h2>Yes! it is working </h2>
+    <h2>Yes! it is working </h2>
 
 
-<form action="/home/" method="post" enctype="multipart/form-data"> {% csrf_token %}
-    <label for="your_name"></label>
-    <input id="your_name" type="Submit" name="your_name" value="Update">
+    <form action="/home/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <label for="your_name"></label>
+        <input id="your_name" type="Submit" name="your_name" value="Update">
 
-</form>
+    </form>
 
-<div class="container mx-auto">
+    <div class="container mx-auto">
 
-<button>
-    <a href=" " class="px-4 py-3 transition duration-300 ease-in-out bg-blue-500 text -white mr-6font-bold hover:bg-blue-600">
-        Click here
-    </a>
-</button>
+        <button>
+            <a href=" " class="px-4 py-3 transition duration-300 ease-in-out bg-blue-500 text -white mr-6font-bold hover:bg-blue-600">
+                Click here
+            </a>
+        </button>
 
+    </div>
 </div>
 
 {% endblock %}

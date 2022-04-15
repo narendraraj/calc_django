@@ -6,28 +6,23 @@ from django.db import models
 
 class CrystalData(models.Model):
     crystal_formula = models.CharField(max_length=25, blank=True, null=True)
-    crystal_name = models.CharField(max_length=125, blank=True, null=True)
-    crystal_system = models.CharField(max_length=25)
-    cell_length_a = models.DecimalField(
-        max_digits=8, decimal_places=4, blank=True, null=True)
-    cell_length_b = models.DecimalField(
-        max_digits=8, decimal_places=4, blank=True, null=True)
-    cell_length_c = models.DecimalField(
-        max_digits=8, decimal_places=4, blank=True, null=True)
-    cell_angle_alpha = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True)
-    cell_angle_beta = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True)
-    cell_angle_gamma = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True)
-    cif_file = models.FileField(blank=True, null=True)
+    crystal_name = models.CharField(max_length=125, blank=True,  null=True)
+    crystal_system = models.CharField(max_length=25, blank=True, )
+    cell_length_a = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
+    cell_length_b = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
+    cell_length_c = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
+    cell_angle_alpha = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    cell_angle_beta = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    cell_angle_gamma = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    space_group_name = models.CharField(max_length=25, null = True, blank= True)
+    space_group_IT_number = models.IntegerField(null = True, blank = True)
+    cif_file = models.FileField(upload_to= 'cif_database', blank= False, null= False)
     file_url = models.URLField(max_length=200, blank=True, null=True)
     comments = models.TextField(max_length=500, blank=True, null=True)
     # timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     # updated  = models.DateTimeField(auto_now=True, auto_now_add=False)
 
-    # space_group_name = models.CharField(null = True, max_length=25)
-    # space_group_IT_number   = models.IntegerField(null=True)
+    
 
     # class Meta:
     #   unique_together = ['cell_length_a', 'cell_length_c', 'cell_length_c']  
@@ -37,3 +32,10 @@ class CrystalData(models.Model):
 
     def __str__(self):
         return self.comments
+    
+    def delete(self, *args, **kwargs):
+        self.cif_file.delete()
+        super().delete(*args, **kwargs)
+        
+    
+ 

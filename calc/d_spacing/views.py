@@ -1,13 +1,26 @@
 # from django.shortcuts import render
+import json
+import os
 import math
+from pyexpat.errors import messages
+import re
+from urllib import response
 # import decimal
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
+from django.contrib import messages
 
 from .models import CrystalData
-from .forms import CrystalDataForm
+from .forms import  CrystalDataForm, CifCrystalDataForm
+
+
 from django.template.defaultfilters import lower
+
+from gemmi import cif
+import requests
 
 # Create your views here.
 
@@ -34,10 +47,19 @@ def home_view(request):
     # print(args, kwargs)
     # print(request.user)
     # info = CrystalData.objects.get(id=1)
+    
+    # url = "http://stem-f2:851"
+    # method = "computer.info"
+    
+    # response= requests.post(url, method, )
+    
+    # print(response)
+
 
     context = {
 
-        "object": ""
+        # "object": "",
+        "response" : response,
     }
     return render(request, "home.html", context)
 
@@ -60,11 +82,13 @@ def crystal_data_create_view(request):
     This function uses POST method.
 
     """
+    form = CrystalDataForm(request.FILES)
+    if request.method == 'POST':
+        form = CrystalDataForm(request.POST, request.FILES)      
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/database-search/')         
 
-    form = CrystalDataForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        form = CrystalDataForm()
 
     context = {
 
@@ -78,12 +102,12 @@ def update_crystal_data_view(request, crystal_id):
     # print(request.user)
     info_update = CrystalData.objects.get(id= crystal_id)
     form = CrystalDataForm(instance=info_update)
-
+    
     if request.method == 'POST':
-        form = CrystalDataForm(request.POST, instance= info_update)
+        form = CrystalDataForm(request.POST or None, request.FILES or None, instance= info_update)        
         if form.is_valid():
             form.save()
-           
+            messages.success(request,"Material data successfuly updated ")           
             return  redirect('/database-search/')
 
     context = {
@@ -99,13 +123,17 @@ def update_crystal_data_view(request, crystal_id):
 
 
 
-def delete_crystal_data_view(request,crystal_id ):    
-    crystal_object = get_object_or_404(CrystalData, id=crystal_id)
-    # form = CrystalDataForm(request.POST,instance=info )
-
-    if crystal_object:
+def delete_crystal_data_view(request, crystal_id ):            
+    crystal_object = get_object_or_404(CrystalData, id = crystal_id)        
+    if request. method == "POST":    
         crystal_object.delete()
-    return redirect('/database-search/')
+        messages.success(request,"Material data successfuly deleted ")
+        return redirect('/database-search/')
+    context = {
+        
+        "object": crystal_object
+    }
+    return render( request,"delete_crystal_data.html", context)
     
        
 
@@ -175,6 +203,94 @@ def result_hkl_view_by_id(request, crystal_id):
     }
 
     return render(request, "result_hkl_view_by_id.html", context)
+
+
+
+
+
+
+
+def upload_cif_file(request):
+#     # print(args, kwargs)
+#     # print(request.user)
+    form = CifCrystalDataForm(request.FILES)
+    if request.method == 'POST':
+        form = CifCrystalDataForm(request.POST or None, request.FILES or None)      
+        if form.is_valid():
+            form.save()
+            messages.success(request," CIF file is successfuly uploaded ")
+            return HttpResponseRedirect('/database-search/')
+    else:
+        form = CifCrystalDataForm()        
+
+
+    context = {
+
+        'form': form
+    }
+    return render(request, "cif_upload.html", context)
+
+#     return render(request, "update_crystal_data.html")
+
+
+
+def cif_file_display(request, crystal_id):
+    # info = CrystalData.objects.get(id=id)
+    info = get_object_or_404(CrystalData, id=crystal_id)
+    
+    cif_path = info.cif_file.path
+    
+    print(cif_path)
+    
+    doc= cif.read_file(cif_path)
+    block = doc.sole_block()
+    
+    cif_info =[]
+    
+    for item in block:
+        if item.pair is not None:
+           cif_info.append(item.pair)
+    
+    
+    print(cif_info)
+        
+           
+
+    
+   
+    # context = {
+    #     'crystal_id': crystal_id,
+    #     'crystal_name': info.crystal_name,
+    #     'crystal_formula': info.crystal_formula,
+    #     'crystal_system': info.crystal_system,
+    #     'cell_length_a': info.cell_length_a,
+    #     'cell_length_b': info.cell_length_b,
+    #     'cell_length_c': info.cell_length_c,
+    #     'cell_angle_alpha': info.cell_angle_alpha,
+    #     'cell_angle_beta': info.cell_angle_beta,
+    #     'cell_angle_gamma': info.cell_angle_gamma,
+    #     'cif_file': info.cif_file,
+    #     'cif_info' : cif_info,
+       
+    # }
+    
+    context = {
+        'crystal_id': crystal_id,
+        'crystal_name': block.find_value('_chemical_name_mineral'),
+        'crystal_formula': block.find_value('_chemical_formula_sum'),
+        'crystal_system': block.find_value(''),
+        'cell_length_a': block.find_value('_cell_length_a'),
+        'cell_length_b': block.find_value('_cell_length_b'),
+        'cell_length_c': block.find_value('_cell_length_c'),
+        'cell_angle_alpha': block.find_value('_cell_angle_alpha'),
+        'cell_angle_beta': block.find_value('_cell_angle_beta'),
+        'cell_angle_gamma': block.find_value('_cell_angle_gamma'),
+        'cif_file': info.cif_file,
+        'cif_info' : cif_info,
+       
+    }
+
+    return render(request, "cif_file_display.html", context)
 
 
 
