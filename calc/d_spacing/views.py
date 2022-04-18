@@ -1,10 +1,13 @@
 # from django.shortcuts import render
+from inspect import unwrap
 import json
 import os
 import math
+from poplib import CR
 from pyexpat.errors import messages
 import re
 from urllib import response
+from venv import create
 # import decimal
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,12 +18,21 @@ from django.contrib import messages
 
 from .models import CrystalData
 from .forms import  CrystalDataForm, CifCrystalDataForm
+from . import readcif 
 
 
 from django.template.defaultfilters import lower
 
 from gemmi import cif
 import requests
+import itertools
+
+from django.conf import settings
+import Dans_Diffraction as dif
+
+
+
+
 
 # Create your views here.
 
@@ -200,38 +212,169 @@ def result_hkl_view_by_id(request, crystal_id):
         'cell_angle_beta': info.cell_angle_beta,
         'cell_angle_gamma': info.cell_angle_gamma,
         'list_of_results': list_of_results
+        
     }
-
+    
+        
     return render(request, "result_hkl_view_by_id.html", context)
 
 
 
 
+    
 
+
+# def upload_cif_file(request):
+# #     # print(args, kwargs)
+# #     # print(request.user)
+#     # form = CifCrystalDataForm(request.FILES)
+#     if request.method == 'POST':
+#         form = CifCrystalDataForm(request.POST or None,request.FILES or None)
+#         file = request.FILES['cif_file']
+#         # read_cif.readcif(file, debug= False)
+#         # read_data = file.read().decode(" utf8")
+#         # print(file.name, file.content_type, file.size,)
+#         # print(read_data[:]) 
+       
+                        
+            
+#         if form.is_valid():
+            
+            
+            
+    
+#             form.save()
+        
+        
+#         messages.success(request," CIF file is successfuly uploaded ")
+#         return HttpResponseRedirect('/database-search/')
+#     else:
+#         form = CifCrystalDataForm()        
+
+
+#     context = {
+
+#         'form': form,
+        
+#     }
+#     return render(request, "cif_upload.html", context)
+# def crystal_system(block):
+#     if block.find_value('_space_group_IT_number')or block.find_value('_symmetry_Int_Tables_number')==range(3):
+#         crystal_system = "triclinic"
+#     elif 
 
 
 def upload_cif_file(request):
-#     # print(args, kwargs)
-#     # print(request.user)
-    form = CifCrystalDataForm(request.FILES)
     if request.method == 'POST':
-        form = CifCrystalDataForm(request.POST or None, request.FILES or None)      
-        if form.is_valid():
-            form.save()            
-            messages.success(request," CIF file is successfuly uploaded ")
-            return HttpResponseRedirect('/database-search/')
+        form = CifCrystalDataForm(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist("cif_file")
+        if form.is_valid():     
+            for file in files:
+                file_instance = CrystalData.objects.create(cif_file = file)
+                file_instance.save()   
+                             
+                file_path=file_instance.cif_file.path
+                instance_id = file_instance.id              
+                
+                # info = get_object_or_404(CrystalData, id=instance_id)
+                
+                # print(info.id)
+                # print(info.cell_length_a)
+                   
+                    
+                
+                
+                xtl = dif.Crystal(file_path)
+                doc= cif.read_file(file_path)
+                block = doc.sole_block()
+                a= xtl.Cell.a
+                # xtl = xtl.Cell.
+                # print(file_path)
+                # doc=readcif.readcif(file_path)
+                
+                # print(doc.values())
+                # readcif.readcif()
+                print(a)
+                
+                
+                    
+
+                
+                CrystalData.objects.filter(id=instance_id).update(
+                    crystal_name = block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
+                    crystal_formula = block.find_value('_chemical_formula_sum'),
+                    crystal_system = block.find_value('_symmetry_cell_setting') or block.find_value('_space_group_crystal_system'),
+                    cell_length_a = float(xtl.Cell.a),
+                    cell_length_b = float(xtl.Cell.b),
+                    cell_length_c = float(xtl.Cell.c),
+                    cell_angle_alpha = float(xtl.Cell.alpha),
+                    cell_angle_beta = float(xtl.Cell.beta),
+                    cell_angle_gamma =  float(xtl.Cell.gamma),
+                    space_group_IT_number =block.find_value('_space_group_IT_number')or block.find_value('_symmetry_Int_Tables_number')                    
+                    
+                    )
+                
+                
+                # doc= cif.read_file(file_path)
+                # block = doc.sole_block()
+                # CrystalData.objects.filter(id=instance_id).update(
+                #     crystal_name = block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
+                #     crystal_formula = block.find_value('_chemical_formula_sum'),
+                #     crystal_system = block.find_value('_symmetry_cell_setting'),
+                #     cell_length_a = block.find_value('_cell_length_a'),
+                #     cell_length_b = block.find_value('_cell_length_b'),
+                #     cell_length_c = block.find_value('_cell_length_c'),
+                #     cell_angle_alpha = block.find_value('_cell_angle_alpha'),
+                #     cell_angle_beta = block.find_value('_cell_angle_beta'),
+                #     cell_angle_gamma =  block.find_value('_cell_angle_gamma')
+                #     )
+                    
+                           
+               
+                
+        messages.success(request," CIF file is successfuly uploaded ")
+        return HttpResponseRedirect('/database-search/')
     else:
         form = CifCrystalDataForm()        
 
 
     context = {
 
-        'form': form
+        'form': form,
+        
     }
     return render(request, "cif_upload.html", context)
 
-#     return render(request, "update_crystal_data.html")
 
+# def read_latest_cif_file_updated_model():
+#     latest_file_upload= CrystalData.objects.latest("id")
+#     latest_file_upload_path = latest_file_upload.cif_file.path
+    
+#     doc = cif.read_file(latest_file_upload_path)
+#     block = doc.sole_block()
+#     c=CrystalData.objects.update(
+#         crystal_name = block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
+#         crystal_formula = block.find_value('_chemical_formula_sum'),
+#         crystal_system = block.find_value('_symmetry_cell_setting'),
+#         cell_length_a = block.find_value('_cell_length_a'),
+#         cell_length_b = block.find_value('_cell_length_b'),
+#         cell_length_c = block.find_value('_cell_length_c'),
+#         cell_angle_alpha = block.find_value('_cell_angle_alpha'),
+#         cell_angle_beta = block.find_value('_cell_angle_beta'),
+#         cell_angle_gamma =  block.find_value('_cell_angle_gamma'),
+#     )
+    
+
+   
+    
+
+# read_latest_cif_file_updated_model()
+
+
+#     return render(request, "update_crystal_data.html")
+# def read_file():
+#     doc= read(file).decode("utf-8")
+#     print(doc)
 
 
 def cif_file_display(request, crystal_id):
@@ -252,12 +395,7 @@ def cif_file_display(request, crystal_id):
            cif_info.append(item.pair)
     
     
-    print(cif_info)
-        
-           
-
-    
-   
+    # imports data from model database
     # context = {
     #     'crystal_id': crystal_id,
     #     'crystal_name': info.crystal_name,
@@ -273,12 +411,16 @@ def cif_file_display(request, crystal_id):
     #     'cif_info' : cif_info,
        
     # }
+     
+    # imports data from cif file 
     
+   
+   
     context = {
         'crystal_id': crystal_id,
-        'crystal_name': block.find_value('_chemical_name_mineral'),
+        'crystal_name': block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
         'crystal_formula': block.find_value('_chemical_formula_sum'),
-        'crystal_system': block.find_value(''),
+        'crystal_system': block.find_value('_symmetry_cell_setting'),
         'cell_length_a': block.find_value('_cell_length_a'),
         'cell_length_b': block.find_value('_cell_length_b'),
         'cell_length_c': block.find_value('_cell_length_c'),
@@ -289,6 +431,9 @@ def cif_file_display(request, crystal_id):
         'cif_info' : cif_info,
        
     }
+    
+        
+   
 
     return render(request, "cif_file_display.html", context)
 

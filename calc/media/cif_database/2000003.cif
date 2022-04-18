@@ -1,0 +1,107 @@
+#------------------------------------------------------------------------------
+#$Date: 2017-08-08 18:53:33 +0300 (Tue, 08 Aug 2017) $
+#$Revision: 199648 $
+#$URL: svn://www.crystallography.net/cod/cif/2/00/00/2000003.cif $
+#------------------------------------------------------------------------------
+#
+# This file is available in the Crystallography Open Database (COD),
+# http://www.crystallography.net/
+#
+# All data on this site have been placed in the public domain by the
+# contributors.
+#
+data_2000003
+loop_
+_publ_author_name
+'Maignan, C.'
+'Leblanc, M.'
+_publ_section_title
+;
+ Room-temperature structure of \a--\b ethylenic sulfoxide C~15~H~18~OS:
+ (-)-4,5-dimethyl-1-p-tolylsulfinyl-1,4-cyclohexadiene
+;
+_journal_issue                   5
+_journal_name_full
+;
+ Acta Crystallographica, Section C: Crystal Structure Communications
+;
+_journal_page_first              915
+_journal_page_last               917
+_journal_paper_doi               10.1107/s0108270189013132
+_journal_volume                  46
+_journal_year                    1990
+_chemical_formula_sum            'C15 H18 O S'
+_space_group_IT_number           19
+_symmetry_cell_setting           orthorhombic
+_symmetry_Int_Tables_number      19
+_symmetry_space_group_name_Hall  'P 2ac 2ab'
+_symmetry_space_group_name_H-M   'P 21 21 21'
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                90
+_cell_formula_units_Z            4
+_cell_length_a                   6.263(2)
+_cell_length_b                   7.965(2)
+_cell_length_c                   26.51(1)
+_cell_volume                     1322.446
+_diffrn_ambient_temperature      ?
+_exptl_crystal_density_diffrn    1.24
+_refine_ls_R_factor_gt           0.048
+_refine_ls_wR_factor_gt          0.048
+_cod_original_formula_sum        'C15 H18 O1 S1'
+_cod_database_code               2000003
+loop_
+_symmetry_equiv_pos_site_id
+_symmetry_equiv_pos_as_xyz
+1 x,y,z
+2 1/2+x,1/2-y,-z
+3 -x,1/2+y,1/2-z
+4 1/2-x,-y,1/2+z
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S 0.2651(5) 0.0449(3) 0.1058(1)
+O1 O 0.3962(9) -0.1103(6) 0.1045(2)
+C1 C 0.226(1) 0.1061(7) 0.1702(2)
+C2 C 0.047(1) 0.1853(8) 0.1834(3)
+C3 C 0.014(2) 0.2296(8) 0.2364(3)
+C4 C 0.170(1) 0.1743(8) 0.2725(3)
+C5 C 0.351(1) 0.0945(7) 0.2587(3)
+C6 C 0.393(1) 0.0589(9) 0.2052(3)
+C7 C 0.439(1) 0.2141(9) 0.0850(2)
+C8 C 0.639(1) 0.1784(9) 0.0678(2)
+C9 C 0.766(2) 0.3051(9) 0.0491(2)
+C10 C 0.694(1) 0.4721(9) 0.0479(2)
+C11 C 0.490(2) 0.5028(8) 0.0655(2)
+C12 C 0.355(1) 0.3782(8) 0.0843(2)
+C13 C 0.120(1) 0.2076(9) 0.3288(2)
+C14 C 0.512(1) 0.0336(9) 0.2969(3)
+C15 C 0.832(2) 0.6131(8) 0.0297(3)
+H1 H -0.071(2) 0.2167(8) 0.1554(3)
+H2 H -0.138(2) 0.1769(8) 0.2476(3)
+H3 H 0.006(2) 0.3649(8) 0.2386(3)
+H4 H 0.419(1) -0.0745(9) 0.2015(3)
+H5 H 0.536(1) 0.1254(9) 0.1946(3)
+H6 H 0.698(1) 0.0509(9) 0.0688(2)
+H7 H 0.924(2) 0.2758(9) 0.0352(2)
+H8 H 0.432(2) 0.6304(8) 0.0646(2)
+H9 H 0.196(1) 0.4060(8) 0.0975(2)
+H10 H -0.031(1) 0.2726(9) 0.3319(2)
+H11 H 0.245(1) 0.2837(9) 0.3451(2)
+H12 H 0.110(1) 0.0894(9) 0.3486(2)
+H13 H 0.644(1) -0.0265(9) 0.2776(3)
+H14 H 0.437(1) -0.0553(9) 0.3221(3)
+H15 H 0.572(1) 0.1390(9) 0.3184(3)
+H16 H 0.985(2) 0.5638(8) 0.0175(3)
+H17 H 0.857(2) 0.7018(8) 0.0599(3)
+H18 H 0.755(2) 0.6753(8) -0.0016(3)
+loop_
+_atom_type_symbol
+_atom_type_radius_bond
+C 0.68
+H 0.23
+O 0.68
+S 1.02

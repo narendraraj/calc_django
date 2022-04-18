@@ -1,0 +1,70 @@
+{
+    "Filename": "C:\\Users\\chandran.narendraraj\\Desktop\\dev\\calc_django\\calc\\media\\cif_database\\1000009.cif",
+    "Directory": "C:\\Users\\chandran.narendraraj\\Desktop\\dev\\calc_django\\calc\\media\\cif_database",
+    "FileTitle": "1000009",
+    "_publ_author_name": [
+        "Thompson, R. M.",
+        "Downs, R. T."
+    ],
+    "_publ_section_title": " The crystal structure of diopside at pressure to 10 GPa\n Locality: DeKalb, New York\n Sample: P = 2.32 GPa",
+    "_journal_name_full": "American Mineralogist",
+    "_journal_page_first": "177",
+    "_journal_page_last": "186",
+    "_journal_paper_doi": "10.2138/am.2008.2684",
+    "_journal_volume": "93",
+    "_journal_year": "2008",
+    "_chemical_formula_structural": "CaMg(Si2O6)",
+    "_chemical_formula_sum": "Ca Mg O6 Si2",
+    "_chemical_name_mineral": "Diopside",
+    "_symmetry_space_group_name_H-M": "C 1 2/c 1",
+    "_cell_angle_alpha": "90.00000",
+    "_cell_angle_beta": "105.60600",
+    "_cell_angle_gamma": "90.00000",
+    "_cell_length_a": "9.68080",
+    "_cell_length_b": "8.84880",
+    "_cell_length_c": "5.21800",
+    "_diffrn_ambient_pressure": "2.32e+06",
+    "_exptl_crystal_density_diffrn": "3.341",
+    "_cod_original_sg_symbol_H-M": "C2/c",
+    "_cod_database_code": "1000009",
+    "_atom_site_label": [
+        "MgM1",
+        "CaM2",
+        "SiT",
+        "O1",
+        "O2",
+        "O3"
+    ],
+    "_atom_site_fract_x": [
+        "0.00000",
+        "0.00000",
+        "0.28626",
+        "0.11547",
+        "0.36079",
+        "0.35156"
+    ],
+    "_atom_site_fract_y": [
+        "0.90867",
+        "0.30270",
+        "0.09370",
+        "0.08705",
+        "0.25183",
+        "0.01943"
+    ],
+    "_atom_site_fract_z": [
+        "0.25000",
+        "0.25000",
+        "0.22834",
+        "0.14258",
+        "0.31872",
+        "0.99227"
+    ],
+    "_atom_site_U_iso_or_equiv": [
+        "0.00469",
+        "0.00912",
+        "0.00545",
+        "0.00785",
+        "0.00899",
+        "0.00760"
+    ]
+}

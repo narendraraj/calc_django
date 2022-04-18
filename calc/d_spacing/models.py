@@ -7,7 +7,7 @@ from django.db import models
 class CrystalData(models.Model):
     crystal_formula = models.CharField(max_length=25, blank=True, null=True)
     crystal_name = models.CharField(max_length=125, blank=True,  null=True)
-    crystal_system = models.CharField(max_length=25, blank=True, )
+    crystal_system = models.CharField(max_length=25, blank=True, null=True )
     cell_length_a = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
     cell_length_b = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
     cell_length_c = models.DecimalField(max_digits=8, decimal_places=4, blank=True, null=True)
@@ -19,8 +19,9 @@ class CrystalData(models.Model):
     cif_file = models.FileField(upload_to= 'cif_database', blank= False, null= False)
     file_url = models.URLField(max_length=200, blank=True, null=True)
     comments = models.TextField(max_length=500, blank=True, null=True)
-    # timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-    # updated  = models.DateTimeField(auto_now=True, auto_now_add=False)
+    created = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True, auto_now_add=False)
+    activate = models.BooleanField(default=False)
 
     
 
