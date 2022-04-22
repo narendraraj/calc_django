@@ -12,6 +12,7 @@ crispy-tailwind = "*"
 gemmi = "*"
 django-extensions = "*"
 requests = "*"
+dans-diffraction = "*"
 
 [requires]
 python_version = "3.8"
