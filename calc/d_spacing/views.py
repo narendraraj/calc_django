@@ -56,38 +56,38 @@ def database_search_view(request):
 def home_view(request):
     
     
-    url = "http://stem-f2:851/"
+    # url = "http://stem-f2:851/"
    
-    method = {
-        "jsonrpc": "2.0",
-        "method": "computer.info",
-        "id" : 14
-    }
-    request_body = json.dumps(method, indent=4)
-    response1 = requests.post(url,  headers={'Content-Type': 'application/json'}, data=request_body)
-    print(response1.json())
-    # print('uptime is:', response.json()['result']['info']['up_time'])
+    # method = {
+    #     "jsonrpc": "2.0",
+    #     "method": "computer.info",
+    #     "id" : 14
+    # }
+    # request_body = json.dumps(method, indent=4)
+    # response1 = requests.post(url,  headers={'Content-Type': 'application/json'}, data=request_body)
+    # print(response1.json())
+    # # print('uptime is:', response.json()['result']['info']['up_time'])
     
     
-    # print(type(ram_total)
+    # # print(type(ram_total)
     
    
-    ram_total = response1.json()['result']['info']['ram_total']
-    ram_total_gb = int(ram_total)*1e-9
+    # ram_total = response1.json()['result']['info']['ram_total']
+    # ram_total_gb = int(ram_total)*1e-9
    
     
-    method2 = {
-        "jsonrpc": "2.0",
-        "method": "highVoltage.hv100.voltage.getMeasured",
-        "id" : 115
+    # method2 = {
+    #     "jsonrpc": "2.0",
+    #     "method": "highVoltage.hv100.voltage.getMeasured",
+    #     "id" : 115
         
-    }
-    request_body = json.dumps(method2, indent=4)
-    response2 = requests.post(url, headers={'Content-Type': 'application/json'}, data=request_body)
-    print(response2.json())
+    # }
+    # request_body = json.dumps(method2, indent=4)
+    # response2 = requests.post(url, headers={'Content-Type': 'application/json'}, data=request_body)
+    # print(response2.json())
     
    
-    high_voltatage = response2.json()['result']['voltage']
+    # high_voltatage = response2.json()['result']['voltage']
     
 
     
@@ -96,8 +96,8 @@ def home_view(request):
 
         # "object": "",
         "response": response,
-        "ram_total_gb": ram_total_gb,
-        "high_voltatage" : high_voltatage,
+        # "ram_total_gb": ram_total_gb,
+        # "high_voltatage" : high_voltatage,
     }
     return render(request, "home.html", context)
 
