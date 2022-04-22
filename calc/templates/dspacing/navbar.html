@@ -12,7 +12,12 @@
 
 
 
-<nav class="relative flex-col justify-end flex-1 mt-12 bg-gray-700 main-nav sm:flex sm:mt-0 sm:flex-row">
+<nav class=" fixed
+inset-x-0
+bg-blue-900    
+flex-col
+main-nav
+sm:flex sm:mt-0 sm:flex-row">
     
     <div class="relative flex flex-col items-center justify-end flex-1 sm:flex-row"><a title="" href="/"
             class="py-2 text-white opacity-75 sm-4 sm:py-2 sm:px-4 sm:text-secondary hover:opacity-100">Home</a>
@@ -35,7 +40,7 @@
 
 
 
-        <div class="absolute left-0 hidden opacity-0 pointer-events-none sm:block dropdown">
+        {% comment %} <div class="absolute left-0 hidden opacity-0 pointer-events-none sm:block dropdown"> {% endcomment %}
             <!-- <div class="flex flex-col bg-white border border-gray-200 rounded-sm shadow-lg"><a
                         title="" href="/database/"
                         class="w-full px-6 py-2 text-sm opacity-75 text-secondary hover:opacity-100 whitespace-nowrap">Buttons</a>
@@ -52,7 +57,7 @@
                     <a title="TailwindCSS Layouts" href="/components/Layouts"
                         class="w-full px-6 py-2 text-sm opacity-75 text-secondary hover:opacity-100 whitespace-nowrap">Layouts</a>
                 </div> -->
-        </div>
+        {% comment %} </div> {% endcomment %}
 
 
 

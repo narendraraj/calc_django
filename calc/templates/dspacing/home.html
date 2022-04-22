@@ -3,35 +3,30 @@
 
 {% block content %}
 
-<div>
-    <h1>Home page</h1>
-    <p> This is home page, just trying to pull some data objects from database </p>
+<div class= "text-2xl py-9">
+    
+    
+    
 
-    {% comment %} <h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
-    <p> <strong> Unit cell length: </strong></p>
-    <p> a = {{object.cell_length_a}} nm, b = {{object.cell_length_b}} nm, c = {{object.cell_length_c}} nm </p>
+    <div  class= " flex ext-2xl py-24  justify-center">
 
-    <p> <strong> Unit cell Angle: </strong></p>
-    <p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p> {% endcomment %}
+        Home page!!   F2 NewSTEM 
 
-    <h2>Yes! it is working </h2>
+        
+        <div class= "text-2xl py-24">
+            <ul class = "list-disc">
+           <li>Ram total :  {{ram_total_gb}} Gb</li>
+           <li>high_voltatage: {{high_voltatage}} kV </li>
+            </ul>
+        </div>
 
-
-    <form action="/home/" method="post" enctype="multipart/form-data"> {% csrf_token %}
-        <label for="your_name"></label>
-        <input id="your_name" type="Submit" name="your_name" value="Update">
-
-    </form>
-
-    <div class="container mx-auto">
-
-        <button>
-            <a href=" " class="px-4 py-3 transition duration-300 ease-in-out bg-blue-500 text -white mr-6font-bold hover:bg-blue-600">
-                Click here
-            </a>
-        </button>
 
     </div>
+
+
+
+
+    
 </div>
 
 {% endblock %}

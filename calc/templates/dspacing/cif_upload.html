@@ -10,10 +10,10 @@
 <div>
     <div>
 
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="" lable="you can upload maximum 10 cof fils" method="POST" enctype="multipart/form-data">
              {% csrf_token %}     
 
-             <div class="flex  items-center justify-center ">
+             <div class="flex  items-center justify-center" >
                 
                 {{ form|crispy }}      
 
@@ -21,8 +21,8 @@
                 
 
 
-                <div class= "flex p-5 items-center justify-center ">
-                    <button type="Submit"  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Upload           
+                <div class= "flex p-28 items-center justify-center " >
+                    <button type="Submit"  class="px-2 py-2  transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Upload           
                     
             
                     

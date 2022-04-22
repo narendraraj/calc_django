@@ -1,10 +1,12 @@
-import sys, os, re
+import sys
+import os
+import re
 import json
 # import numpy as np
 from warnings import warn
 
 
-def readcif(filename = None, debug = False):
+def readcif(filename=None, debug=False):
     """
     Open a Crystallographic Information File (*.cif) file and store all entries in a key:value dictionary
      Looped values are stored as lists under a single key entry
@@ -65,7 +67,8 @@ def readcif(filename = None, debug = False):
         if vals[0][0] == '_':
             if len(vals) == 1:
                 # Record next lines that are not keys as string
-                if lines[n + 1][0] == ';': n += 1
+                if lines[n + 1][0] == ';':
+                    n += 1
                 strarg = []
                 while n + 1 < len(lines) and (len(lines[n + 1]) == 0 or lines[n + 1][0].strip() not in ['_', ';']):
                     strarg += [lines[n + 1].strip('\'"')]
@@ -98,10 +101,15 @@ def readcif(filename = None, debug = False):
                 # this fixes error on symmetry arguments having spaces
                 # this will only work if the last argument in the loop is split by spaces (in quotes)
                 # cols = cols[:len(loopvals) - 1] + [''.join(cols[len(loopvals) - 1:])]
-                cols = [col for col in re.split("( |\\\".*?\\\"|'.*?')", lines[n]) if col.strip()]
-                if len(cols) != len(loopvals): break
-                if cols[0][0] == '_' or cols[0] == 'loop_': break  # catches error if loop is only 1 iteration
-                if cols[0][0] == '#': n += 1; continue  # catches comented out lines
+                cols = [col for col in re.split(
+                    "( |\\\".*?\\\"|'.*?')", lines[n]) if col.strip()]
+                if len(cols) != len(loopvals):
+                    break
+                if cols[0][0] == '_' or cols[0] == 'loop_':
+                    break  # catches error if loop is only 1 iteration
+                if cols[0][0] == '#':
+                    n += 1
+                    continue  # catches comented out lines
                 if len(loopvals) == 1:
                     cifvals[loopvals[0]] += [lines[n].strip(' \"\'\n')]
                 else:
@@ -127,14 +135,14 @@ def readcif(filename = None, debug = False):
         if '.' in key:
             newkey = key.replace('.', '_')
             cifvals[newkey] = cifvals[key]
+    return cifvals
     # load_json = json.dumps(cifvals,  indent=4)
-    
-    return json.dumps(cifvals,  indent=4)
-    
-    # print(load_json)
-    # cif_json =json.loads(load_json)    
-    # print(cif_json ["_publ_section_title"])
 
+    # return json.dumps(cifvals,  indent=4)
+
+    # print(load_json)
+    # cif_json =json.loads(load_json)
+    # print(cif_json ["_publ_section_title"])
 
     # print(load_json)
 
@@ -142,7 +150,4 @@ def readcif(filename = None, debug = False):
     #     outfile.write(load_json)
 
 
-
-
-# readcif(r"C:\Users\chandran.narendraraj\Desktop\dev\calc_django\calc\media\cif_database\1000001.cif", debug = False)
-
+# readcif(r"C:\Users\chandran.narendraraj\Desktop\dev\calc_django\calc\media\cif_database\3000000.cif", debug = False)
