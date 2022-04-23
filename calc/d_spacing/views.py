@@ -174,7 +174,7 @@ def delete_crystal_data_view(request, crystal_id):
     return render(request, "delete_crystal_data.html", context)
 
 
-def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
+def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
     h = list_of_hkl[0]
     k = list_of_hkl[1]
     l = list_of_hkl[2]
@@ -200,7 +200,7 @@ def get_d_result(crystal_structure, list_of_abc, list_of_hkl):
     return round(d_result, 4)
 
 
-def result_hkl_view_by_id(request, crystal_id):
+def dspaing_results_view(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
     # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
@@ -216,7 +216,7 @@ def result_hkl_view_by_id(request, crystal_id):
     for h in h_range:
         for k in k_range:
             for l in l_range:
-                result = get_d_result(
+                result = calculate_dspacing(
                     crystal_structure, list_of_abc, [h, k, l])
                 # cubic_result = info.cell_length_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
                 # d_results(h,k,l)
@@ -238,7 +238,7 @@ def result_hkl_view_by_id(request, crystal_id):
 
     }
 
-    return render(request, "result_hkl_view_by_id.html", context)
+    return render(request, "dspaing_results.html", context)
 
 
 # def upload_cif_file(request):
