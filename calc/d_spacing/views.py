@@ -383,54 +383,25 @@ def cif_file_display(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
 
-    cif_path = info.cif_file.path
-
-    print(cif_path)
-
-    doc = cif.read_file(cif_path)
-    block = doc.sole_block()
-
-    cif_info = []
-
-    for item in block:
-        if item.pair is not None:
-            cif_info.append(item.pair)
-
+   
     # imports data from model database
-    # context = {
-    #     'crystal_id': crystal_id,
-    #     'crystal_name': info.crystal_name,
-    #     'crystal_formula': info.crystal_formula,
-    #     'crystal_system': info.crystal_system,
-    #     'cell_length_a': info.cell_length_a,
-    #     'cell_length_b': info.cell_length_b,
-    #     'cell_length_c': info.cell_length_c,
-    #     'cell_angle_alpha': info.cell_angle_alpha,
-    #     'cell_angle_beta': info.cell_angle_beta,
-    #     'cell_angle_gamma': info.cell_angle_gamma,
-    #     'cif_file': info.cif_file,
-    #     'cif_info' : cif_info,
-
-    # }
-
-    # imports data from cif file
-
     context = {
         'crystal_id': crystal_id,
-        'crystal_name': block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
-        'crystal_formula': block.find_value('_chemical_formula_sum'),
-        'crystal_system': block.find_value('_symmetry_cell_setting'),
-        'cell_length_a': block.find_value('_cell_length_a'),
-        'cell_length_b': block.find_value('_cell_length_b'),
-        'cell_length_c': block.find_value('_cell_length_c'),
-        'cell_angle_alpha': block.find_value('_cell_angle_alpha'),
-        'cell_angle_beta': block.find_value('_cell_angle_beta'),
-        'cell_angle_gamma': block.find_value('_cell_angle_gamma'),
+        'crystal_name': info.crystal_name,
+        'crystal_formula': info.crystal_formula,
+        'crystal_system': info.crystal_system,
+        'cell_length_a': info.cell_length_a,
+        'cell_length_b': info.cell_length_b,
+        'cell_length_c': info.cell_length_c,
+        'cell_angle_alpha': info.cell_angle_alpha,
+        'cell_angle_beta': info.cell_angle_beta,
+        'cell_angle_gamma': info.cell_angle_gamma,
         'cif_file': info.cif_file,
-        'cif_info': cif_info,
+        # 'cif_info' : cif_info,
 
     }
 
+   
     return render(request, "cif_file_display.html", context)
 
 
