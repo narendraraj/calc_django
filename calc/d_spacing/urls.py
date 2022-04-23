@@ -16,6 +16,6 @@ urlpatterns = [
     path('database-search/<int:crystal_id>/delete/',
          views.delete_crystal_data_view, name="delete_crystal_data"),
      path('database-search/<int:crystal_id>/cif-display/',
-         views.cif_file_display, name="cif_display"),
+         views.cif_file_display_view, name="cif_file_display"),
 
 ]

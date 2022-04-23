@@ -384,7 +384,7 @@ def upload_cif_file_view(request):
 #     print(doc)
 
 
-def cif_file_display(request, crystal_id):
+def cif_file_display_view(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
 
