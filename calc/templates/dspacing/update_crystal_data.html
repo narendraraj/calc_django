@@ -23,35 +23,27 @@ Update page
         Edit & Update 
     </div>
 
-    <div class= "py-20" >
+    <div class= "py-20  justify-center " >
         <form action="" method="POST" enctype="multipart/form-data">        
 
             {% csrf_token %}     
 
-              
             {{ form|crispy }} 
-                
-          
+      
 
-
-            <div class = "flex justify-center py-5" >
+            <div class = "flex py-5" >
 
                     <button type = "submit" action= "" class=" px-2 py-2 justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none "> Update & Save       
-                        <a href = ></a>
+                        <a href ={%url 'd_spacing:database_search'%} ></a>
                     </button>
-                
-            {% comment %} </div>
-
-            <div class = "flex justify-center"> {% endcomment %}
-
-                    <button type = "submit" action="" class=" px-2 py-2  justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Cancel       
-                        <a href = "/database-search/"></a>
-                    </button>
-
             </div>  
-
-            
         </form>
+
+        <div class = "flex  " >
+            <button class=" px-2 py-2  justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">        
+                <a href = "{%url 'd_spacing:database_search'%}">Cancel </a>
+            </button>
+        </div>  
     </div>
 
  

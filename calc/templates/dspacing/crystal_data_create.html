@@ -8,7 +8,7 @@
 
     {{ form.as_p }} -->
 
-<form action="/forms/" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+<form action="{%url 'd_spacing:crystal_data_create'%}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
 
     <!-- <form method='POST'>  -->
     <div class="flex h-auto bg-white py-28 ">

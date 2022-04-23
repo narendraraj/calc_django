@@ -19,10 +19,10 @@ flex-col
 main-nav
 sm:flex sm:mt-0 sm:flex-row">
     
-    <div class="relative flex flex-col items-center justify-end flex-1 sm:flex-row"><a title="" href="/"
+    <div class="relative flex flex-col items-center justify-end flex-1 sm:flex-row"><a title="" href="{% url 'd_spacing:home'%}"
             class="py-2 text-white opacity-75 sm-4 sm:py-2 sm:px-4 sm:text-secondary hover:opacity-100">Home</a>
         <div class="relative user">
-            <a title="" href="/database-search/"
+            <a title="" href="{% url 'd_spacing:database_search'%}"
                 class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100">Materials
                 info
             </a>
@@ -64,12 +64,12 @@ sm:flex sm:mt-0 sm:flex-row">
     </div>
     <div class="flex flex-col items-center mt-2 sm:mt-0 sm:flex-row sm:border-l sm:border-gray-300">
 
-        <a rel="nofollow" title="" href="/upload-cif-file"
+        <a rel="nofollow" title="" href="{%url 'd_spacing:upload_cif_file'%}"
             class="px-3 py-2 font-bold text-white rounded sm:ml-4 md:px-4 bg-primary hover:bg-teal-300">Upload CIF
         </a>
         
         
-        <a rel="nofollow" title="" href="/forms"
+        <a rel="nofollow" title="" href="{% url 'd_spacing:crystal_data_create'%}"
             class="px-3 py-2 font-bold text-white rounded sm:ml-4 md:px-4 bg-primary hover:bg-teal-300">Submit crystal
             structure info
         </a>

@@ -14,7 +14,7 @@
 
 <div>
 
-    <div  class = "flex " >
+    {% comment %} <div  class = "flex " >
         {% if messages %}
        
            {% for message in messages %}
@@ -27,7 +27,7 @@
        {% endif %}           
        
        
-    </div>
+    </div> {% endcomment %}
 
 
 
@@ -44,8 +44,8 @@
         </div>
     </div {% endcomment %}
         
-    <form action='/database-search/' method='GET'>
-        <div class=" inline-block w-full px-12 py-20  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
+    <form action={%url 'd_spacing:database_search'%} method='GET'>
+        <div class=" inline-block w-full px-12 py-8  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
                 <div class="flex justify-center">
                     <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded border-blue-500 lg:px-6">
 
@@ -161,7 +161,9 @@
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a href="{{object.id}}/cif-display">{{ object.id }}</a>
+                    {% comment %} <div class="text-sm leading-4 text-gray-800"><a href="{{object.id}}/cif-display">{{ object.id }}</a>
+                    </div> {% endcomment %}
+                    <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_display' object.id %}">{{object.id}}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -171,7 +173,7 @@
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
                     <div class="text-sm leading-4 text-gray-800"><a
-                            href="{{ object.id }}">{{ object.crystal_formula }}</a>
+                            href="">{{ object.crystal_formula }}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -182,7 +184,7 @@
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
                     <div class="text-sm leading-4 text-gray-800"><a
-                            href="{{ object.id }}">{{ object.crystal_name }}</a>
+                            href="">{{ object.crystal_name }}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -223,7 +225,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{{ object.id }}">Get d Values</a>
+                        <a href="{% url  'd_spacing:detail' object.id %}">Get d Values</a>
 
                     </button>
                 </td>
@@ -232,7 +234,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{{object.id}}/update">Edit</a>
+                        <a href="{% url  'd_spacing:update_crystal_data' object.id %}">Edit</a>
 
                     </button>
                 </td>
@@ -243,7 +245,7 @@
                                        
                         
                         <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
-                            <a href="{{ object.id }}/delete">Delete</a>
+                            <a href="{% url  'd_spacing:delete_crystal_data' object.id %}">Delete</a>
                         </button>
                         
 

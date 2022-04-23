@@ -3,6 +3,7 @@ from inspect import unwrap
 import json
 import os
 import math
+from time import time 
 from poplib import CR
 from pyexpat.errors import messages
 import re
@@ -15,6 +16,7 @@ from django.http import HttpResponseRedirect
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.contrib import messages
+from django.urls import reverse
 
 from .models import CrystalData
 from .forms import CrystalDataForm, CifCrystalDataForm
@@ -125,7 +127,7 @@ def crystal_data_create_view(request):
         form = CrystalDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/database-search/')
+            return redirect(reverse('d_spacing:database_search'))
 
     context = {
 
@@ -146,7 +148,7 @@ def update_crystal_data_view(request, crystal_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Material data successfuly updated ")
-            return redirect('/database-search/')
+            return redirect(reverse('d_spacing:database_search'))
 
     context = {
 
@@ -163,7 +165,8 @@ def delete_crystal_data_view(request, crystal_id):
     if request. method == "POST":
         crystal_object.delete()
         messages.success(request, "Material data successfuly deleted ")
-        return redirect('/database-search/')
+        return redirect(reverse('d_spacing:database_search'))
+    
     context = {
 
         "object": crystal_object
@@ -275,7 +278,7 @@ def result_hkl_view_by_id(request, crystal_id):
 #     elif
 
 
-def upload_cif_file(request):
+def upload_cif_file_view(request):
     if request.method == 'POST':
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)
         files = request.FILES.getlist("cif_file")
@@ -339,7 +342,9 @@ def upload_cif_file(request):
                 #     )
 
         messages.success(request, " CIF file is successfuly uploaded ")
-        return HttpResponseRedirect('/database-search/')
+        return redirect(reverse('d_spacing:database_search'))
+       
+        
     else:
         form = CifCrystalDataForm()
 
@@ -348,7 +353,7 @@ def upload_cif_file(request):
         'form': form,
 
     }
-    return render(request, "cif_upload.html", context)
+    return render(request, "upload_cif_file.html", context)
 
 
 # def read_latest_cif_file_updated_model():

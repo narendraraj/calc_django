@@ -1,0 +1,48 @@
+#------------------------------------------------------------------------------
+#$Date: 2015-01-27 21:58:39 +0200 (Tue, 27 Jan 2015) $
+#$Revision: 130149 $
+#$URL: svn://www.crystallography.net/cod/cif/1/00/00/1000056.cif $
+#------------------------------------------------------------------------------
+#
+# This file is available in the Crystallography Open Database (COD),
+# http://www.crystallography.net/
+#
+# All data on this site have been placed in the public domain by the
+# contributors.
+#
+data_1000056
+_publ_section_title
+;
+Crystal structure of magnesium heptaboride Mg2 B14
+;
+_journal_coden_ASTM              JCOMAH
+_journal_name_full               'Journal of the Less-Common Metals'
+_journal_page_first              325
+_journal_paper_doi               10.1016/0022-5088(81)90235-6
+_journal_volume                  82
+_journal_year                    1981
+_chemical_formula_sum            'B14 Mg1.93'
+_symmetry_space_group_name_H-M   'I m a m'
+_cell_angle_alpha                90.0
+_cell_angle_beta                 90.0
+_cell_angle_gamma                90.0
+_cell_length_a                   5.970(3)
+_cell_length_b                   8.125(3)
+_cell_length_c                   10.480(5)
+_cod_database_code               1000056
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+B1 B0 16 j 0.250(1) 0.0407(9) 0.0830(7) 1.
+B2 B0 16 j 0.160(1) 0.834(1) 0.0671(6) 1.
+B3 B0 8 h 0. 0.181(1) 0.081(1) 1.
+B4 B0 8 h 0. -0.028(1) 0.1644(8) 1.
+B5 B0 8 h 0. 0.382(1) 0.142(1) 1.
+Mg1 Mg0 4 e 0. 0.3664(5) 0.75 0.930(15)
+Mg2 Mg0 4 d 0.25 0.25 0.25 1.

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # # Create your models here.
@@ -27,16 +28,31 @@ class CrystalData(models.Model):
 
     # class Meta:
     #   unique_together = ['cell_length_a', 'cell_length_c', 'cell_length_c']  
-
+    def __str__(self):
+        return self.crystal_formula
+    
+    def __str__(self):
+        return self.crystal_name
+    
     def __str__(self):
         return self.crystal_system
+    
+    def __str__(self):
+        return self.space_group_name
 
     def __str__(self):
         return self.comments
+    
+    
     
     def delete(self, *args, **kwargs):
         self.cif_file.delete()
         super().delete(*args, **kwargs)
         
-    
+    class Meta:
+        ordering = ['-created']
+        # verbose_name_plural = 'dates'
+        
+    def get_absolute_url(self):
+       return reverse('d_spacing:detail', args=[self.id])
  
