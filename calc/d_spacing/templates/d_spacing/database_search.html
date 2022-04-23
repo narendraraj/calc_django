@@ -163,7 +163,7 @@
                     <!-- <div> -->
                     {% comment %} <div class="text-sm leading-4 text-gray-800"><a href="{{object.id}}/cif-display">{{ object.id }}</a>
                     </div> {% endcomment %}
-                    <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_display' object.id %}">{{object.id}}</a>
+                    <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_file_display' object.id %}">{{object.id}}</a>
                     </div>
                     <!-- </div> -->
                     <!-- </div> -->
@@ -225,7 +225,7 @@
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{% url  'd_spacing:detail' object.id %}">Get d Values</a>
+                        <a href="{% url  'd_spacing:dspaing_results' object.id %}">Get d Values</a>
 
                     </button>
                 </td>

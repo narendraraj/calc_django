@@ -10,12 +10,12 @@ urlpatterns = [
     path('forms/', views.crystal_data_create_view, name='crystal_data_create'),
     path('database-search/', views.database_search_view, name='database_search'),
     path('database-search/<int:crystal_id>/',
-         views.result_hkl_view_by_id, name='detail'),
+         views.dspaing_results_view, name='dspaing_results'),
     path('database-search/<int:crystal_id>/update/',
          views.update_crystal_data_view, name="update_crystal_data"),
     path('database-search/<int:crystal_id>/delete/',
          views.delete_crystal_data_view, name="delete_crystal_data"),
      path('database-search/<int:crystal_id>/cif-display/',
-         views.cif_file_display, name="cif_display"),
+         views.cif_file_display_view, name="cif_file_display"),
 
 ]
