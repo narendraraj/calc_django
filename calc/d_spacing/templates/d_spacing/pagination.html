@@ -1,0 +1,95 @@
+{% load static %}
+
+
+<div class="mt-4 sm:flex-1 sm:flex sm:items-center sm:justify-between work-sans">
+    <div "">
+       
+        <p class="text-sm leading-5 text-blue-700">
+            Showing
+            <span class="font-medium"></span>
+            {% comment %} to {% endcomment %}
+            <span class="font-medium">15</span>
+            of
+            
+            <span class="font-medium ">
+                {{total_object}}
+
+
+            </span>
+            
+            results
+        </p>
+        
+    </div>
+    
+    <div>
+        <nav class="relative z-0 inline-flex shadow-sm">
+            <div v-if="pagination.current_page < pagination.last_page">                       
+                <a href="?{% if query %}q={{query}}&{% endif %}page=1"
+                    class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-500"
+                    aria-label="Next"> First
+                </a>
+            </div>
+            <div class=  "{% if not object_list.has_previous %} disabled {% endif %}">
+                {% if object_list.has_previous %}                
+                    <a href="?{% if query %}q={{query}}&{% endif %}page={{ object_list.previous_page_number }}"
+                        class=" relative inline-flex items-center px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
+                        aria-label="Previous" >
+                        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                {% endif %}
+            </div>
+            <div>
+                {% for i in object_list.paginator.page_range %}
+                    {% if object_list.number == i %}
+                    <a href='#'
+                        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-blue-600 border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                        {{i}}
+                    </a>
+                        {% elif i > object_list.number|add:'-3' and i < object_list.number|add:'3' %}
+                    <a href="?{% if query %}q={{query}}&{% endif %}page={{ i }}"
+                        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                        {{ i }}
+                    </a>
+                    {% comment %} <a href="?{% if query %}q={{query}}&{% endif %}page={{ i }}"
+                        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                        {{ i }}
+                    </a> {% endcomment %}
+                        {% endif %}
+                {% endfor %}
+                {% comment %} <a href="#"
+                    class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                    3
+                </a> {% endcomment %}
+            </div>
+            {% if object_list.has_next %}
+            <div v-if="pagination.current_page < pagination.last_page">                       
+                <a href="?{% if query %}q={{query}}&{% endif %}page={{ object_list.next_page_number }}"
+                    class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
+                    aria-label="Next">
+                    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    </a>
+            </div>
+
+            <div v-if="pagination.current_page < pagination.last_page">                       
+                <a href="?{% if query %}q={{query}}&{% endif %}page={{object_list.paginator.num_pages }}"
+                    class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
+                    aria-label="Next"> Last
+                </a>
+            </div>
+            {% endif %}
+        </nav>
+    </div>
+</div>
+
+
+
+    <!-- end pagination-->

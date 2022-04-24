@@ -38,23 +38,45 @@ import Dans_Diffraction as dif
 
 # pulled object from database for testing purpose as global varibale 'info'
 # info = CrystalData.objects.get(id=10)
-def database_search_view(request):
+# def database_search_view(request):
 
-    qs = CrystalData.objects.all()
+#     # qs = CrystalData.objects.all()
+    
+#     query =""
+    
+#     query = request.GET.get('q', '')  # this is a dictionary
+    
 
-    query = request.GET.get('q')  # this is a dictionary
+#     if query is not None:
+#         lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
+#             crystal_name__icontains=query) | Q(crystal_system__icontains=query)
+#         qs = CrystalData.objects.filter(lookups)
+        
+        
+#     # Pagination
+#     page= request.GET.get('page', 1)
+#     qs_paginator = Paginator(qs, 15)
+    
+#     try:
+#         qs = qs_paginator.page(page)      
+        
+#     except PageNotAnInteger:
+#         qs = qs_paginator.page(1)
+#     except EmptyPage:
+#         qs = qs_paginator.page(qs_paginator.num_pages) 
+     
+         
 
-    if query is not None:
-        lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
-            crystal_name__icontains=query) | Q(crystal_system__icontains=query)
-        qs = CrystalData.objects.filter(lookups)
+#     context = {
+#         "object_list": qs
 
-    context = {
-        "object_list": qs
+#     }
+    
+   
+    
+    
 
-    }
-
-    return render(request, "database_search.html", context)
+#     return render(request, "database_search.html", context)
 
 
 def home_view(request):
@@ -109,21 +131,38 @@ def home_view(request):
 
 
 def database_list_view(request, page=1):
-    database_objects = CrystalData.objects.all()
-    # page_number = request.GET.get('page', 1)
-    paginator = Paginator(database_objects, 15)
+    
+    
+    query =""
+    
+    query = request.GET.get('q', '')  # this is a dictionary
+    
 
-    # print(page_number)
-
+    if query is not None:
+        lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
+            crystal_name__icontains=query) | Q(crystal_system__icontains=query)
+        qs = CrystalData.objects.filter(lookups)
+        
+        
+    # Pagination
+    page= request.GET.get('page', 1)
+    qs_paginator = Paginator(qs,15)
+    total_object = qs_paginator.count
+    
     try:
-        database_objects = paginator.page(page)
+        qs = qs_paginator.page(page)      
+        
     except PageNotAnInteger:
-        database_objects = paginator.page(1)
+        qs = qs_paginator.page(1)
     except EmptyPage:
-        database_objects = paginator.page(paginator.num_pages)
-    context = {
+        qs = qs_paginator.page(qs_paginator.num_pages) 
+     
+         
 
-        "database_objects": database_objects
+    context = {
+        "object_list": qs,
+         "total_object":  total_object,
+
     }
     return render(request, "database_list.html", context)
 
@@ -141,7 +180,7 @@ def crystal_data_create_view(request):
         form = CrystalDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('d_spacing:database_search'))
+            return redirect(reverse('d_spacing:database_list'))
 
     context = {
 
@@ -162,7 +201,7 @@ def update_crystal_data_view(request, crystal_id):
         if form.is_valid():
             form.save()
             messages.success(request, "Material data successfuly updated ")
-            return redirect(reverse('d_spacing:database_search'))
+            return redirect(reverse('d_spacing:database_list'))
 
     context = {
 
@@ -179,7 +218,7 @@ def delete_crystal_data_view(request, crystal_id):
     if request. method == "POST":
         crystal_object.delete()
         messages.success(request, "Material data successfuly deleted ")
-        return redirect(reverse('d_spacing:database_search'))
+        return redirect(reverse('d_spacing:database_list'))
 
     context = {
 
@@ -205,9 +244,7 @@ def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
     if lower(crystal_structure) == 'orthorhombic':
         d_result = (math.sqrt((h ** 2 / a ** 2) +
                               (k ** 2 / b ** 2) + (l ** 2 / c ** 2))) ** -1
-    # if lower(crystal_structure) == 'tetragonal':
-    #     d_result = (math.sqrt((h ** 2 + k ** 2) / a ** 2) +
-    #               (l ** 2 / c ** 2)) ** -1
+    
     if lower(crystal_structure) == 'tetragonal':
         d_result = math.sqrt(
             ((h ** 2 + k ** 2 + l**2*(a/c)**2))*(1 / a ** 2)) ** -1
@@ -255,41 +292,6 @@ def dspacing_results_view(request, crystal_id):
     return render(request, "dspacing_results.html", context)
 
 
-# def upload_cif_file(request):
-# #     # print(args, kwargs)
-# #     # print(request.user)
-#     # form = CifCrystalDataForm(request.FILES)
-#     if request.method == 'POST':
-#         form = CifCrystalDataForm(request.POST or None,request.FILES or None)
-#         file = request.FILES['cif_file']
-#         # read_cif.readcif(file, debug= False)
-#         # read_data = file.read().decode(" utf8")
-#         # print(file.name, file.content_type, file.size,)
-#         # print(read_data[:])
-
-
-#         if form.is_valid():
-
-
-#             form.save()
-
-
-#         messages.success(request," CIF file is successfuly uploaded ")
-#         return HttpResponseRedirect('/database-search/')
-#     else:
-#         form = CifCrystalDataForm()
-
-
-#     context = {
-
-#         'form': form,
-
-#     }
-#     return render(request, "cif_upload.html", context)
-# def crystal_system(block):
-#     if block.find_value('_space_group_IT_number')or block.find_value('_symmetry_Int_Tables_number')==range(3):
-#         crystal_system = "triclinic"
-#     elif
 
 
 def upload_cif_file_view(request):
@@ -356,7 +358,7 @@ def upload_cif_file_view(request):
                 #     )
 
         messages.success(request, " CIF file is successfuly uploaded ")
-        return redirect(reverse('d_spacing:database_search'))
+        return redirect(reverse('d_spacing:database_list'))
 
     else:
         form = CifCrystalDataForm()
