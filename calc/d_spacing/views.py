@@ -3,7 +3,7 @@ from inspect import unwrap
 import json
 import os
 import math
-from time import time 
+from time import time
 from poplib import CR
 from pyexpat.errors import messages
 import re
@@ -17,6 +17,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.contrib import messages
 from django.urls import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
 
 from .models import CrystalData
 from .forms import CrystalDataForm, CifCrystalDataForm
@@ -39,9 +40,10 @@ import Dans_Diffraction as dif
 # info = CrystalData.objects.get(id=10)
 def database_search_view(request):
 
+    qs = CrystalData.objects.all()
+
     query = request.GET.get('q')  # this is a dictionary
 
-    qs = CrystalData.objects.all()
     if query is not None:
         lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
             crystal_name__icontains=query) | Q(crystal_system__icontains=query)
@@ -56,10 +58,9 @@ def database_search_view(request):
 
 
 def home_view(request):
-    
-    
+
     # url = "http://stem-f2:851/"
-   
+
     # method = {
     #     "jsonrpc": "2.0",
     #     "method": "computer.info",
@@ -69,35 +70,28 @@ def home_view(request):
     # response1 = requests.post(url,  headers={'Content-Type': 'application/json'}, data=request_body)
     # print(response1.json())
     # # print('uptime is:', response.json()['result']['info']['up_time'])
-    
-    
+
     # # print(type(ram_total)
-    
-   
+
     # ram_total = response1.json()['result']['info']['ram_total']
     # ram_total_gb = int(ram_total)*1e-9
-   
-    
+
     # method2 = {
     #     "jsonrpc": "2.0",
     #     "method": "highVoltage.hv100.voltage.getMeasured",
     #     "id" : 115
-        
+
     # }
     # request_body = json.dumps(method2, indent=4)
     # response2 = requests.post(url, headers={'Content-Type': 'application/json'}, data=request_body)
     # print(response2.json())
-    
-   
-    # high_voltatage = response2.json()['result']['voltage']
-    
 
-    
+    # high_voltatage = response2.json()['result']['voltage']
 
     context = {
 
         # "object": "",
-        "response": response,
+        # "response": response,
         # "ram_total_gb": ram_total_gb,
         # "high_voltatage" : high_voltatage,
     }
@@ -112,6 +106,26 @@ def home_view(request):
     #     'cell_angle_beta': info.cell_angle_beta,
     #     'cell_angle_gamma': info.cell_angle_gamma
     # }
+
+
+def database_list_view(request, page=1):
+    database_objects = CrystalData.objects.all()
+    # page_number = request.GET.get('page', 1)
+    paginator = Paginator(database_objects, 15)
+
+    # print(page_number)
+
+    try:
+        database_objects = paginator.page(page)
+    except PageNotAnInteger:
+        database_objects = paginator.page(1)
+    except EmptyPage:
+        database_objects = paginator.page(paginator.num_pages)
+    context = {
+
+        "database_objects": database_objects
+    }
+    return render(request, "database_list.html", context)
 
 
 def crystal_data_create_view(request):
@@ -166,7 +180,7 @@ def delete_crystal_data_view(request, crystal_id):
         crystal_object.delete()
         messages.success(request, "Material data successfuly deleted ")
         return redirect(reverse('d_spacing:database_search'))
-    
+
     context = {
 
         "object": crystal_object
@@ -200,7 +214,7 @@ def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
     return round(d_result, 4)
 
 
-def dspaing_results_view(request, crystal_id):
+def dspacing_results_view(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
     # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
@@ -238,7 +252,7 @@ def dspaing_results_view(request, crystal_id):
 
     }
 
-    return render(request, "dspaing_results.html", context)
+    return render(request, "dspacing_results.html", context)
 
 
 # def upload_cif_file(request):
@@ -343,8 +357,7 @@ def upload_cif_file_view(request):
 
         messages.success(request, " CIF file is successfuly uploaded ")
         return redirect(reverse('d_spacing:database_search'))
-       
-        
+
     else:
         form = CifCrystalDataForm()
 
@@ -388,7 +401,6 @@ def cif_file_display_view(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
 
-   
     # imports data from model database
     context = {
         'crystal_id': crystal_id,
@@ -406,7 +418,6 @@ def cif_file_display_view(request, crystal_id):
 
     }
 
-   
     return render(request, "cif_file_display.html", context)
 
 
@@ -417,15 +428,6 @@ def cif_file_display_view(request, crystal_id):
 #         "object_list": info
 #     }
 #     return render(request, "crystal_list.html", context)
-
-
-# def database_view(request):
-#     info = CrystalData.objects.all()
-#     context = {
-
-#         "object_list": info
-#     }
-#     return render(request, "database_view.html", context)
 
 
 # def hkl_crystal_view(request):

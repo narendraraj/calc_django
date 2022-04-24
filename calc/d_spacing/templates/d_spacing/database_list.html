@@ -1,22 +1,16 @@
 {% extends 'base.html' %}
 
 
-{% block title %} search results {% endblock title %}
+{% block title %} list of crystals {% endblock title %}
+
 {% block content %}
 
-<h1>database-Search page</h1>
-
-
-
-
-   
-
-
+{% comment %} {% include 'database_search.html' %} {% endcomment %}
 <div>
 
    
         
-    <form action="{% url 'd_spacing:database_search'  %} "method='GET'>
+    <form action="{%url 'd_spacing:database_search'%}" method='GET'>
         <div class=" inline-block w-full px-12 py-8  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
                 <div class="flex justify-center">
                     <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded border-blue-500 lg:px-6">
@@ -35,7 +29,7 @@
                                 </span>
                             </div>
                             
-                                <input type="text" action = {% url 'd_spacing:database_search' %} method= 'GET' name = 'q' 
+                                <input type="text" action = "{%url 'd_spacing:database_search'%}" method= 'GET' name = 'q' 
                                 class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-gray-500 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xs lg:text-base"
                                 placeholder="Search" >
                                 
@@ -51,13 +45,9 @@
         
     </form>
 </div>
-  
-
-
-
 
 <!-- component  serach bar-->
- <div class="py-2 pr-10 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">  
+{% comment %} <div class="py-2 pr-10 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"> {% endcomment %}
 
 
 
@@ -125,7 +115,7 @@
 
             <tbody class="bg-white"></tbody>
 
-            {% for object in object_list %}
+            {% for object in database_objects %}
 
 
 
@@ -133,7 +123,7 @@
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
-                    
+                   
                     <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_file_display' object.id %}">{{object.id}}</a>
                     </div>
                     <!-- </div> -->
@@ -230,13 +220,75 @@
         </table>
 
 
-</div>  
+        <div class="mt-4 sm:flex-1 sm:flex sm:items-center sm:justify-between work-sans">
+            {% comment %} <div "">
+               
+                <p class="text-sm leading-5 text-blue-700">
+                    Showing
+                    <span class="font-medium">1</span>
+                    to
+                    <span class="font-medium">200</span>
+                    of
+                    <span class="font-medium ">{{paginator.count}}</span>
+                    results
+                </p>
+                
+            </div> {% endcomment %}
+            
+            <div>
+                <nav class="relative z-0 inline-flex shadow-sm">
+                    <div class=  "{% if not database_objects.has_previous %} disabled {% endif %}">
+                        
+                        <a href="{% if database_objects.has_previous %}{% url 'd_spacing:database_list' database_objects.previous_page_number%}{% endif %}"
+                            class=" relative inline-flex items-center px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
+                            aria-label="Previous" >
+                            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        
+                    </div>
+                    <div>
+                        {% for i in database_objects.paginator.page_range %}
+                            {% if database_objects.number == i %}
+                            <a href='#'
+                                class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-blue-600 border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                                {{i}}
+                            </a>
+                                {% elif i > database_objects.number|add:'-2' and i < database_objects.number|add:'3' %}
+                            <a href="{% url 'd_spacing:database_list' i %}"
+                                class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                                {{ i }}
+                            </a>
+                                {% endif %}
+                        {% endfor %}
+                        {% comment %} <a href="#"
+                            class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 hover:bg-tertiary">
+                            3
+                        </a> {% endcomment %}
+                    </div>
+                    <div v-if="pagination.current_page < pagination.last_page">                       
+                        <a href="{% if database_objects.has_next %}{% url 'd_spacing:database_list' database_objects.next_page_number %}{% endif %} "
+                            class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
+                            aria-label="Next">
+                            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
 
 
 {% endblock  %}
-
-
-
