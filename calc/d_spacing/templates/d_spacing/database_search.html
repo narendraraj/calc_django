@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 
 
 {% block title %} search results {% endblock title %}
 {% block content %}
 
 <h1>database-Search page</h1>
-<p>  </p>
+
 
 
 
@@ -14,37 +14,9 @@
 
 <div>
 
-    {% comment %} <div  class = "flex " >
-        {% if messages %}
-       
-           {% for message in messages %}
-       
-               <div class="text-lg text-green-700 justify-center">
-                   {{ message}}
-               </div>
-           {%endfor%}
-       
-       {% endif %}           
-       
-       
-    </div> {% endcomment %}
-
-
-
-    {% comment %} <div class="inline-block w-full px-12 py-6 overflow-hidden align-middle bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
-        <div class="flex justify-center">  
-            <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded lg:px-6">
-                <div class="relative flex flex-wrap items-stretch w-full h-full mb-6">
-                    <form action='/database/' method='GET'>
-                            <input type='text' name='q' />
-                            <input type='submit' />
-                    </form >
-                </div>
-            </div>
-        </div>
-    </div {% endcomment %}
+   
         
-    <form action={%url 'd_spacing:database_search'%} method='GET'>
+    <form action="{% url 'd_spacing:database_list'  %} "method='GET'>
         <div class=" inline-block w-full px-12 py-8  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
                 <div class="flex justify-center">
                     <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded border-blue-500 lg:px-6">
@@ -62,209 +34,38 @@
                                     </svg>
                                 </span>
                             </div>
-                            
-                                <input type="text" action = '/database-search/' method= 'GET' name = 'q' 
-                                class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-gray-500 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xs lg:text-base"
-                                placeholder="Search" >
+                                
+                                    <input type="text" action = {% url 'd_spacing:database_list' %} method= 'GET' name = 'q' 
+                                    class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-blue-600 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xl lg:text-base"
+                                    placeholder="Search" >
+                                    
+                                    
+                                
                                 
 
                                                                
                         </div>               
                     </div>
+                    
                 
                     
-                    <input type = 'submit' value = "Search" class="px-6 py-2 border  border-blue-500 transition duration-300 ease-in-out bg-gray-400 rounded-sm text-gray-900 mr-6font-bold  hover:bg-blue-600 hover:text-gray-100">
+                    <input type = 'submit' value = "Search" class="px-6 py-2 border text-lg border-blue-500 transition duration-300 ease-in-out bg-gray-400 rounded-sm text-blue-600 mr-6font-bold  hover:bg-blue-600 hover:text-gray-100">
+                
+                    <div class= "relative flex px-1" >
+                        <button  class=" px-6 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
+    
+                            <a href="{%url 'd_spacing:database_list'%}">Clear</a>
+                    
+                        </button>
+                    </div>
+                
                 </div>
+              
             </div>
         
     </form>
 </div>
   
-
-
-
-
-<!-- component  serach bar-->
- <div class="py-2 pr-10 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"> 
-
-
-
-
-    <div
-        class="inline-block min-w-full px-12 pt-2 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
-
-
-        <table class="min-w-full">
-            <thead>
-                <tr>
-                    <th
-                        class="px-4 py-2 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300 px-">
-                        ID
-                    </th>
-
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Crystal Formula
-                    </th>
-
-                    <th
-                        class="text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300 py-42 px-">
-                        Crystal Name
-                    </th>
-
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Crystal Structure
-                    </th>
-
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Unit cell lengths
-                    </th>
-
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Unit cell angle
-                    </th>
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        CIF file
-                    </th>
-
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Get d Values
-                    </th>
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        edit
-                    </th>
-                    <th
-                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Delete
-                    </th>
-                    
-
-
-                </tr>
-            </thead>
-
-
-
-            <tbody class="bg-white"></tbody>
-
-            {% for object in object_list %}
-
-
-
-            <tr>
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    {% comment %} <div class="text-sm leading-4 text-gray-800"><a href="{{object.id}}/cif-display">{{ object.id }}</a>
-                    </div> {% endcomment %}
-                    <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_file_display' object.id %}">{{object.id}}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a
-                            href="">{{ object.crystal_formula }}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a
-                            href="">{{ object.crystal_name }}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-red-600">
-                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full opacity-50"></span>
-                        <span class="relative text-xs"> {{ object.crystal_system | upper}}</span>
-                    </span>
-                </td>
-
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    a = {{ object.cell_length_a}}<br>
-                    b = {{ object.cell_length_b}}<br>
-                    c = {{ object.cell_length_c}}
-                </td>
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    &alpha; = {{object.cell_angle_alpha}}<br>
-                    &beta; = {{object.cell_angle_beta}}<br>
-                    &gamma; = {{object.cell_angle_gamma}}
-                </td>
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a
-                            href="">{{ object.cif_file }}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-
-                <td
-                    class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
-                    <button
-                        class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{% url  'd_spacing:dspaing_results' object.id %}">Get d Values</a>
-
-                    </button>
-                </td>
-
-                <td
-                    class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
-                    <button
-                        class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                        <a href="{% url  'd_spacing:update_crystal_data' object.id %}">Edit</a>
-
-                    </button>
-                </td>
-
-               
-                <td                
-                    class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
-                                       
-                        
-                        <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
-                            <a href="{% url  'd_spacing:delete_crystal_data' object.id %}">Delete</a>
-                        </button>
-                        
-
-                    
-                </td> 
-
-
-                {% endfor %}
-
-                </tbody>
-        </table>
-
-
-</div> 
-
-
-
-
-
 
 {% endblock  %}
 
