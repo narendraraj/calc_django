@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8df5c22a8b32b163f9877eacdb9de108a58cd1eac714b41b858aa415a681c817"
+            "sha256": "b5f26074973cf2ca8807c79bfb49e28f02c1430ef1fe0908040e14cf9096824e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -108,6 +108,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==1.14.0"
         },
+        "django-debug-toolbar": {
+            "hashes": [
+                "sha256:644bbd5c428d3283aa9115722471769cac1bec189edf3a0c855fd8ff870375a9",
+                "sha256:6b633b6cfee24f232d73569870f19aa86c819d750e7f3e833f2344a9eb4b4409"
+            ],
+            "index": "pypi",
+            "version": "==3.2.4"
+        },
         "django-extensions": {
             "hashes": [
                 "sha256:28e1e1bf49f0e00307ba574d645b0af3564c981a6dfc87209d48cb98f77d0b1a",
@@ -125,11 +133,11 @@
         },
         "fonttools": {
             "hashes": [
-                "sha256:59a90de72149893167e3d552ae2402c6874e006b9adc3feaf5f6d706fe20d392",
-                "sha256:b038d1a0dee0079de7ade57071e2e2aced6e35bd697de244ac62938b2b1628c1"
+                "sha256:696fe922a271584c3ec8325ba31d4001a4fd6c4953b22900b767f1cb53ce1044",
+                "sha256:b4da40696829845ea8c1cb33ce51c552179754cbee7ab4e8b96a6bcf421f437a"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==4.32.0"
+            "version": "==4.33.2"
         },
         "gemmi": {
             "hashes": [
@@ -396,11 +404,11 @@
         },
         "pygments": {
             "hashes": [
-                "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65",
-                "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"
+                "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb",
+                "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"
             ],
-            "markers": "python_version >= '3.5'",
-            "version": "==2.11.2"
+            "markers": "python_version >= '3.6'",
+            "version": "==2.12.0"
         },
         "pyparsing": {
             "hashes": [
