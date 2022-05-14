@@ -16,7 +16,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TEMPLATES_DIR = (BASE_DIR / "d_spacing/templates/d_spacing")
+TEMPLATES_DIR = (BASE_DIR / 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,25 +28,29 @@ SECRET_KEY = ' refer secutiy key file'  # it saved in calc/securtiy.text
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'd_spacing.apps.DSpacingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'd_spacing'
+    # my apps,
+    'd_spacing.apps.DSpacingConfig',
+    # 'd_spacing',
+    'account.apps.AccountConfig',
+    # other installed apps,
     "crispy_forms",
     "crispy_tailwind",
+    "debug_toolbar",
     # "django-extensions"
 ]
-
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
@@ -62,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'calc.urls'
@@ -69,7 +74,7 @@ ROOT_URLCONF = 'calc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR, ],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,6 +100,9 @@ DATABASES = {
     }
 }
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -132,7 +140,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 STATIC_ROOT = (BASE_DIR / "assets")
 

@@ -36,48 +36,6 @@ import Dans_Diffraction as dif
 
 # Create your views here.
 
-# pulled object from database for testing purpose as global varibale 'info'
-# info = CrystalData.objects.get(id=10)
-# def database_search_view(request):
-
-#     # qs = CrystalData.objects.all()
-    
-#     query =""
-    
-#     query = request.GET.get('q', '')  # this is a dictionary
-    
-
-#     if query is not None:
-#         lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
-#             crystal_name__icontains=query) | Q(crystal_system__icontains=query)
-#         qs = CrystalData.objects.filter(lookups)
-        
-        
-#     # Pagination
-#     page= request.GET.get('page', 1)
-#     qs_paginator = Paginator(qs, 15)
-    
-#     try:
-#         qs = qs_paginator.page(page)      
-        
-#     except PageNotAnInteger:
-#         qs = qs_paginator.page(1)
-#     except EmptyPage:
-#         qs = qs_paginator.page(qs_paginator.num_pages) 
-     
-         
-
-#     context = {
-#         "object_list": qs
-
-#     }
-    
-   
-    
-    
-
-#     return render(request, "database_search.html", context)
-
 
 def home_view(request):
 
@@ -117,7 +75,7 @@ def home_view(request):
         # "ram_total_gb": ram_total_gb,
         # "high_voltatage" : high_voltatage,
     }
-    return render(request, "home.html", context)
+    return render(request, "d_spacing/home.html", context)
 
     # context = {
     #     'crystal_system': info.crystal_system,
@@ -164,7 +122,7 @@ def database_list_view(request, page=1):
          "total_object":  total_object,
 
     }
-    return render(request, "database_list.html", context)
+    return render(request, "d_spacing/database_list.html", context)
 
 
 def crystal_data_create_view(request):
@@ -186,7 +144,7 @@ def crystal_data_create_view(request):
 
         'form': form
     }
-    return render(request, "crystal_data_create.html", context)
+    return render(request, "d_spacing/crystal_data_create.html", context)
 
 
 def update_crystal_data_view(request, crystal_id):
@@ -210,7 +168,7 @@ def update_crystal_data_view(request, crystal_id):
 
     }
 
-    return render(request, 'update_crystal_data.html', context)
+    return render(request, 'd_spacing/update_crystal_data.html', context)
 
 
 def delete_crystal_data_view(request, crystal_id):
@@ -224,7 +182,7 @@ def delete_crystal_data_view(request, crystal_id):
 
         "object": crystal_object
     }
-    return render(request, "delete_crystal_data.html", context)
+    return render(request, "d_spacing/delete_crystal_data.html", context)
 
 
 def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
@@ -289,7 +247,7 @@ def dspacing_results_view(request, crystal_id):
 
     }
 
-    return render(request, "dspacing_results.html", context)
+    return render(request, "d_spacing/dspacing_results.html", context)
 
 
 
@@ -368,7 +326,7 @@ def upload_cif_file_view(request):
         'form': form,
 
     }
-    return render(request, "upload_cif_file.html", context)
+    return render(request, "d_spacing/upload_cif_file.html", context)
 
 
 # def read_latest_cif_file_updated_model():
@@ -420,7 +378,7 @@ def cif_file_display_view(request, crystal_id):
 
     }
 
-    return render(request, "cif_file_display.html", context)
+    return render(request, "d_spacing/cif_file_display.html", context)
 
 
 # def list_view(request):
