@@ -3,11 +3,74 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
-# MyUser = get_user_model()
-from account.models import MyUser
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
+                                       SetPasswordForm)
+# from account.models import MyUser
 
 
+MyUser = get_user_model()
 
+
+class CustomUserCreationForm(UserCreationForm):
+    # email= forms.EmailField(max_length=255, help_text= 'Required', )
+    # password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    # password2 = forms.CharField(
+    #     label='Repeat password', widget=forms.PasswordInput)
+
+    class Meta:
+        model = MyUser
+        fields = ('email', )
+
+
+# class CustomUserCreationForm(forms.ModelForm):
+#     email = forms.EmailField(max_length=100, help_text='Required', error_messages={
+#         'required': 'Sorry, you will need an email'})
+#     password = forms.CharField(label='Password', widget=forms.PasswordInput)
+#     password2 = forms.CharField(
+#         label='Repeat password', widget=forms.PasswordInput)
+
+#     class Meta:
+#         model = MyUser
+#         fields = ('email', )
+
+#     def clean_email(self):
+#         email = slef.cleaned_data['email']
+#         if MyUser.objects.filter(email=email).exists():
+#             raise forms.ValidationError('Please use another Email, that is already taken')
+#         return email
+
+#     def clean_password2(self):
+#         cd = self.cleaned_data
+#         if cd['passowrd'] != cd['password2']:
+#             raise froms.ValidationError('Passwords do not match.')
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['email'].widget.attrs.update({'class':'form-control', 'placeholder':'E-mail', 'name':'email', 'id':'id_email'})
+#         self.fields['password'].widget.attrs.update(
+#             {'class': 'form-control', 'placeholder': 'Password'})
+#         self.fields['password2'].widget.attrs.update(
+#             {'class': 'form-control', 'placeholder': 'Repeat Password'})
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = MyUser
+        fields = ("email",)
+
+
+'''
+
+
+class UserRegistrationForm(UserCreationForm):
+    email= forms.EmailField(max_length=255, help_text= 'Required', )
+
+    class Meta:
+        model = MyUser
+        fields = ('email', "password1", "password2")
+        
+        
 
 
 class UserCreationForm(forms.ModelForm):
@@ -111,3 +174,4 @@ class UserChangeForm(forms.ModelForm):
 #         fields = ('email', 'password', 'is_active', 'is_admin')
     
         
+'''

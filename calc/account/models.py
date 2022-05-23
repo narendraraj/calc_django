@@ -19,16 +19,7 @@ class MyUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **other_fields)
         user.set_password(password)
-        user.save(using=self._db)
-
-        # user = self.model(
-        #     email=self.normalize_email(email,  **other_fields,),
-        
-            
-        # )
-
-        # user.set_password(password)
-        # user.save(using=self._db)
+        user.save(using=self._db)        
         return user
 
     def create_superuser(self, email,  password=None, **other_fields):
@@ -67,7 +58,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
-    # date_of_birth = models.DateField()
+    
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -81,6 +72,15 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+    def get_full_name(self):
+        # The user is identified by their email address
+        return self.email
+
+    def get_short_name(self):
+        # The user is identified by their email address
+        return self.email
+
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -91,6 +91,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+    
+    class Meta:
+        verbose_name = "Accounts"
+        verbose_name_plural = "Accounts"
 
     # @property
     # def is_staff(self):
@@ -98,7 +102,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     #     # Simplest possible answer: All admins are staff
     #     return self.is_admin
 
-
+    # def email_user(self, subject, message):
+    #     send_mail(
+    #         subject,
+    #         message,
+    #         'l@1.com',
+    #         [self.email],
+    #         fail_silently=False,
+    #     )
 ################################################################################################
 
 

@@ -13,33 +13,31 @@
 <nav
   class="fixed inset-x-0 bg-blue-900 flex-col main-nav sm:flex sm:mt-0 sm:flex-row"
 >
-  <div
-    class="relative flex flex-col items-center justify-end flex-1 sm:flex-row"
-  >
-    <a
-      title=""
-      href="{% url 'd_spacing:home'%}"
-      class="py-2 text-white opacity-75 sm-4 sm:py-2 sm:px-4 sm:text-secondary hover:opacity-100"
-      >Home</a
-    >
-    <div class="relative user">
+    <div class="relative flex flex-col items-center justify-start flex-1 sm:flex-row">
       <a
         title=""
-        href="{% url 'd_spacing:database_list'%}"
-        class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
-        >Materials info
-      </a>
-    </div>
-
-    <div class="relative user">
-      <a
-        title=""
-        href="http://127.0.0.1:8000/admin/"
-        class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
+        href="{% url 'd_spacing:home'%}"
+        class="py-2 text-white opacity-75 sm-4 sm:py-2 sm:px-4 sm:text-secondary hover:opacity-100"
+        >Home</a
       >
-        Admin
-      </a>
-    </div>
+      <div class="relative user">
+        <a
+          title=""
+          href="{% url 'd_spacing:database_list'%}"
+          class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
+          >Materials info
+        </a>
+      </div>
+
+      <div class="relative user">
+        <a
+          title=""
+          href="http://127.0.0.1:8000/admin/"
+          class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
+        >
+          Admin
+        </a>
+    
 
     {% comment %}
     <div
@@ -66,32 +64,67 @@
     </div>
     {% endcomment %}
   </div>
-  <div
+  {% comment %} <div
     class="flex flex-col items-center mt-2 sm:mt-0 sm:flex-row sm:border-l sm:border-gray-300"
-  >
+  > {% endcomment %}
     <a
-      rel="nofollow"
+      rel="relative user"
       title=""
       href="{%url 'd_spacing:upload_cif_file'%}"
-      class="px-3 py-2 font-bold text-white rounded sm:ml-4 md:px-4 bg-primary hover:bg-teal-300"
+      class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
       >Upload CIF
     </a>
 
-    <a
+  </div>
+
+    {% comment %} <a
       rel="nofollow"
       title=""
       href="{% url 'd_spacing:crystal_data_create'%}"
       class="px-3 py-2 font-bold text-white rounded sm:ml-4 md:px-4 bg-primary hover:bg-teal-300"
       >Submit crystal structure info
+    
+    </a> {% endcomment %}
+    
+    
+    {% if user.is_authenticated %}
+    
+    <a
+      rel="nofollow"
+      title=""
+      href=""
+      class="block py-2 font-bold text-white rounded sm:py-4 sm:px-4 bg-primary hover:bg-teal-300"
+      >Hello!! {{user}}
+    
+    <a
+      rel="nofollow"
+      title="L'ogin Tailwind components"
+      href="{% url 'account:account_logout' %}"
+      class="block py-2  text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100 sm:mt-0"
+      >Logout
+    </a>
+    </a>
+    
+
+    {% else %}
+
+    <a
+      rel=""
+      title=""
+      href="{% url 'account:account_register' %}"
+      class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
+    >
+      Register
     </a>
 
     <a
-      rel="nofollow"
-      title="Login Tailwind components"
-      href=""
-      class="px-5 py-2 mt-8 text-white opacity-75 sm:text-secondary hover:opacity-100 sm:mt-0"
-      >Login | Register</a
-    >
+      rel=""
+      title=""
+      href="{% url 'account:account_login' %}"
+      class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
+      >Login      
+    </a>
+    {% endif %}
   </div>
 </nav>
 
