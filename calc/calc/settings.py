@@ -162,5 +162,5 @@ EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'narendrarajchandran@gmail.com'
-EMAIL_HOST_PASSWORD = 'Grapes@258'
+EMAIL_HOST_USER = ##### 
+EMAIL_HOST_PASSWORD = ####

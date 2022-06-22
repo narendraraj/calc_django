@@ -16,8 +16,10 @@ from django.http import HttpResponseRedirect
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
+
 
 from .models import CrystalData
 from .forms import CrystalDataForm, CifCrystalDataForm
@@ -89,37 +91,32 @@ def home_view(request):
 
 
 def database_list_view(request, page=1):
-    
-    
-    query =""
-    
+
+    query = ""
+
     query = request.GET.get('q', '')  # this is a dictionary
-    
 
     if query is not None:
         lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
             crystal_name__icontains=query) | Q(crystal_system__icontains=query)
         qs = CrystalData.objects.filter(lookups)
-        
-        
+
     # Pagination
-    page= request.GET.get('page', 1)
-    qs_paginator = Paginator(qs,15)
+    page = request.GET.get('page', 1)
+    qs_paginator = Paginator(qs, 15)
     total_object = qs_paginator.count
-    
+
     try:
-        qs = qs_paginator.page(page)      
-        
+        qs = qs_paginator.page(page)
+
     except PageNotAnInteger:
         qs = qs_paginator.page(1)
     except EmptyPage:
-        qs = qs_paginator.page(qs_paginator.num_pages) 
-     
-         
+        qs = qs_paginator.page(qs_paginator.num_pages)
 
     context = {
         "object_list": qs,
-         "total_object":  total_object,
+        "total_object":  total_object,
 
     }
     return render(request, "d_spacing/database_list.html", context)
@@ -202,13 +199,14 @@ def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
     if lower(crystal_structure) == 'orthorhombic':
         d_result = (math.sqrt((h ** 2 / a ** 2) +
                               (k ** 2 / b ** 2) + (l ** 2 / c ** 2))) ** -1
-    
+
     if lower(crystal_structure) == 'tetragonal':
         d_result = math.sqrt(
             ((h ** 2 + k ** 2 + l**2*(a/c)**2))*(1 / a ** 2)) ** -1
     return round(d_result, 4)
 
 
+# @login_required(redirect_field_name='/')
 def dspacing_results_view(request, crystal_id):
     # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
@@ -250,8 +248,6 @@ def dspacing_results_view(request, crystal_id):
     return render(request, "d_spacing/dspacing_results.html", context)
 
 
-
-
 def upload_cif_file_view(request):
     if request.method == 'POST':
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)
@@ -284,11 +280,12 @@ def upload_cif_file_view(request):
                 # print(a)
 
                 CrystalData.objects.filter(id=instance_id).update(
-                    crystal_name=block.find_value('_chemical_name_mineral') or block.find_value(
-                        '_chemical_name_systematic'),
-                    crystal_formula=block.find_value('_chemical_formula_sum'),
-                    crystal_system=block.find_value('_symmetry_cell_setting') or block.find_value(
-                        '_space_group_crystal_system'),
+                    crystal_name=str(block.find_value('_chemical_name_mineral') or block.find_value(
+                        '_chemical_name_systematic')),
+                    crystal_formula=str(
+                        block.find_value('_chemical_formula_sum')),
+                    crystal_system=str(block.find_value('_symmetry_cell_setting') or block.find_value(
+                        '_space_group_crystal_system')),
                     cell_length_a=float(xtl.Cell.a),
                     # cell_length_a = doc["_cell_length_a"],
                     cell_length_b=float(xtl.Cell.b),
@@ -297,7 +294,7 @@ def upload_cif_file_view(request):
                     cell_angle_beta=float(xtl.Cell.beta),
                     cell_angle_gamma=float(xtl.Cell.gamma),
                     space_group_IT_number=block.find_value(
-                        '_space_group_IT_number') or block.find_value('_symmetry_Int_Tables_number')
+                        '_space_group_IT_number') or block.find_value('_symmetry_Int_Tables_number'),
 
                 )
 

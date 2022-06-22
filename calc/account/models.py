@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
+
 # from django.utils.translation import gettext_lazy as _
 
 
@@ -15,11 +16,11 @@ class MyUserManager(BaseUserManager):
         """
         if not email:
             raise ValueError('Users must have an email address')
-        
+
         email = self.normalize_email(email)
         user = self.model(email=email, **other_fields)
         user.set_password(password)
-        user.save(using=self._db)        
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email,  password=None, **other_fields):
@@ -27,25 +28,23 @@ class MyUserManager(BaseUserManager):
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
-        
+
         other_fields.setdefault('is_staff', True)
-        other_fields.setdefault('is_superuser', True)        
+        other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
-        
-        
+
         if other_fields.get('is_staff') is not True:
             raise ValueError(
                 'Superuser must be assigned to is_staff=True.')
         if other_fields.get('is_superuser') is not True:
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
-        
-        
+
         user = self.create_user(
             email,
             password=password,
             **other_fields
-            
+
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -58,13 +57,14 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
-    
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    date_joined	= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
-    last_login	= models.DateTimeField(verbose_name='last login', auto_now=True)
-    
+    date_joined = models.DateTimeField(
+        verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
@@ -72,7 +72,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
+
     def get_full_name(self):
         # The user is identified by their email address
         return self.email
@@ -81,9 +81,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         # The user is identified by their email address
         return self.email
 
-
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
+        
         # Simplest possible answer: Yes, always
         return True
 
@@ -91,7 +91,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-    
+
     class Meta:
         verbose_name = "Accounts"
         verbose_name_plural = "Accounts"
@@ -102,6 +102,11 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     #     # Simplest possible answer: All admins are staff
     #     return self.is_admin
 
+    # @property
+    # def is_active(self):
+    #     "Is the user a member of staff?"
+    #     # Simplest possible answer: All admins are staff
+    #     return self.is_staff
     # def email_user(self, subject, message):
     #     send_mail(
     #         subject,
@@ -113,12 +118,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 ################################################################################################
 
 
-
-
-
 # class MyUserManager(BaseUserManager):
-    
-    
+
+
 #     def create_user(self, email, password=None, **other_fields):
 #         """
 #         Creates and saves a User with the given email and password.
@@ -140,7 +142,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 #         birth and password.
 #         """
 #         other_fields.setdefault('is_staff', True)
-#         other_fields.setdefault('is_superuser', True)        
+#         other_fields.setdefault('is_superuser', True)
 #         other_fields.setdefault('is_active', True)
 
 #         if other_fields.get('is_staff') is not True:
@@ -149,20 +151,18 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 #         if other_fields.get('is_superuser') is not True:
 #             raise ValueError(
 #                 'Superuser must be assigned to is_superuser=True.')
-        
+
 
 #         # user = self.create_user(
 #         #     email=email,
 #         #     password=password,
 #         #     **other_fields,
-#         #     
+#         #
 #         # )
 #         # user.is_admin = True
 #         # user.save(using=self._db)
 #         # return user
 #         return self.create_user(email, password, **other_fields)
-
-    
 
 
 # class MyUser(AbstractBaseUser, PermissionsMixin):
