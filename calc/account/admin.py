@@ -63,7 +63,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
         }),
         ('Permissions', {'fields': ('is_active',
-                                    'is_staff', 'is_admin', 'is_superuser', )}),
+                                    'is_staff', 'is_admin', 'is_superuser', 'groups', )}),
     )
     search_fields = ('email',)
     ordering = ('email',)
@@ -83,5 +83,4 @@ class CustomUserAdmin(BaseUserAdmin):
 # Now register the new UserAdmin...
 
 admin.site.register(MyUser, CustomUserAdmin)
-
-
+admin.site.unregister(Group)
