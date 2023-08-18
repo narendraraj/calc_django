@@ -125,7 +125,7 @@ def database_list_view(request, page=1):
 def crystal_data_create_view(request):
     """
 
-    A view to create the form for to input crystal (materials) structure infroamtion and saves it to the database.    
+    A view to create the form for to input crystal (materials) structure infroamtion and saves it to the database.
     class CryatalDataForm is called from forms.py.
     This function uses POST method.
 
@@ -229,8 +229,11 @@ def dspacing_results_view(request, crystal_id):
                 # d_results(h,k,l)
                 # list_of_results.append([h, k, l, cubic_result])
                 list_of_results.append([h, k, l, result])
+    list_of_results.sort(key=lambda x: x[3], reverse=True)
+    # print(list_of_results)
 
     context = {
+
         'crystal_id': crystal_id,
         'crystal_name': info.crystal_name,
         'crystal_formula': info.crystal_formula,
