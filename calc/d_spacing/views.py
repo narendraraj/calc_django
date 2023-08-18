@@ -182,17 +182,30 @@ def delete_crystal_data_view(request, crystal_id):
     return render(request, "d_spacing/delete_crystal_data.html", context)
 
 
+
+
+
+
+
+
+
 def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
-    h = list_of_hkl[0]
-    k = list_of_hkl[1]
-    l = list_of_hkl[2]
 
     a = float(list_of_abc[0])
     b = float(list_of_abc[1])
     c = float(list_of_abc[2])
 
+
+
+    h = list_of_hkl[0]
+    k = list_of_hkl[1]
+    l = list_of_hkl[2]
+
+
+
     if lower(crystal_structure) == 'cubic':
         d_result = a/(math.sqrt((h ** 2) + (k ** 2) + (l ** 2)))
+
     if lower(crystal_structure) == 'hexagonal':
         d_result = (math.sqrt((4 / 3) * ((h ** 2) + (h * k) + (k ** 2)
                                          ) / (a ** 2)) + math.sqrt((l ** 2) / (c ** 2))) ** -1
@@ -205,6 +218,11 @@ def calculate_dspacing(crystal_structure, list_of_abc, list_of_hkl):
             ((h ** 2 + k ** 2 + l**2*(a/c)**2))*(1 / a ** 2)) ** -1
     return round(d_result, 4)
 
+    if lower(crystal_structure) == 'monoclinic':
+        d_result = math.sqrt(1/ sin**2
+            ((h ** 2 + k ** 2 + l**2*(a/c)**2))*(1 / a ** 2)) ** -1
+    return round(d_result, 4)
+
 
 # @login_required(redirect_field_name='/')
 def dspacing_results_view(request, crystal_id):
@@ -212,7 +230,10 @@ def dspacing_results_view(request, crystal_id):
     info = get_object_or_404(CrystalData, id=crystal_id)
     # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
     list_of_abc = [info.cell_length_a, info.cell_length_b, info.cell_length_c]
+
     crystal_structure = info.crystal_system
+
+
     h_range = range(1, 3)
     k_range = range(0, 4)
     l_range = range(0, 4)
