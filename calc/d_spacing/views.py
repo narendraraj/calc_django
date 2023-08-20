@@ -35,7 +35,7 @@ import itertools
 from django.conf import settings
 import Dans_Diffraction as dif
 
-from .calculator_dspacing import CrystalAnalyzer
+from .calculator_dspacing import CrystalAnalyzer, determine_crystal_structure_1
 # Create your views here.
 
 
@@ -102,9 +102,11 @@ def database_list_view(request, page=1):
         qs = CrystalData.objects.filter(lookups)
 
     # Pagination
+    object_per_page = int(20)
     page = request.GET.get('page', 1)
-    qs_paginator = Paginator(qs, 15)
+    qs_paginator = Paginator(qs, object_per_page)
     total_object = qs_paginator.count
+    
 
     try:
         qs = qs_paginator.page(page)
@@ -194,15 +196,18 @@ def dspacing_results_view(request, crystal_id):
     unit_cell_angle_alpha = float(info.cell_angle_alpha)
     unit_cell_angle_beta = float(info.cell_angle_beta)
     unit_cell_angle_gamma = float(info.cell_angle_gamma)
+    space_group_it_number = int(info.space_group_IT_number)
 
     analyzer = CrystalAnalyzer(unit_cell_length_a, unit_cell_length_b,  unit_cell_length_c, unit_cell_angle_alpha, unit_cell_angle_beta,unit_cell_angle_gamma)
 
     crystal_system = info.crystal_system
+
     print(crystal_system)
 
     if crystal_system == "None":
-        crystal_system = f"{analyzer.structure} - (calculated, No value found in CIF)"
-        print(crystal_system)
+        crystal_system = f"{determine_crystal_structure_1(space_group_it_number)} - (calculated_1, No value found in CIF)" or  f"{analyzer.structure} - (calculated_2, No value found in CIF)"
+    print(determine_crystal_structure_1(space_group_it_number))
+    print(crystal_system)
 
     miller_index_results = []
 
@@ -228,6 +233,7 @@ def dspacing_results_view(request, crystal_id):
         'cell_angle_alpha': info.cell_angle_alpha,
         'cell_angle_beta': info.cell_angle_beta,
         'cell_angle_gamma': info.cell_angle_gamma,
+        'space_group_IT_number': info.space_group_IT_number,
         'list_of_results': miller_index_results
 
     }
@@ -359,55 +365,10 @@ def cif_file_display_view(request, crystal_id):
         'cell_angle_alpha': info.cell_angle_alpha,
         'cell_angle_beta': info.cell_angle_beta,
         'cell_angle_gamma': info.cell_angle_gamma,
+        'space_group_IT_number': info.space_group_IT_number,
         'cif_file': info.cif_file,
         # 'cif_info' : cif_info,
 
     }
 
     return render(request, "d_spacing/cif_file_display.html", context)
-
-
-# def list_view(request):
-#     info = CrystalData.objects.all()
-#     context = {
-
-#         "object_list": info
-#     }
-#     return render(request, "crystal_list.html", context)
-
-
-# def hkl_crystal_view(request):
-#     info = CrystalData.objects.get(id=1)  # for specific id
-#     list_of_abc = [info.cell_length_a, info.cell_length_b, info.cell_length_c]
-#     crystal_structure = info.crystal_system
-#     h_range = [1, 2, 3]
-#     k_range = [0, 1, 2, 3]
-#     l_range = [0, 1, 2, 3]
-
-#     list_of_results = []
-
-#     for h in h_range:
-#         for k in k_range:
-#             for l in l_range:
-#                 result = get_d_result(
-#                     crystal_structure, list_of_abc, [h, k, l])
-#                 # cubic_result = info.cell_length_a/decimal.Decimal((math.sqrt((h ** 2) + (k ** 2) + (l ** 2))))
-#                 # d_results(h,k,l)
-#                 # list_of_results.append([h, k, l, cubic_result])
-#                 list_of_results.append([h, k, l, result])
-
-#     context = {
-#         'crystal_name': info.crystal_name,
-#         'crystal_formula': info.crystal_formula,
-#         'crystal_system': info.crystal_system,
-#         'cell_length_a': info.cell_length_a,
-#         'cell_length_b': info.cell_length_b,
-#         'cell_length_c': info.cell_length_c,
-#         'cell_angle_alpha': info.cell_angle_alpha,
-#         'cell_angle_beta': info.cell_angle_beta,
-#         'cell_angle_gamma': info.cell_angle_gamma,
-#         # 'cubic_result': cubic_result,
-#         'list_of_results': list_of_results
-#     }
-
-#     return render(request, "hkl_crystal.html", context)

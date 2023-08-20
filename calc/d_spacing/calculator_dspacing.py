@@ -1,6 +1,31 @@
 import math
 
 
+
+def determine_crystal_structure_1(space_group_it_number):
+    if space_group_it_number is not None:
+        if space_group_it_number in range(0, 3):
+            return "triclinic"
+        elif space_group_it_number in range(3,16):
+            return "monoclinic"
+        elif space_group_it_number in  range(15,75):
+            return "orthorhombic"
+        elif space_group_it_number in  range(74,143):
+            return "tetragonal"
+        elif space_group_it_number in  range(142,168):
+            return "rhombohedral"
+        elif  space_group_it_number in  range(167,195):
+            return "hexagonal"
+        elif space_group_it_number in range(194,231):
+            return "cubic"
+    else:
+        return "No Space group IT number Provided in Cif file"
+
+
+
+
+
+
 class CrystalAnalyzer:
     def __init__(self, unit_cell_length_a, unit_cell_length_b, unit_cell_length_c, unit_cell_angle_alpha, unit_cell_angle_beta, unit_cell_angle_gamma):
         self.unit_cell_length_a = unit_cell_length_a
@@ -12,9 +37,13 @@ class CrystalAnalyzer:
         # self.miller_index_h = miller_index_h
         # self.miller_index_k = miller_index_k
         # self.miller_index_l = miller_index_l
-        self.structure = self.determine_crystal_structure()
+        # self.structure_1 = self.determine_crystal_structure_1()
+        self.structure = self.determine_crystal_structure_2()
 
-    def determine_crystal_structure(self):
+
+
+
+    def determine_crystal_structure_2(self):
         if self.unit_cell_length_a == self.unit_cell_length_b == self.unit_cell_length_c and self.unit_cell_angle_alpha == 90 and self.unit_cell_angle_beta == 90 and self.unit_cell_angle_gamma == 90.0:
             return "cubic"
         elif self.unit_cell_length_a == self.unit_cell_length_b != self.unit_cell_length_c and self.unit_cell_angle_alpha == 90 and self.unit_cell_angle_beta == 90 and self.unit_cell_angle_gamma == 90.0:
