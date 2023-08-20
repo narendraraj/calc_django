@@ -106,7 +106,7 @@ def database_list_view(request, page=1):
     page = request.GET.get('page', 1)
     qs_paginator = Paginator(qs, object_per_page)
     total_object = qs_paginator.count
-    
+
 
     try:
         qs = qs_paginator.page(page)
@@ -196,16 +196,21 @@ def dspacing_results_view(request, crystal_id):
     unit_cell_angle_alpha = float(info.cell_angle_alpha)
     unit_cell_angle_beta = float(info.cell_angle_beta)
     unit_cell_angle_gamma = float(info.cell_angle_gamma)
-    space_group_it_number = int(info.space_group_IT_number)
+    space_group_it_number = info.space_group_IT_number
 
     analyzer = CrystalAnalyzer(unit_cell_length_a, unit_cell_length_b,  unit_cell_length_c, unit_cell_angle_alpha, unit_cell_angle_beta,unit_cell_angle_gamma)
 
     crystal_system = info.crystal_system
+    # crystal_system_1 = f"{determine_crystal_structure_1(space_group_it_number)} - (calculated_1, No value found in CIF)"
+    crystal_system_2 = f"{analyzer.structure} - (calculated_2, No value found in CIF)"
 
     print(crystal_system)
 
+    # if crystal_system == "None":
+    #     crystal_system = crystal_system_1,
     if crystal_system == "None":
-        crystal_system = f"{determine_crystal_structure_1(space_group_it_number)} - (calculated_1, No value found in CIF)" or  f"{analyzer.structure} - (calculated_2, No value found in CIF)"
+        crystal_system = crystal_system_2
+
     print(determine_crystal_structure_1(space_group_it_number))
     print(crystal_system)
 
@@ -239,8 +244,6 @@ def dspacing_results_view(request, crystal_id):
     }
 
     return render(request, "d_spacing/dspacing_results.html", context)
-
-
 
 
 

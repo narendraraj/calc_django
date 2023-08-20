@@ -3,23 +3,22 @@ import math
 
 
 def determine_crystal_structure_1(space_group_it_number):
-    if space_group_it_number is not None:
-        if space_group_it_number in range(0, 3):
-            return "triclinic"
-        elif space_group_it_number in range(3,16):
-            return "monoclinic"
-        elif space_group_it_number in  range(15,75):
-            return "orthorhombic"
-        elif space_group_it_number in  range(74,143):
-            return "tetragonal"
-        elif space_group_it_number in  range(142,168):
-            return "rhombohedral"
-        elif  space_group_it_number in  range(167,195):
-            return "hexagonal"
-        elif space_group_it_number in range(194,231):
-            return "cubic"
+    if space_group_it_number in range(0, 3):
+        return "triclinic"
+    elif space_group_it_number in range(3,16):
+        return "monoclinic"
+    elif space_group_it_number in  range(15,75):
+        return "orthorhombic"
+    elif space_group_it_number in  range(74,143):
+        return "tetragonal"
+    elif space_group_it_number in  range(142,168):
+        return "rhombohedral"
+    elif  space_group_it_number in  range(167,195):
+        return "hexagonal"
+    elif space_group_it_number in range(194,231):
+        return "cubic"
     else:
-        return "No Space group IT number Provided in Cif file"
+        return "None"
 
 
 
