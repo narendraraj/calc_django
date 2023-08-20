@@ -3,35 +3,35 @@
 
 <div class="mt-4 sm:flex-1 sm:flex sm:items-center sm:justify-between work-sans">
     <div "">
-       
-        <p class="text-sm leading-5 text-blue-700">
+
+        <!-- <p class="text-sm leading-5 text-blue-700">
             Showing
             <span class="font-medium"></span>
             {% comment %} to {% endcomment %}
-            <span class="font-medium">15</span>
+            <span class="font-medium"></span>
             of
-            
+
             <span class="font-medium ">
                 {{total_object}}
 
 
-            </span>
-            
-            results
+            </span> -->
+
+            <!-- results -->
         </p>
-        
+
     </div>
-    
+
     <div>
         <nav class="relative z-0 inline-flex shadow-sm">
-            <div v-if="pagination.current_page < pagination.last_page">                       
+            <div v-if="pagination.current_page < pagination.last_page">
                 <a href="?{% if query %}q={{query}}&{% endif %}page=1"
                     class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-500"
                     aria-label="Next"> First
                 </a>
             </div>
             <div class=  "{% if not object_list.has_previous %} disabled {% endif %}">
-                {% if object_list.has_previous %}                
+                {% if object_list.has_previous %}
                     <a href="?{% if query %}q={{query}}&{% endif %}page={{ object_list.previous_page_number }}"
                         class=" relative inline-flex items-center px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
                         aria-label="Previous" >
@@ -67,7 +67,7 @@
                 </a> {% endcomment %}
             </div>
             {% if object_list.has_next %}
-            <div v-if="pagination.current_page < pagination.last_page">                       
+            <div v-if="pagination.current_page < pagination.last_page">
                 <a href="?{% if query %}q={{query}}&{% endif %}page={{ object_list.next_page_number }}"
                     class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500"
                     aria-label="Next">
@@ -79,7 +79,7 @@
                     </a>
             </div>
 
-            <div v-if="pagination.current_page < pagination.last_page">                       
+            <div v-if="pagination.current_page < pagination.last_page">
                 <a href="?{% if query %}q={{query}}&{% endif %}page={{object_list.paginator.num_pages }}"
                     class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
                     aria-label="Next"> Last

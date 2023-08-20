@@ -8,8 +8,8 @@
 {% comment %} {% include 'database_search.html' %} {% endcomment %}
 {% comment %} <div>
 
-   
-        
+
+
     <form action="{%url 'd_spacing:database_list'%}" method='GET'>
         <div class=" inline-block w-full px-12 py-8  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
                 <div class="flex justify-center">
@@ -28,21 +28,21 @@
                                     </svg>
                                 </span>
                             </div>
-                            
-                                <input type="text" action = "{%url 'd_spacing:database_list'%}" method= 'GET' name = 'q' 
+
+                                <input type="text" action = "{%url 'd_spacing:database_list'%}" method= 'GET' name = 'q'
                                 class="relative flex-1 flex-auto flex-grow flex-shrink w-px px-3 font-thin leading-normal tracking-wide text-gray-500 border border-l-0 border-none rounded rounded-l-none focus:outline-none text-xxs lg:text-xs lg:text-base"
                                 placeholder="Search" >
-                                
 
-                                                               
-                        </div>               
+
+
+                        </div>
                     </div>
-                
-                    
+
+
                     <input type = 'submit' value = "Search" class="px-6 py-2 border  border-blue-500 transition duration-300 ease-in-out bg-gray-400 rounded-sm text-gray-900 mr-6font-bold  hover:bg-blue-600 hover:text-gray-100">
                 </div>
             </div>
-        
+
     </form>
 </div> {% endcomment %}
 
@@ -72,18 +72,24 @@
 
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Crystal Formula
+                        Crystal formula
                     </th>
 
                     <th
                         class="text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300 py-42 px-">
-                        Crystal Name
+                        Crystal name
                     </th>
 
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        Crystal Structure
+                        Crystal structure
                     </th>
+
+                    <th
+                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                        Space group number
+                    </th>
+
 
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
@@ -111,7 +117,7 @@
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Delete
                     </th>
-                    
+
 
 
                 </tr>
@@ -129,7 +135,7 @@
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
-                   
+
                     <div class="text-sm leading-4 text-gray-800"><a href="{% url  'd_spacing:cif_file_display' object.id %}">{{object.id}}</a>
                     </div>
                     <!-- </div> -->
@@ -163,6 +169,17 @@
                         <span class="relative text-xs"> {{ object.crystal_system | upper}}</span>
                     </span>
                 </td>
+
+                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+                    <!-- <div class="flex items-center"> -->
+                    <!-- <div> -->
+                    <div class="text-sm leading-4 text-gray-800"><a
+                            href="">{{ object.space_group_IT_number }}</a>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                </td>
+
 
 
                 <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
@@ -206,18 +223,18 @@
                     </button>
                 </td>
 
-               
-                <td                
+
+                <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
-                                       
-                        
-                        <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
+
+
+                        <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
                             <a href="{% url  'd_spacing:delete_crystal_data' object.id %}">Delete</a>
                         </button>
-                        
 
-                    
-                </td> 
+
+
+                </td>
 
 
                 {% endfor %}
@@ -227,7 +244,7 @@
 
         {% include 'd_spacing/pagination.html'%}
 
-        
+
     </div>
 </div>
 

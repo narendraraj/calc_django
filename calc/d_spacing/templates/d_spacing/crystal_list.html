@@ -30,10 +30,10 @@
         <!-- <td><a href="{{  object.crystal_formula }}">{{  object.crystal_formula }}</a></td> -->
         <td><a href="">{{ object.crystal_formula }}</a></td>
         <td><a href="">{{  object.crystal_name }}</a></td>
-        <td>{{  object.crystal_system }}</td>
-        <td>{{  object.cell_lenght_a}}</td>
-        <td>{{  object.cell_lenght_b}}</td>
-        <td>{{  object.cell_lenght_c}}</td>
+        <td>{{ object.crystal_system }}</td>
+        <td>{{ object.cell_lenght_a}}</td>
+        <td>{{ object.cell_lenght_b}}</td>
+        <td>{{ object.cell_lenght_c}}</td>
         <td>{{ object.cell_angle_alpha}}</td>
         <td>{{ object.cell_angle_beta}}</td>
         <td>{{ object.cell_angle_gamma}}</td>
@@ -49,12 +49,12 @@
 
 
 </form>
-<!-- 
+<!--
 <form action="list/" method="POST"> {% csrf_token %}
 
     <p class= "text-sm">
         Do you want to delte the Material "{{object_list.crystal_name}}" ?
-     </p>      
+     </p>
 
 
     <input  type="Submit"  value=" Yes object"> <a href='../'>Cancel</a>
