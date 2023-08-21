@@ -85,9 +85,15 @@
                         Crystal structure
                     </th>
 
+
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Space group number
+                    </th>
+
+                    <th
+                        class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
+                        Symmetry space group H-M
                     </th>
 
 
@@ -111,7 +117,7 @@
                     </th>
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
-                        edit
+                        Edit
                     </th>
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
@@ -180,6 +186,16 @@
                     <!-- </div> -->
                 </td>
 
+                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+                    <!-- <div class="flex items-center"> -->
+                    <!-- <div> -->
+                    <div class="text-sm leading-4 text-gray-800"><a
+                            href="">{{ object.symmetry_space_group_name_H_M }}</a>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                </td>
+
 
 
                 <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
@@ -214,23 +230,47 @@
                     </button>
                 </td>
 
+
+
                 <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
+                    {% if user.is_authenticated %}
                     <button
                         class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+
                         <a href="{% url  'd_spacing:update_crystal_data' object.id %}">Edit</a>
 
                     </button>
+                    {% else %}
+                    <p class="text-sm text-blue-500 text-center">To edit </p>
+                    <button
+                    class="px-2 py-2 text-blue-500 text-sm transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+
+                    <a href="{% url 'account:account_login' %}">login</a>
+
+                    </button>
+
+
+                    {% endif %}
                 </td>
 
 
                 <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
 
-
+                    {% if user.is_authenticated %}
                         <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
                             <a href="{% url  'd_spacing:delete_crystal_data' object.id %}">Delete</a>
                         </button>
+                    {% else %}
+                    <p class="text-sm text-blue-500 text-center">To delete</p>
+                        <button
+                         class="px-2 py-2 text-blue-500 text-sm transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+
+                        <a href="{% url 'account:account_login' %}"> login </a>
+                    {% endif %}
+
+                    </button>
 
 
 
