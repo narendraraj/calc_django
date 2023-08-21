@@ -176,7 +176,7 @@ def delete_crystal_data_view(request, crystal_id):
         crystal_object.delete()
         messages.success(request, "Material data successfuly deleted ")
         return redirect(reverse('d_spacing:database_list'))
-
+        
     context = {
 
         "object": crystal_object
