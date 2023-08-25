@@ -22,7 +22,7 @@ class CrystalData(models.Model):
     cell_angle_gamma = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, null=True)
     space_group_name = models.CharField(max_length=125, null=True, blank=True)
-    space_group_IT_number = models.IntegerField(null=True, blank=True)
+    space_group_it_number = models.IntegerField(null=True, blank=True)
     symmetry_space_group_name_H_M = models.CharField(max_length=225, blank=True, null=True)
     cif_file = models.FileField(
         upload_to='cif_database', blank=False, null=False)
