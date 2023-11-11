@@ -6,9 +6,9 @@ from django.urls import reverse
 
 
 class CrystalData(models.Model):
-    crystal_formula = models.CharField(max_length=25, blank=True, null=True)
+    crystal_formula = models.CharField(max_length=125, blank=True, null=True)
     crystal_name = models.CharField(max_length=125, blank=True,  null=True)
-    crystal_system = models.CharField(max_length=25, blank=True, null=True)
+    crystal_system = models.CharField(max_length=125, blank=True, null=True)
     cell_length_a = models.DecimalField(
         max_digits=8, decimal_places=4, blank=True, null=True)
     cell_length_b = models.DecimalField(
@@ -21,8 +21,9 @@ class CrystalData(models.Model):
         max_digits=8, decimal_places=2, blank=True, null=True)
     cell_angle_gamma = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, null=True)
-    space_group_name = models.CharField(max_length=25, null=True, blank=True)
-    space_group_IT_number = models.IntegerField(null=True, blank=True)
+    space_group_name = models.CharField(max_length=125, null=True, blank=True)
+    space_group_it_number = models.IntegerField(null=True, blank=True)
+    symmetry_space_group_name_H_M = models.CharField(max_length=225, blank=True, null=True)
     cif_file = models.FileField(
         upload_to='cif_database', blank=False, null=False)
     file_url = models.URLField(max_length=200, blank=True, null=True)

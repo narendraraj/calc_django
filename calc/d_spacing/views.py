@@ -9,6 +9,7 @@ from pyexpat.errors import messages
 import re
 from urllib import response
 from venv import create
+
 # import decimal
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -35,12 +36,12 @@ import itertools
 from django.conf import settings
 import Dans_Diffraction as dif
 
-from .calculator_dspacing import CrystalAnalyzer, determine_crystal_structure_1
+from .calculator_dspacing import CrystalAnalyzer
+
 # Create your views here.
 
 
 def home_view(request):
-
     # url = "http://stem-f2:851/"
 
     # method = {
@@ -71,7 +72,6 @@ def home_view(request):
     # high_voltatage = response2.json()['result']['voltage']
 
     context = {
-
         # "object": "",
         # "response": response,
         # "ram_total_gb": ram_total_gb,
@@ -91,22 +91,24 @@ def home_view(request):
 
 
 def database_list_view(request, page=1):
-
     query = ""
 
-    query = request.GET.get('q', '')  # this is a dictionary
+    query = request.GET.get("q", "")  # this is a dictionary
 
     if query is not None:
-        lookups = Q(id__icontains=query) | Q(crystal_formula__icontains=query) | Q(
-            crystal_name__icontains=query) | Q(crystal_system__icontains=query)
+        lookups = (
+            Q(id__icontains=query)
+            | Q(crystal_formula__icontains=query)
+            | Q(crystal_name__icontains=query)
+            | Q(crystal_system__icontains=query)
+        )
         qs = CrystalData.objects.filter(lookups)
 
     # Pagination
     object_per_page = int(20)
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     qs_paginator = Paginator(qs, object_per_page)
     total_object = qs_paginator.count
-
 
     try:
         qs = qs_paginator.page(page)
@@ -118,8 +120,7 @@ def database_list_view(request, page=1):
 
     context = {
         "object_list": qs,
-        "total_object":  total_object,
-
+        "total_object": total_object,
     }
     return render(request, "d_spacing/database_list.html", context)
 
@@ -133,16 +134,13 @@ def crystal_data_create_view(request):
 
     """
     form = CrystalDataForm(request.FILES)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CrystalDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('d_spacing:database_list'))
+            return redirect(reverse("d_spacing:database_list"))
 
-    context = {
-
-        'form': form
-    }
+    context = {"form": form}
     return render(request, "d_spacing/crystal_data_create.html", context)
 
 
@@ -152,138 +150,135 @@ def update_crystal_data_view(request, crystal_id):
     info_update = CrystalData.objects.get(id=crystal_id)
     form = CrystalDataForm(instance=info_update)
 
-    if request.method == 'POST':
-        form = CrystalDataForm(request.POST or None,
-                               request.FILES or None, instance=info_update)
+    if request.method == "POST":
+        form = CrystalDataForm(
+            request.POST or None, request.FILES or None, instance=info_update
+        )
         if form.is_valid():
             form.save()
             messages.success(request, "Material data successfuly updated ")
-            return redirect(reverse('d_spacing:database_list'))
+            return redirect(reverse("d_spacing:database_list"))
 
-    context = {
+    context = {"form": form, "crystal_id": crystal_id}
 
-        'form': form,
-        'crystal_id': crystal_id
-
-    }
-
-    return render(request, 'd_spacing/update_crystal_data.html', context)
+    return render(request, "d_spacing/update_crystal_data.html", context)
 
 
 def delete_crystal_data_view(request, crystal_id):
     crystal_object = get_object_or_404(CrystalData, id=crystal_id)
-    if request. method == "POST":
+    if request.method == "POST":
         crystal_object.delete()
         messages.success(request, "Material data successfuly deleted ")
-        return redirect(reverse('d_spacing:database_list'))
-        
-    context = {
+        return redirect(reverse("d_spacing:database_list"))
 
-        "object": crystal_object
-    }
+    context = {"object": crystal_object}
     return render(request, "d_spacing/delete_crystal_data.html", context)
 
 
-
-
 def dspacing_results_view(request, crystal_id):
-    # info = CrystalData.objects.get(id=id)
-    info = get_object_or_404(CrystalData, id=crystal_id)
-    # info = get_object_or_404(CrystalData, crystal_formula=crystal_formula)
-    unit_cell_length_a = float(info.cell_length_a)
-    unit_cell_length_b = float(info.cell_length_b)
-    unit_cell_length_c = float(info.cell_length_c)
-    unit_cell_angle_alpha = float(info.cell_angle_alpha)
-    unit_cell_angle_beta = float(info.cell_angle_beta)
-    unit_cell_angle_gamma = float(info.cell_angle_gamma)
-    space_group_it_number = info.space_group_IT_number
+    try:
+        info = get_object_or_404(CrystalData, id=crystal_id)
 
-    analyzer = CrystalAnalyzer(unit_cell_length_a, unit_cell_length_b,  unit_cell_length_c, unit_cell_angle_alpha, unit_cell_angle_beta,unit_cell_angle_gamma)
+    except CrystalData.DoesNotExist:
+        return HttpResponse("crystal not found", status=404)
+
+    try:
+        unit_cell_length_a = float(info.cell_length_a)
+        unit_cell_length_b = float(info.cell_length_b)
+        unit_cell_length_c = float(info.cell_length_c)
+        unit_cell_angle_alpha = float(info.cell_angle_alpha)
+        unit_cell_angle_beta = float(info.cell_angle_beta)
+        unit_cell_angle_gamma = float(info.cell_angle_gamma)
+
+    except ValueError:
+        return HttpResponse("Invalid input data", staus=400)
 
     crystal_system = info.crystal_system
-    # crystal_system_1 = f"{determine_crystal_structure_1(space_group_it_number)} - (calculated_1, No value found in CIF)"
-    crystal_system_2 = f"{analyzer.structure} - (calculated_2, No value found in CIF)"
+    space_group_it_number = info.space_group_it_number
 
-    print(crystal_system)
-
-    # if crystal_system == "None":
-    #     crystal_system = crystal_system_1,
-    if crystal_system == "None":
-        crystal_system = crystal_system_2
-
-    print(determine_crystal_structure_1(space_group_it_number))
-    print(crystal_system)
+    analyzer = CrystalAnalyzer(
+        unit_cell_length_a,
+        unit_cell_length_b,
+        unit_cell_length_c,
+        unit_cell_angle_alpha,
+        unit_cell_angle_beta,
+        unit_cell_angle_gamma,
+        crystal_system,
+        space_group_it_number,
+    )
 
     miller_index_results = []
 
     for miller_index_h in range(1, 3):
         for miller_index_k in range(0, 4):
             for miller_index_l in range(0, 4):
-                d_spacing = analyzer.calculate_d_spacing(miller_index_h, miller_index_k, miller_index_l).__round__(4)
-                miller_index_results.append((miller_index_h, miller_index_k, miller_index_l, d_spacing))
-    print(f"The determined crystal structure is: {analyzer.structure}")
+                d_spacing = analyzer.calculate_d_spacing(
+                    miller_index_h,
+                    miller_index_k,
+                    miller_index_l,
+                ).__round__(4)
+                if d_spacing is not None:
+                    miller_index_results.append(
+                        (
+                            miller_index_h,
+                            miller_index_k,
+                            miller_index_l,
+                            d_spacing,
+                        )
+                    )
+
+    miller_index_results.sort(key=lambda x: x[3], reverse=True)
+    # print(list_of_results)
+
+    print(f"The determined crystal structure is: {analyzer.crystal_system}")
     print("Miller Index (hkl) - D-spacing results:")
     for result in miller_index_results:
         print(f"({result[0]}, {result[1]}, {result[2]}) - {result[3]:.4f} Å")
 
     context = {
-
-        'crystal_id': crystal_id,
-        'crystal_name': info.crystal_name,
-        'crystal_formula': info.crystal_formula,
-        'crystal_system':  crystal_system,
-        'cell_length_a': info.cell_length_a,
-        'cell_length_b': info.cell_length_b,
-        'cell_length_c': info.cell_length_c,
-        'cell_angle_alpha': info.cell_angle_alpha,
-        'cell_angle_beta': info.cell_angle_beta,
-        'cell_angle_gamma': info.cell_angle_gamma,
-        'space_group_IT_number': info.space_group_IT_number,
-        'list_of_results': miller_index_results
-
+        "crystal_id": crystal_id,
+        "crystal_name": info.crystal_name,
+        "crystal_formula": info.crystal_formula,
+        "crystal_system": info.crystal_system,
+        "cell_length_a": info.cell_length_a,
+        "cell_length_b": info.cell_length_b,
+        "cell_length_c": info.cell_length_c,
+        "cell_angle_alpha": info.cell_angle_alpha,
+        "cell_angle_beta": info.cell_angle_beta,
+        "cell_angle_gamma": info.cell_angle_gamma,
+        "space_group_it_number": info.space_group_it_number,
+        "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
+        "list_of_results": miller_index_results,
     }
 
     return render(request, "d_spacing/dspacing_results.html", context)
 
 
-
-
 def upload_cif_file_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)
         files = request.FILES.getlist("cif_file")
         if form.is_valid():
-            for file in files:
+            total_files = len(files)
+            for i, file in enumerate(files):
                 file_instance = CrystalData.objects.create(cif_file=file)
                 file_instance.save()
+
+                progress = (i + 1) / total_files * 100
 
                 file_path = file_instance.cif_file.path
                 instance_id = file_instance.id
 
-                # info = get_object_or_404(CrystalData, id=instance_id)
-
-                # print(info.id)
-                # print(info.cell_length_a)
-
                 xtl = dif.Crystal(file_path)
                 doc = cif.read_file(file_path)
                 block = doc.sole_block()
-                # a= xtl.Cell.a
-
-                # print(file_path)
-                # doc=readcif.readcif(file_path)
-                # print(json.dumps(doc, indent=4))
-                # print(doc["_cell_length_a"])
-                # print(doc)
-                # print(doc.values())
-                # readcif.readcif()
-                # print(a)
 
                 CrystalData.objects.filter(id=instance_id).update(
-                    crystal_name=str(block.find_value('_chemical_name_mineral') or block.find_value(
-                        '_chemical_name_systematic')),
-                    crystal_formula=str(
-                        block.find_value('_chemical_formula_sum')),
+                    crystal_name=str(
+                        block.find_value("_chemical_name_mineral")
+                        or block.find_value("_chemical_name_systematic")
+                    ),
+                    crystal_formula=str(block.find_value("_chemical_formula_sum")),
                     cell_length_a=float(xtl.Cell.a),
                     # cell_length_a = doc["_cell_length_a"],
                     cell_length_b=float(xtl.Cell.b),
@@ -291,10 +286,16 @@ def upload_cif_file_view(request):
                     cell_angle_alpha=float(xtl.Cell.alpha),
                     cell_angle_beta=float(xtl.Cell.beta),
                     cell_angle_gamma=float(xtl.Cell.gamma),
-                    space_group_IT_number=block.find_value(
-                        '_space_group_IT_number') or block.find_value('_symmetry_Int_Tables_number'),
-                    crystal_system=str(block.find_value('_symmetry_cell_setting') or block.find_value(
-                        '_space_group_crystal_system'))),
+                    space_group_it_number=block.find_value("_space_group_IT_number")
+                    or block.find_value("_symmetry_Int_Tables_number"),
+                    symmetry_space_group_name_H_M=block.find_value(
+                        "_symmetry_space_group_name_H-M"
+                    ),
+                    crystal_system=str(
+                        block.find_value("_symmetry_cell_setting")
+                        or block.find_value("_space_group_crystal_system")
+                    ),
+                ),
 
                 # doc= cif.read_file(file_path)
                 # block = doc.sole_block()
@@ -311,16 +312,13 @@ def upload_cif_file_view(request):
                 #     )
 
         messages.success(request, " CIF file is successfuly uploaded ")
-        return redirect(reverse('d_spacing:database_list'))
+        print(progress)
+        return redirect(reverse("d_spacing:database_list"))
 
     else:
         form = CifCrystalDataForm()
 
-    context = {
-
-        'form': form,
-
-    }
+    context = {"form": form}
     return render(request, "d_spacing/upload_cif_file.html", context)
 
 
@@ -358,20 +356,20 @@ def cif_file_display_view(request, crystal_id):
 
     # imports data from model database
     context = {
-        'crystal_id': crystal_id,
-        'crystal_name': info.crystal_name,
-        'crystal_formula': info.crystal_formula,
-        'crystal_system': info.crystal_system,
-        'cell_length_a': info.cell_length_a,
-        'cell_length_b': info.cell_length_b,
-        'cell_length_c': info.cell_length_c,
-        'cell_angle_alpha': info.cell_angle_alpha,
-        'cell_angle_beta': info.cell_angle_beta,
-        'cell_angle_gamma': info.cell_angle_gamma,
-        'space_group_IT_number': info.space_group_IT_number,
-        'cif_file': info.cif_file,
+        "crystal_id": crystal_id,
+        "crystal_name": info.crystal_name,
+        "crystal_formula": info.crystal_formula,
+        "crystal_system": info.crystal_system,
+        "cell_length_a": info.cell_length_a,
+        "cell_length_b": info.cell_length_b,
+        "cell_length_c": info.cell_length_c,
+        "cell_angle_alpha": info.cell_angle_alpha,
+        "cell_angle_beta": info.cell_angle_beta,
+        "cell_angle_gamma": info.cell_angle_gamma,
+        "space_group_it_number": info.space_group_IT_number,
+        "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
+        "cif_file": info.cif_file,
         # 'cif_info' : cif_info,
-
     }
 
     return render(request, "d_spacing/cif_file_display.html", context)
