@@ -88,59 +88,36 @@ def home_view(request):
     }
     return render(request, "d_spacing/home.html", context)
 
-    # context = {
-    #     'crystal_system': info.crystal_system,
-    #     'cell_length_a': info.cell_length_a,
-    #     'cell_length_b': info.cell_length_b,
-    #     'cell_length_c': info.cell_length_c,
-    #     'cell_angle_alpha': info.cell_angle_alpha,
-    #     'cell_angle_beta': info.cell_angle_beta,
-    #     'cell_angle_gamma': info.cell_angle_gamma
-    # }
-
-
-# def database_list_view(request, page=1):
-#     query = ""
-
-#     query = request.GET.get("q", "")  # this is a dictionary
-
-#     if query is not None:
-#         lookups = (
-#             Q(id__icontains=query)
-#             | Q(crystal_formula__icontains=query)
-#             | Q(crystal_name__icontains=query)
-#             | Q(crystal_system__icontains=query)
-#         )
-#         qs = CrystalData.objects.filter(lookups)
-
-#     # Pagination
-#     object_per_page = int(20)
-#     page = request.GET.get("page", 1)
-#     qs_paginator = Paginator(qs, object_per_page)
-#     total_object = qs_paginator.count
-
-#     try:
-#         qs = qs_paginator.page(page)
-
-#     except PageNotAnInteger:
-#         qs = qs_paginator.page(1)
-#     except EmptyPage:
-#         qs = qs_paginator.page(qs_paginator.num_pages)
-
-#     context = {
-#         "object_list": qs,
-#         "total_object": total_object,
-#     }
-#     return render(request, "d_spacing/database_list.html", context)
-
 
 class CrystalDataListView(ListView):
+    """
+    A view that displays a list of CrystalData objects.
+
+    Attributes:
+        model: The model that the view will display.
+        template_name: The name of the template to render.
+        context_object_name: The name of the context variable to use in the template.
+        paginate_by: The number of objects to display per page.
+
+    Methods:
+        get_queryset: Returns the queryset of objects to display.
+    """
+
     model = CrystalData
     template_name = "d_spacing/database_list.html"
     context_object_name = "object_list"
     paginate_by = 20
 
     def get_queryset(self):
+        """
+        Returns the queryset of CrystalData objects to display.
+
+        If a search query is provided in the request, filters the queryset to include only
+        objects that match the query.
+
+        Returns:
+            A queryset of CrystalData objects.
+        """
         query = self.request.GET.get("q", "")
         if query:
             return CrystalData.objects.filter(
@@ -152,7 +129,51 @@ class CrystalDataListView(ListView):
         return CrystalData.objects.all()
 
 
+class CrystalDataUserListView(LoginRequiredMixin, ListView):
+    """
+    A view that displays a list of CrystalData objects uploaded by the current user.
+
+    Attributes:
+        model (CrystalData): The model that this view displays.
+        template_name (str): The name of the template to render.
+        context_object_name (str): The name of the context variable to use in the template.
+        paginate_by (int): The number of objects to display per page.
+
+    Methods:
+        get_queryset(): Returns the queryset of CrystalData objects to display.
+    """
+
+    model = CrystalData
+    template_name = "d_spacing/user_database_list.html"
+    context_object_name = "object_list"
+    paginate_by = 20
+
+    def get_queryset(self):
+        """
+        Returns the queryset of CrystalData objects to display.
+
+        If a search query is provided in the request, filters the queryset to include only
+        objects that match the query and were uploaded by the current user. Otherwise, returns
+        all objects uploaded by the current user.
+        """
+        query = self.request.GET.get("q", "")
+        if query:
+            return CrystalData.objects.filter(
+                Q(id__icontains=query)
+                | Q(crystal_formula__icontains=query)
+                | Q(crystal_name__icontains=query)
+                | Q(crystal_system__icontains=query),
+                uploaded_by=self.request.user,
+            )
+        return CrystalData.objects.filter(uploaded_by=self.request.user)
+
+
 class CrystalDataPaginator(Paginator):
+    """
+    A custom paginator class that extends Django's built-in Paginator class.
+    This class adds functionality to handle exceptions when retrieving a page of data.
+    """
+
     def __init__(
         self, request, object_list, per_page, orphans=0, allow_empty_first_page=True
     ):
@@ -168,12 +189,17 @@ class CrystalDataPaginator(Paginator):
 
 def crystal_data_create_view(request):
     """
+    View function for creating a new crystal data entry.
 
-    A view to create the form for to input crystal (materials) structure infroamtion and saves it to the database.
-    class CryatalDataForm is called from forms.py.
-    This function uses POST method.
+    Args:
+        request: HttpRequest object representing the current request.
 
+    Returns:
+        If the request method is GET, returns a rendered HTML template containing a form for creating a new crystal data entry.
+        If the request method is POST and the form is valid, saves the form data to the database and redirects to the database list view.
+        If the request method is POST and the form is invalid, returns a rendered HTML template containing the invalid form.
     """
+
     form = CrystalDataForm(request.FILES)
     if request.method == "POST":
         form = CrystalDataForm(request.POST, request.FILES)
@@ -185,33 +211,30 @@ def crystal_data_create_view(request):
     return render(request, "d_spacing/crystal_data_create.html", context)
 
 
-# def update_crystal_data_view(request, crystal_id):
-#     # print(args, kwargs)
-#     # print(request.user)
-#     info_update = CrystalData.objects.get(id=crystal_id)
-#     form = CrystalDataForm(instance=info_update)
-
-#     if request.method == "POST":
-#         form = CrystalDataForm(
-#             request.POST or None, request.FILES or None, instance=info_update
-#         )
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Material data successfuly updated ")
-#             return redirect(reverse("d_spacing:database_list"))
-
-#     context = {"form": form, "crystal_id": crystal_id}
-
-#     return render(request, "d_spacing/update_crystal_data.html", context)
-
-
 class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
+    """
+    View for updating CrystalData model instance.
+
+    Attributes:
+    - model: CrystalData model
+    - form_class: CrystalDataForm
+    - template_name: HTML template for rendering the view
+    - success_url: URL to redirect to after successful form submission
+    """
+
     model = CrystalData
     form_class = CrystalDataForm
     template_name = "d_spacing/update_crystal_data.html"
     success_url = reverse_lazy("d_spacing:database_list")
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests for the view.
+
+        Returns:
+        - If user is authorized to update the material data, returns the view with the form.
+        - If user is not authorized, returns a warning message and redirects to the database list view.
+        """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
             messages.warning(
@@ -221,6 +244,13 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests for the view.
+
+        Returns:
+        - If user is authorized to update the material data, saves the form and returns a success message.
+        - If user is not authorized, returns a warning message and redirects to the database list view.
+        """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
             messages.warning(
@@ -230,27 +260,95 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
+        """
+        Handles valid form submissions.
+
+        Returns:
+        - Returns a success message and calls the parent form_valid method.
+        """
         messages.success(self.request, "Material data successfully updated.")
         return super().form_valid(form)
 
 
-# def delete_crystal_data_view(request, crystal_id):
-#     crystal_object = get_object_or_404(CrystalData, id=crystal_id)
-#     if request.method == "POST":
-#         crystal_object.delete()
-#         messages.success(request, "Material data successfuly deleted ")
-#         return redirect(reverse("d_spacing:database_list"))
+# class DeleteCrystalDataView(LoginRequiredMixin, ListView):
+#     """
+#     A view that allows a user to delete one or more CrystalData objects.
 
-#     context = {"object": crystal_object}
-#     return render(request, "d_spacing/delete_crystal_data.html", context)
+#     Inherits from Django's built-in ListView class and adds authorization checks
+#     to ensure that only the user who uploaded the CrystalData objects can delete them.
+
+#     Attributes:
+#     - model (CrystalData): The model that this view operates on.
+#     - template_name (str): The name of the template to use for rendering the view.
+
+#     Methods:
+#     - get_queryset(self): Returns the queryset of CrystalData objects to display.
+#     - post(self, request, *args, **kwargs): Handles POST requests to the view.
+#     """
+
+#     model = CrystalData
+#     template_name = "d_spacing/delete_crystal_data.html"
+
+#     def get_queryset(self):
+#         """
+#         Returns the queryset of CrystalData objects to display.
+
+#         Filters the queryset to only include objects uploaded by the authenticated user.
+
+#         Returns:
+#         - QuerySet: The queryset of CrystalData objects to display.
+#         """
+#         return CrystalData.objects.filter(uploaded_by=self.request.user)
+
+#     def post(self, request):
+#         """
+#         Handles POST requests to the view.
+
+#         Deletes the selected CrystalData objects and redirects to the success URL.
+
+#         Returns:
+#         - redirect(self.success_url): A redirect to the success URL.
+#         """
+#         selected_ids = request.POST.getlist("selected_ids")
+#         selected_objects = CrystalData.objects.filter(
+#             id__in=selected_ids, uploaded_by=request.user
+#         )
+#         if request.POST.get("confirm_delete"):
+#             selected_objects.delete()
+#             return redirect(reverse_lazy("d_spacing:user_database_list"))
 
 
 class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
+    """
+    A view that allows a user to delete a CrystalData object.
+
+    Inherits from Django's built-in DeleteView class and adds authorization checks
+    to ensure that only the user who uploaded the CrystalData object can delete it.
+
+    Attributes:
+    - model (CrystalData): The model that this view operates on.
+    - template_name (str): The name of the template to use for rendering the view.
+    - success_url (str): The URL to redirect to after a successful deletion.
+
+    Methods:
+    - get(self, request, *args, **kwargs): Handles GET requests to the view.
+    - post(self, request, *args, **kwargs): Handles POST requests to the view.
+    """
+
     model = CrystalData
     template_name = "d_spacing/delete_crystal_data.html"
     success_url = reverse_lazy("d_spacing:database_list")
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests to the view.
+
+        Checks if the user is authorized to delete the CrystalData object, and if not,
+        redirects them to the database list page with a warning message.
+
+        Returns:
+        - super().get(request, *args, **kwargs): The parent class's get method.
+        """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
             messages.warning(
@@ -260,6 +358,16 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests to the view.
+
+        Checks if the user is authorized to delete the CrystalData object, and if not,
+        redirects them to the database list page with a warning message. If the deletion
+        is successful, displays a success message.
+
+        Returns:
+        - super().post(request, *args, **kwargs): The parent class's post method.
+        """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
             messages.warning(

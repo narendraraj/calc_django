@@ -4,52 +4,61 @@
 <h1> Delete crystal data</h1>
 
 
-<!-- <p> This is home page, just trying to pull some data objects from database </p>
 
-<h2>{{object.crytal_formula}} <br> {{object.crystal_name}} <br> {{object.crystal_system|upper}}</h2>
-<p> <strong> Unit cell length: </strong></p>
-<p> a = {{object.cell_length_a}} nm, b = {{object.cell_length_b}} nm, c = {{object.cell_length_c}} nm </p>
-
-<p> <strong> Unit cell Angle: </strong></p>
-<p> Alpha = {{object.cell_angle_alpha}}, Beta = {{object.cell_angle_beta}}, Gamma = {{object.cell_angle_gamma}}</p>
-
-<h2>Yes! it is working </h2> -->
 <div>
 
     <form action="." method="POST"> {% csrf_token %}
 
-        <p class= "text-lg"> </p>                                                
-                        
-                        
-                        
-            
-
+        <p class= "text-lg"> </p>
 
         <div class = "flex flex-shrink text-lg px-52 py-36 text-center">
-        
+
             Do you want to delete the Material "{{object.crystal_name}} , {{object.cif_file}}" ?
-            
-            
+
+
             <div class="  py-20 leading-2 text-left whitespace-no-wrap text-lg">
-               
 
-                <button type = ""Submit"" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Delete        
-                
-                </button>          
+                <!-- <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Formula</th>
+                            <th>System</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crystal_data in object_list %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_ids" value="{{ crystal_data.id }}"></td>
+                            <td>{{ crystal_data.id }}</td>
+                            <td>{{ crystal_data.crystal_name }}</td>
+                            <td>{{ crystal_data.crystal_formula }}</td>
+                            <td>{{ crystal_data.crystal_system }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> -->
 
-                <button  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> 
-            
+
+                <button type ="Submit" class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Delete
+
+                </button>
+
+                <button  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
+
                     <a href="{%url 'd_spacing:database_list'%}">Cancel</a>
-            
+
                 </button>
             </div>
         </div>
-        
+
 
         </div>
     </form>
 
-    
+
 
 
 

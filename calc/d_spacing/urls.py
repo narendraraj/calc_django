@@ -4,6 +4,7 @@ from . import views
 
 from .views import (
     CrystalDataListView,
+    CrystalDataUserListView,
     CrystalDataPaginator,
     UpdateCrystalDataView,
     DeleteCrystalDataView,
@@ -46,6 +47,7 @@ urlpatterns = [
         CrystalDataListView.as_view(paginator_class=CrystalDataPaginator),
         name="database_list",
     ),
+    path("my-data/", CrystalDataUserListView.as_view(), name="user_database_list"),
     path(
         "database/<int:pk>/update/",
         UpdateCrystalDataView.as_view(),

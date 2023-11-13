@@ -9,6 +9,7 @@ MyUser = get_user_model()
 
 
 class CrystalData(models.Model):
+    
     crystal_formula = models.CharField(max_length=125, blank=True, null=True)
     crystal_name = models.CharField(max_length=125, blank=True, null=True)
     crystal_system = models.CharField(max_length=125, blank=True, null=True)
