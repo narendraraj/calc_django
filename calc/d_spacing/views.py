@@ -21,15 +21,18 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from .models import CrystalData
+from .models import CrystalData, get_user_model
 from .forms import CrystalDataForm, CifCrystalDataForm
 from . import readcif
+from .utils import parse_cif_file
 
+# from account.forms import get_first_name_from_email, get_last_name_from_email
 
 from django.template.defaultfilters import lower
 
@@ -42,6 +45,8 @@ import Dans_Diffraction as dif
 
 from .calculator_dspacing import CrystalAnalyzer
 
+
+MyUser = get_user_model()
 # Create your views here.
 
 
@@ -343,9 +348,8 @@ def dspacing_results_view(request, crystal_id):
 
     return render(request, "d_spacing/dspacing_results.html", context)
 
-
-@login_required
-def upload_cif_file_view(request):
+    # @login_required
+    # def upload_cif_file_view(request):
     if request.method == "POST":
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)
         files = request.FILES.getlist("cif_file")
@@ -395,6 +399,42 @@ def upload_cif_file_view(request):
         form = CifCrystalDataForm()
 
     return render(request, "d_spacing/upload_cif_file.html", {"form": form})
+
+
+class UploadCifFileView(LoginRequiredMixin, View):
+    form_class = CifCrystalDataForm
+    template_name = "d_spacing/upload_cif_file.html"
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {"form": form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist("cif_file")
+        if form.is_valid():
+            total_files = len(files)
+            for i, file in enumerate(files):
+                file_instance = CrystalData.objects.create(
+                    cif_file=file, uploaded_by=request.user
+                )
+                file_instance.save()
+                # first_name = get_first_name_from_email(request.user.email)
+
+                progress = (i + 1) / total_files * 100
+
+                file_path = file_instance.cif_file.path
+                instance_id = file_instance.id
+
+                parse_cif_file(file_path, instance_id)
+
+            messages.success(request, "CIF file(s) uploaded successfully!")
+            return redirect(reverse("d_spacing:database_list"))
+        else:
+            messages.error(request, "Invalid form submission.")
+            context = {"form": form, "first_name": first_name}
+            return render(request, self.template_name, context)
 
 
 # def read_latest_cif_file_updated_model():

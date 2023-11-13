@@ -63,6 +63,12 @@ class CrystalData(models.Model):
     def __str__(self):
         return str(self.comments)
 
+    # def uploaded_by_first_name(self):
+    #     if self.uploaded_by:
+    #         return self.uploaded_by.first_name
+    #     else:
+    #         return ""
+
     def delete(self, *args, **kwargs):
         self.cif_file.delete()
         super().delete(*args, **kwargs)

@@ -52,6 +52,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
@@ -71,9 +73,28 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         # The user is identified by their email address
         return self.email
 
-    def get_short_name(self):
-        # The user is identified by their email address
-        return self.email
+    def get_first_name_from_email(self, email):
+        username, domain = email.split("@")
+        name_parts = username.split(".")
+        first_name = name_parts[0].capitalize()
+        return first_name
+
+    def get_last_name_from_email(self, email):
+        username, domain = email.split("@")
+        name_parts = username.split(".")
+        last_name = name_parts[-1].capitalize()
+        return last_name
+
+    def save(self, *args, **kwargs):
+        if not self.first_name:
+            self.first_name = self.get_first_name_from_email(self.email)
+        if not self.last_name:
+            self.last_name = self.get_last_name_from_email(self.email)
+        super().save(*args, **kwargs)
+
+    # def get_short_name(self):
+    #     # The user is identified by their email address
+    #     return self.email
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

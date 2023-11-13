@@ -7,6 +7,7 @@ from .views import (
     CrystalDataPaginator,
     UpdateCrystalDataView,
     DeleteCrystalDataView,
+    UploadCifFileView,
 )
 
 app_name = "d_spacing"
@@ -14,7 +15,7 @@ app_name = "d_spacing"
 urlpatterns = [
     path("", views.home_view, name="home"),
     path("home/", views.home_view, name="home"),
-    path("upload-cif-file/", views.upload_cif_file_view, name="upload_cif_file"),
+    # path("upload-cif-file/", views.upload_cif_file_view, name="upload_cif_file"),
     path("forms/", views.crystal_data_create_view, name="crystal_data_create"),
     #     path('database-search/', views.database_search_view, name='database_search'),
     #     path('database-list/', views.database_list_view, name='database_list'),
@@ -33,6 +34,7 @@ urlpatterns = [
     #     views.delete_crystal_data_view,
     #     name="delete_crystal_data",
     # ),
+    path("upload-cif-file/", UploadCifFileView.as_view(), name="upload_cif_file"),
     path(
         "database/<int:crystal_id>/cif-display/",
         views.cif_file_display_view,

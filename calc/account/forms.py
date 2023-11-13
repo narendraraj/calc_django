@@ -3,8 +3,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
-                                       SetPasswordForm)
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+)
+
 # from account.models import MyUser
 
 
@@ -19,7 +23,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ('email', )
+        fields = ("email",)
 
 
 # class CustomUserCreationForm(forms.ModelForm):
@@ -54,7 +58,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-
     class Meta:
         model = MyUser
         fields = ("email",)
@@ -69,8 +72,8 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = MyUser
         fields = ('email', "password1", "password2")
-        
-        
+
+
 
 
 class UserCreationForm(forms.ModelForm):
@@ -166,12 +169,12 @@ class UserChangeForm(forms.ModelForm):
 
 
 # class CustomUserChangeForm(forms.ModelForm):
-    
+
 #     password = ReadOnlyPasswordHashField()
 
 #     class Meta:
 #         model = MyUser
 #         fields = ('email', 'password', 'is_active', 'is_admin')
-    
-        
+
+
 '''
