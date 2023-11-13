@@ -156,6 +156,9 @@ MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = "account.MyUser"
 
+LOGIN_URL = "/login/"
+
+
 # SMTP Configuration
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"

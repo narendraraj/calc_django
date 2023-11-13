@@ -12,44 +12,44 @@
 <body>
 
 
-    
+
 
 
     <div class= "">
 
         {% include 'navbar.html' %}
-        
+
         </div>
-        
+
         <div  class = "flex flex-row p-4 py-16 justify-center" >
 
             {% if messages %}
                 {% for message in messages %}
-                
+
 
                     <div class= "bg-green-100 border border-green-600 text-green-600 px-4 py-3 rounded relative" role="alert">
-                        <strong class="font-bold">{{message}}</strong>                             
-                        
+                        <strong class="font-bold">{{message}}</strong>
+
                     </div>
-                                            
-                
-                
-            
-                
-            
+
+
+
+
+
+
                     {% comment %} <div class="text-2xl py-6 bg-gray-500 text-green-700 ">
-                        {{ message}}
+                        {{message}}
                     </div> {% endcomment %}
                 {%endfor%}
-            
-            {% endif %}           
-           
-           
+
+            {% endif %}
+
+
     </div>
-    
 
 
-    
+
+
 
 
 

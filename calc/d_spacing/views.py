@@ -12,15 +12,16 @@ from venv import create
 
 # import decimal
 from django.http import HttpResponse, request, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponseRedirect
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
-
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import CrystalData
 from .forms import CrystalDataForm, CifCrystalDataForm
@@ -90,39 +91,71 @@ def home_view(request):
     # }
 
 
-def database_list_view(request, page=1):
-    query = ""
+# def database_list_view(request, page=1):
+#     query = ""
 
-    query = request.GET.get("q", "")  # this is a dictionary
+#     query = request.GET.get("q", "")  # this is a dictionary
 
-    if query is not None:
-        lookups = (
-            Q(id__icontains=query)
-            | Q(crystal_formula__icontains=query)
-            | Q(crystal_name__icontains=query)
-            | Q(crystal_system__icontains=query)
-        )
-        qs = CrystalData.objects.filter(lookups)
+#     if query is not None:
+#         lookups = (
+#             Q(id__icontains=query)
+#             | Q(crystal_formula__icontains=query)
+#             | Q(crystal_name__icontains=query)
+#             | Q(crystal_system__icontains=query)
+#         )
+#         qs = CrystalData.objects.filter(lookups)
 
-    # Pagination
-    object_per_page = int(20)
-    page = request.GET.get("page", 1)
-    qs_paginator = Paginator(qs, object_per_page)
-    total_object = qs_paginator.count
+#     # Pagination
+#     object_per_page = int(20)
+#     page = request.GET.get("page", 1)
+#     qs_paginator = Paginator(qs, object_per_page)
+#     total_object = qs_paginator.count
 
-    try:
-        qs = qs_paginator.page(page)
+#     try:
+#         qs = qs_paginator.page(page)
 
-    except PageNotAnInteger:
-        qs = qs_paginator.page(1)
-    except EmptyPage:
-        qs = qs_paginator.page(qs_paginator.num_pages)
+#     except PageNotAnInteger:
+#         qs = qs_paginator.page(1)
+#     except EmptyPage:
+#         qs = qs_paginator.page(qs_paginator.num_pages)
 
-    context = {
-        "object_list": qs,
-        "total_object": total_object,
-    }
-    return render(request, "d_spacing/database_list.html", context)
+#     context = {
+#         "object_list": qs,
+#         "total_object": total_object,
+#     }
+#     return render(request, "d_spacing/database_list.html", context)
+
+
+class CrystalDataListView(ListView):
+    model = CrystalData
+    template_name = "d_spacing/database_list.html"
+    context_object_name = "object_list"
+    paginate_by = 20
+
+    def get_queryset(self):
+        query = self.request.GET.get("q", "")
+        if query:
+            return CrystalData.objects.filter(
+                Q(id__icontains=query)
+                | Q(crystal_formula__icontains=query)
+                | Q(crystal_name__icontains=query)
+                | Q(crystal_system__icontains=query)
+            )
+        return CrystalData.objects.all()
+
+
+class CrystalDataPaginator(Paginator):
+    def __init__(
+        self, request, object_list, per_page, orphans=0, allow_empty_first_page=True
+    ):
+        self.request = request
+        super().__init__(object_list, per_page, orphans, allow_empty_first_page)
+
+    def get_page(self, number):
+        try:
+            return super().get_page(number)
+        except Exception:
+            return super().get_page(1)
 
 
 def crystal_data_create_view(request):
@@ -254,6 +287,7 @@ def dspacing_results_view(request, crystal_id):
     return render(request, "d_spacing/dspacing_results.html", context)
 
 
+@login_required
 def upload_cif_file_view(request):
     if request.method == "POST":
         form = CifCrystalDataForm(request.POST or None, request.FILES or None)
@@ -261,7 +295,9 @@ def upload_cif_file_view(request):
         if form.is_valid():
             total_files = len(files)
             for i, file in enumerate(files):
-                file_instance = CrystalData.objects.create(cif_file=file)
+                file_instance = CrystalData.objects.create(
+                    cif_file=file, uploaded_by=request.user
+                )
                 file_instance.save()
 
                 progress = (i + 1) / total_files * 100
@@ -297,21 +333,7 @@ def upload_cif_file_view(request):
                     ),
                 ),
 
-                # doc= cif.read_file(file_path)
-                # block = doc.sole_block()
-                # CrystalData.objects.filter(id=instance_id).update(
-                #     crystal_name = block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
-                #     crystal_formula = block.find_value('_chemical_formula_sum'),
-                #     crystal_system = block.find_value('_symmetry_cell_setting'),
-                #     cell_length_a = block.find_value('_cell_length_a'),
-                #     cell_length_b = block.find_value('_cell_length_b'),
-                #     cell_length_c = block.find_value('_cell_length_c'),
-                #     cell_angle_alpha = block.find_value('_cell_angle_alpha'),
-                #     cell_angle_beta = block.find_value('_cell_angle_beta'),
-                #     cell_angle_gamma =  block.find_value('_cell_angle_gamma')
-                #     )
-
-        messages.success(request, " CIF file is successfuly uploaded ")
+        messages.success(request, "CIF file(s) is successfuly uploaded ")
         print(progress)
         return redirect(reverse("d_spacing:database_list"))
 

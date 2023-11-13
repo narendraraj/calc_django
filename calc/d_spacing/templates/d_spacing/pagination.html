@@ -22,7 +22,7 @@
 
     </div>
 
-    <div>
+    <!-- <div>
         <nav class="relative z-0 inline-flex shadow-sm">
             <div v-if="pagination.current_page < pagination.last_page">
                 <a href="?{% if query %}q={{query}}&{% endif %}page=1"
@@ -88,8 +88,31 @@
             {% endif %}
         </nav>
     </div>
-</div>
+</div> -->
 
+<div class="pagination">
+    <nav class="relative z-0 inline-flex shadow-sm"></nav>
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-l-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-500"
+                aria-label="Next"> First  </a>
+                <a href="?page={{ page_obj.previous_page_number }} "class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
+                aria-label="Previous">previous</a>
+            {% endif %}
 
+            <span class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 border-gray-300 bg-blue-600 text-white  focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
+            aria-label="Current page" current-page >
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }} " class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
+                aria-label="Next">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}"class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium leading-5 text-blue-600 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-r-md hover:text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue "
+                aria-label="Next">  Last  </a>
+            {% endif %}
+        </span>
+    </nav>
+  </div>
 
     <!-- end pagination-->
