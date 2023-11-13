@@ -337,7 +337,7 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
 
     model = CrystalData
     template_name = "d_spacing/delete_crystal_data.html"
-    success_url = reverse_lazy("d_spacing:database_list")
+    success_url = reverse_lazy("d_spacing:user_database_list")
 
     def get(self, request, *args, **kwargs):
         """
