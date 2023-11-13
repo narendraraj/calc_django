@@ -37,7 +37,7 @@
         >
           Admin
         </a>
-    
+
 
     {% comment %}
     <div
@@ -83,19 +83,19 @@
       href="{% url 'd_spacing:crystal_data_create'%}"
       class="px-3 py-2 font-bold text-white rounded sm:ml-4 md:px-4 bg-primary hover:bg-teal-300"
       >Submit crystal structure info
-    
+
     </a> {% endcomment %}
-    
-    
+
+
     {% if user.is_authenticated %}
-    
+
     <a
       rel="nofollow"
       title=""
       href=""
       class="block py-2 font-bold text-white rounded sm:py-4 sm:px-4 bg-primary hover:bg-teal-300"
       >Hello!! {{user}}
-    
+
     <a
       rel="nofollow"
       title="L'ogin Tailwind components"
@@ -104,7 +104,7 @@
       >Logout
     </a>
     </a>
-    
+
 
     {% else %}
 
@@ -122,7 +122,7 @@
       title=""
       href="{% url 'account:account_login' %}"
       class="block py-2 text-white opacity-75 sm:py-4 sm:px-4 sm:text-secondary hover:opacity-100"
-      >Login      
+      >Login
     </a>
     {% endif %}
   </div>

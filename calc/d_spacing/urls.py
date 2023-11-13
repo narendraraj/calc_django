@@ -2,7 +2,12 @@ from django.urls import path
 
 from . import views
 
-from .views import CrystalDataListView, CrystalDataPaginator
+from .views import (
+    CrystalDataListView,
+    CrystalDataPaginator,
+    UpdateCrystalDataView,
+    DeleteCrystalDataView,
+)
 
 app_name = "d_spacing"
 
@@ -18,16 +23,16 @@ urlpatterns = [
         views.dspacing_results_view,
         name="dspacing_results",
     ),
-    path(
-        "database/<int:crystal_id>/update/",
-        views.update_crystal_data_view,
-        name="update_crystal_data",
-    ),
-    path(
-        "database/<int:crystal_id>/delete/",
-        views.delete_crystal_data_view,
-        name="delete_crystal_data",
-    ),
+    # path(
+    #     "database/<int:crystal_id>/update/",
+    #     views.update_crystal_data_view,
+    #     name="update_crystal_data",
+    # ),
+    # path(
+    #     "database/<int:crystal_id>/delete/",
+    #     views.delete_crystal_data_view,
+    #     name="delete_crystal_data",
+    # ),
     path(
         "database/<int:crystal_id>/cif-display/",
         views.cif_file_display_view,
@@ -38,5 +43,15 @@ urlpatterns = [
         "database-list/",
         CrystalDataListView.as_view(paginator_class=CrystalDataPaginator),
         name="database_list",
+    ),
+    path(
+        "database/<int:pk>/update/",
+        UpdateCrystalDataView.as_view(),
+        name="update_crystal_data",
+    ),
+    path(
+        "database/<int:pk>/delete/",
+        DeleteCrystalDataView.as_view(),
+        name="delete_crystal_data",
     ),
 ]

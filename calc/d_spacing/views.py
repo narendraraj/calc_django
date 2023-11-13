@@ -11,7 +11,9 @@ from urllib import response
 from venv import create
 
 # import decimal
+from django.http import JsonResponse
 from django.http import HttpResponse, request, Http404
+from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponseRedirect
 from django.core.files.storage import FileSystemStorage
@@ -19,6 +21,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -177,35 +180,89 @@ def crystal_data_create_view(request):
     return render(request, "d_spacing/crystal_data_create.html", context)
 
 
-def update_crystal_data_view(request, crystal_id):
-    # print(args, kwargs)
-    # print(request.user)
-    info_update = CrystalData.objects.get(id=crystal_id)
-    form = CrystalDataForm(instance=info_update)
+# def update_crystal_data_view(request, crystal_id):
+#     # print(args, kwargs)
+#     # print(request.user)
+#     info_update = CrystalData.objects.get(id=crystal_id)
+#     form = CrystalDataForm(instance=info_update)
 
-    if request.method == "POST":
-        form = CrystalDataForm(
-            request.POST or None, request.FILES or None, instance=info_update
-        )
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Material data successfuly updated ")
+#     if request.method == "POST":
+#         form = CrystalDataForm(
+#             request.POST or None, request.FILES or None, instance=info_update
+#         )
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Material data successfuly updated ")
+#             return redirect(reverse("d_spacing:database_list"))
+
+#     context = {"form": form, "crystal_id": crystal_id}
+
+#     return render(request, "d_spacing/update_crystal_data.html", context)
+
+
+class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
+    model = CrystalData
+    form_class = CrystalDataForm
+    template_name = "d_spacing/update_crystal_data.html"
+    success_url = reverse_lazy("d_spacing:database_list")
+
+    def get(self, request, *args, **kwargs):
+        crystal_data = self.get_object()
+        if crystal_data.uploaded_by != request.user:
+            messages.warning(
+                request, "You are not authorized to update this material data."
+            )
             return redirect(reverse("d_spacing:database_list"))
+        return super().get(request, *args, **kwargs)
 
-    context = {"form": form, "crystal_id": crystal_id}
+    def post(self, request, *args, **kwargs):
+        crystal_data = self.get_object()
+        if crystal_data.uploaded_by != request.user:
+            messages.warning(
+                request, "You are not authorized to update this material data."
+            )
+            return redirect(reverse("d_spacing:database_list"))
+        return super().post(request, *args, **kwargs)
 
-    return render(request, "d_spacing/update_crystal_data.html", context)
+    def form_valid(self, form):
+        messages.success(self.request, "Material data successfully updated.")
+        return super().form_valid(form)
 
 
-def delete_crystal_data_view(request, crystal_id):
-    crystal_object = get_object_or_404(CrystalData, id=crystal_id)
-    if request.method == "POST":
-        crystal_object.delete()
-        messages.success(request, "Material data successfuly deleted ")
-        return redirect(reverse("d_spacing:database_list"))
+# def delete_crystal_data_view(request, crystal_id):
+#     crystal_object = get_object_or_404(CrystalData, id=crystal_id)
+#     if request.method == "POST":
+#         crystal_object.delete()
+#         messages.success(request, "Material data successfuly deleted ")
+#         return redirect(reverse("d_spacing:database_list"))
 
-    context = {"object": crystal_object}
-    return render(request, "d_spacing/delete_crystal_data.html", context)
+#     context = {"object": crystal_object}
+#     return render(request, "d_spacing/delete_crystal_data.html", context)
+
+
+class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
+    model = CrystalData
+    template_name = "d_spacing/delete_crystal_data.html"
+    success_url = reverse_lazy("d_spacing:database_list")
+
+    def get(self, request, *args, **kwargs):
+        crystal_data = self.get_object()
+        if crystal_data.uploaded_by != request.user:
+            messages.warning(
+                request, "You are not authorized to delete this material data."
+            )
+            return redirect(reverse("d_spacing:database_list"))
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        crystal_data = self.get_object()
+        if crystal_data.uploaded_by != request.user:
+            messages.warning(
+                request, "You are not authorized to delete this material data."
+            )
+            return redirect(reverse("d_spacing:database_list"))
+        messages.success(request, "Material data successfully deleted.")
+        return super().post(request, *args, **kwargs)
 
 
 def dspacing_results_view(request, crystal_id):
@@ -316,7 +373,6 @@ def upload_cif_file_view(request):
                     ),
                     crystal_formula=str(block.find_value("_chemical_formula_sum")),
                     cell_length_a=float(xtl.Cell.a),
-                    # cell_length_a = doc["_cell_length_a"],
                     cell_length_b=float(xtl.Cell.b),
                     cell_length_c=float(xtl.Cell.c),
                     cell_angle_alpha=float(xtl.Cell.alpha),
@@ -331,17 +387,14 @@ def upload_cif_file_view(request):
                         block.find_value("_symmetry_cell_setting")
                         or block.find_value("_space_group_crystal_system")
                     ),
-                ),
+                )
 
-        messages.success(request, "CIF file(s) is successfuly uploaded ")
-        print(progress)
-        return redirect(reverse("d_spacing:database_list"))
-
+            messages.success(request, "CIF file(s) uploaded successfully!")
+            return redirect(reverse("d_spacing:database_list"))
     else:
         form = CifCrystalDataForm()
 
-    context = {"form": form}
-    return render(request, "d_spacing/upload_cif_file.html", context)
+    return render(request, "d_spacing/upload_cif_file.html", {"form": form})
 
 
 # def read_latest_cif_file_updated_model():
