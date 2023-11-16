@@ -1,5 +1,5 @@
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth import get_user_model
 
 # Create your views here.
@@ -9,7 +9,6 @@ MyUser = get_user_model()
 
 
 class CrystalData(models.Model):
-    
     crystal_formula = models.CharField(max_length=125, blank=True, null=True)
     crystal_name = models.CharField(max_length=125, blank=True, null=True)
     crystal_system = models.CharField(max_length=125, blank=True, null=True)
@@ -80,3 +79,6 @@ class CrystalData(models.Model):
 
     def get_absolute_url(self):
         return reverse("d_spacing:detail", args=[self.id])
+
+    # def get_download_url(self):
+    #     return reverse_lazy("download_cif_file", args=[self.id])

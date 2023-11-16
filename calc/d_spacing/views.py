@@ -12,11 +12,12 @@ from venv import create
 
 # import decimal
 from django.http import JsonResponse
-from django.http import HttpResponse, request, Http404
+from django.http import HttpResponse, request, Http404, FileResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponseRedirect
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
+from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -39,8 +40,8 @@ from django.template.defaultfilters import lower
 from gemmi import cif
 import requests
 import itertools
+import mimetypes
 
-from django.conf import settings
 import Dans_Diffraction as dif
 
 from .calculator_dspacing import CrystalAnalyzer
@@ -225,7 +226,7 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
     model = CrystalData
     form_class = CrystalDataForm
     template_name = "d_spacing/update_crystal_data.html"
-    success_url = reverse_lazy("d_spacing:database_list")
+    success_url = reverse_lazy("d_spacing:user_database_list")
 
     def get(self, request, *args, **kwargs):
         """
@@ -268,54 +269,6 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
         """
         messages.success(self.request, "Material data successfully updated.")
         return super().form_valid(form)
-
-
-# class DeleteCrystalDataView(LoginRequiredMixin, ListView):
-#     """
-#     A view that allows a user to delete one or more CrystalData objects.
-
-#     Inherits from Django's built-in ListView class and adds authorization checks
-#     to ensure that only the user who uploaded the CrystalData objects can delete them.
-
-#     Attributes:
-#     - model (CrystalData): The model that this view operates on.
-#     - template_name (str): The name of the template to use for rendering the view.
-
-#     Methods:
-#     - get_queryset(self): Returns the queryset of CrystalData objects to display.
-#     - post(self, request, *args, **kwargs): Handles POST requests to the view.
-#     """
-
-#     model = CrystalData
-#     template_name = "d_spacing/delete_crystal_data.html"
-
-#     def get_queryset(self):
-#         """
-#         Returns the queryset of CrystalData objects to display.
-
-#         Filters the queryset to only include objects uploaded by the authenticated user.
-
-#         Returns:
-#         - QuerySet: The queryset of CrystalData objects to display.
-#         """
-#         return CrystalData.objects.filter(uploaded_by=self.request.user)
-
-#     def post(self, request):
-#         """
-#         Handles POST requests to the view.
-
-#         Deletes the selected CrystalData objects and redirects to the success URL.
-
-#         Returns:
-#         - redirect(self.success_url): A redirect to the success URL.
-#         """
-#         selected_ids = request.POST.getlist("selected_ids")
-#         selected_objects = CrystalData.objects.filter(
-#             id__in=selected_ids, uploaded_by=request.user
-#         )
-#         if request.POST.get("confirm_delete"):
-#             selected_objects.delete()
-#             return redirect(reverse_lazy("d_spacing:user_database_list"))
 
 
 class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
@@ -433,10 +386,10 @@ def dspacing_results_view(request, crystal_id):
     miller_index_results.sort(key=lambda x: x[3], reverse=True)
     # print(list_of_results)
 
-    print(f"The determined crystal structure is: {analyzer.crystal_system}")
-    print("Miller Index (hkl) - D-spacing results:")
-    for result in miller_index_results:
-        print(f"({result[0]}, {result[1]}, {result[2]}) - {result[3]:.4f} Å")
+    # print(f"The determined crystal structure is: {analyzer.crystal_system}")
+    # print("Miller Index (hkl) - D-spacing results:")
+    # for result in miller_index_results:
+    # print(f"({result[0]}, {result[1]}, {result[2]}) - {result[3]:.4f} Å")
 
     context = {
         "crystal_id": crystal_id,
@@ -455,58 +408,6 @@ def dspacing_results_view(request, crystal_id):
     }
 
     return render(request, "d_spacing/dspacing_results.html", context)
-
-    # @login_required
-    # def upload_cif_file_view(request):
-    if request.method == "POST":
-        form = CifCrystalDataForm(request.POST or None, request.FILES or None)
-        files = request.FILES.getlist("cif_file")
-        if form.is_valid():
-            total_files = len(files)
-            for i, file in enumerate(files):
-                file_instance = CrystalData.objects.create(
-                    cif_file=file, uploaded_by=request.user
-                )
-                file_instance.save()
-
-                progress = (i + 1) / total_files * 100
-
-                file_path = file_instance.cif_file.path
-                instance_id = file_instance.id
-
-                xtl = dif.Crystal(file_path)
-                doc = cif.read_file(file_path)
-                block = doc.sole_block()
-
-                CrystalData.objects.filter(id=instance_id).update(
-                    crystal_name=str(
-                        block.find_value("_chemical_name_mineral")
-                        or block.find_value("_chemical_name_systematic")
-                    ),
-                    crystal_formula=str(block.find_value("_chemical_formula_sum")),
-                    cell_length_a=float(xtl.Cell.a),
-                    cell_length_b=float(xtl.Cell.b),
-                    cell_length_c=float(xtl.Cell.c),
-                    cell_angle_alpha=float(xtl.Cell.alpha),
-                    cell_angle_beta=float(xtl.Cell.beta),
-                    cell_angle_gamma=float(xtl.Cell.gamma),
-                    space_group_it_number=block.find_value("_space_group_IT_number")
-                    or block.find_value("_symmetry_Int_Tables_number"),
-                    symmetry_space_group_name_H_M=block.find_value(
-                        "_symmetry_space_group_name_H-M"
-                    ),
-                    crystal_system=str(
-                        block.find_value("_symmetry_cell_setting")
-                        or block.find_value("_space_group_crystal_system")
-                    ),
-                )
-
-            messages.success(request, "CIF file(s) uploaded successfully!")
-            return redirect(reverse("d_spacing:database_list"))
-    else:
-        form = CifCrystalDataForm()
-
-    return render(request, "d_spacing/upload_cif_file.html", {"form": form})
 
 
 class UploadCifFileView(LoginRequiredMixin, View):
@@ -538,43 +439,14 @@ class UploadCifFileView(LoginRequiredMixin, View):
                 parse_cif_file(file_path, instance_id)
 
             messages.success(request, "CIF file(s) uploaded successfully!")
-            return redirect(reverse("d_spacing:database_list"))
+            return redirect(reverse("d_spacing:user_database_list"))
         else:
             messages.error(request, "Invalid form submission.")
             context = {"form": form, "first_name": first_name}
             return render(request, self.template_name, context)
 
 
-# def read_latest_cif_file_updated_model():
-#     latest_file_upload= CrystalData.objects.latest("id")
-#     latest_file_upload_path = latest_file_upload.cif_file.path
-
-#     doc = cif.read_file(latest_file_upload_path)
-#     block = doc.sole_block()
-#     c=CrystalData.objects.update(
-#         crystal_name = block.find_value('_chemical_name_mineral') or block.find_value('_chemical_name_systematic'),
-#         crystal_formula = block.find_value('_chemical_formula_sum'),
-#         crystal_system = block.find_value('_symmetry_cell_setting'),
-#         cell_length_a = block.find_value('_cell_length_a'),
-#         cell_length_b = block.find_value('_cell_length_b'),
-#         cell_length_c = block.find_value('_cell_length_c'),
-#         cell_angle_alpha = block.find_value('_cell_angle_alpha'),
-#         cell_angle_beta = block.find_value('_cell_angle_beta'),
-#         cell_angle_gamma =  block.find_value('_cell_angle_gamma'),
-#     )
-
-
-# read_latest_cif_file_updated_model()
-
-
-#     return render(request, "update_crystal_data.html")
-# def read_file():
-#     doc= read(file).decode("utf-8")
-#     print(doc)
-
-
 def cif_file_display_view(request, crystal_id):
-    # info = CrystalData.objects.get(id=id)
     info = get_object_or_404(CrystalData, id=crystal_id)
 
     # imports data from model database
@@ -589,10 +461,27 @@ def cif_file_display_view(request, crystal_id):
         "cell_angle_alpha": info.cell_angle_alpha,
         "cell_angle_beta": info.cell_angle_beta,
         "cell_angle_gamma": info.cell_angle_gamma,
-        "space_group_it_number": info.space_group_IT_number,
+        "space_group_it_number": info.space_group_it_number,
         "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
         "cif_file": info.cif_file,
         # 'cif_info' : cif_info,
     }
 
     return render(request, "d_spacing/cif_file_display.html", context)
+
+
+def download_cif_file(request, id):
+    cif_file = get_object_or_404(CrystalData, id=id)
+    file_path = cif_file.cif_file.path
+
+    content_type, encoding = mimetypes.guess_type(file_path)
+    if content_type is None:
+        content_type = "text/plain"
+
+    response = FileResponse(open(file_path, "rb"), content_type=content_type)
+    response["Content-Length"] = cif_file.cif_file.size
+    original_filename = os.path.basename(cif_file.cif_file.name)
+    response["Content-Disposition"] = f'attachment; filename="{original_filename}"'
+
+    return response
+    # return redirect(reverse("d_spacing:database_list"))
