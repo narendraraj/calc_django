@@ -10,7 +10,7 @@
 
 
 
-    <form action="{%url 'd_spacing:database_list'%}" method='GET'>
+    <form action="{%url 'd_spacing:user_database_list'%}" method='GET'>
         <div class=" inline-block w-full px-12 py-8  align-middle rounded-tl-lg rounded-tr-lg shadow-lg">
                 <div class="flex justify-center">
                     <div class="inline-flex w-7/12 h-12 px-2 bg-transparent border rounded border-blue-500 lg:px-6">
@@ -58,6 +58,8 @@
 
 
 
+
+
     <div
         class="inline-block min-w-full px-12 pt-2 overflow-hidden align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
 
@@ -65,6 +67,9 @@
         <table class="min-w-full">
             <thead>
                 <tr>
+                    <th class="px-4 py-2 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300 px-">
+                        Select
+                    </th>
                     <th
                         class="px-4 py-2 leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300 px-">
                         ID
@@ -110,23 +115,23 @@
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         CIF file
                     </th>
-                    <th
+                    <!-- <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Added by
-                    </th>
+                    </th> -->
 
                     <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Get d Values
                     </th>
-                    <!-- <th
+                    <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Edit
-                    </th> -->
-                    <!-- <th
+                    </th>
+                    <th
                         class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-500 border-b-2 border-gray-300">
                         Delete
-                    </th> -->
+                    </th>
 
 
 
@@ -142,6 +147,7 @@
 
 
             <tr>
+                <td><input type="checkbox" name="selected_ids" value="{{ crystal_data.id }}"></td>
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
@@ -214,30 +220,25 @@
                     &gamma; = {{object.cell_angle_gamma}}
                 </td>
 
-
-
                 <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
                     <!-- <div class="flex items-center"> -->
                     <!-- <div> -->
-
-                    <div >
-                        <a href="{% url 'd_spacing:download_cif_file' object.id %}"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#335EFF" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                          </svg>
-                           </a>
-                    </div>
-
+                        <div >
+                            <a href="{% url 'd_spacing:download_cif_file' object.id %}"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#335EFF" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                              </svg>
+                               </a>
+                        </div>
                     <!-- </div> -->
                     <!-- </div> -->
                 </td>
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+                <!-- <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
 
                     <div class="text-sm leading-4 text-gray-800"><a
                             href="">{{ object.uploaded_by.first_name}}</a>
                     </div>
 
-                </td>
+                </td> -->
 
 
                 <td
@@ -251,7 +252,7 @@
 
 
 
-                <!-- <td
+                <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     {% if user.is_authenticated %}
                     <button
@@ -271,15 +272,17 @@
 
 
                     {% endif %}
-                </td> -->
+                </td>
 
-
-                <!-- <td
+                <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
 
                     {% if user.is_authenticated %}
                         <button type = "" action= ""  class="px-2 py-2 text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
-                            <a href="{% url  'd_spacing:delete_crystal_data' object.id %}">Delete</a>
+                            <a href="{% url  'd_spacing:delete_crystal_data' object.id %}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#335EFF" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                              </svg>
+                              </a>
                         </button>
                     {% else %}
                     <p class="text-sm text-blue-500 text-center">To delete</p>
@@ -293,7 +296,7 @@
 
 
 
-                </td> -->
+                </td>
 
 
                 {% endfor %}

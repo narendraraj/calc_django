@@ -1,7 +1,9 @@
 from locale import normalize
 from django.db import models
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
 )
 
 # from django.utils.translation import gettext_lazy as _
@@ -15,7 +17,7 @@ class MyUserManager(BaseUserManager):
         birth and password.
         """
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Users must have an email address")
 
         email = self.normalize_email(email)
         user = self.model(email=email, **other_fields)
@@ -23,29 +25,22 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,  password=None, **other_fields):
+    def create_superuser(self, email, password=None, **other_fields):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
 
-        other_fields.setdefault('is_staff', True)
-        other_fields.setdefault('is_superuser', True)
-        other_fields.setdefault('is_active', True)
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
+        other_fields.setdefault("is_active", True)
 
-        if other_fields.get('is_staff') is not True:
-            raise ValueError(
-                'Superuser must be assigned to is_staff=True.')
-        if other_fields.get('is_superuser') is not True:
-            raise ValueError(
-                'Superuser must be assigned to is_superuser=True.')
+        if other_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must be assigned to is_staff=True.")
+        if other_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must be assigned to is_superuser=True.")
 
-        user = self.create_user(
-            email,
-            password=password,
-            **other_fields
-
-        )
+        user = self.create_user(email, password=password, **other_fields)
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -53,21 +48,22 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
-        verbose_name='email address',
+        verbose_name="email address",
         max_length=255,
         unique=True,
     )
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(
-        verbose_name='date joined', auto_now_add=True)
-    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -77,13 +73,32 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         # The user is identified by their email address
         return self.email
 
-    def get_short_name(self):
-        # The user is identified by their email address
-        return self.email
+    def get_first_name_from_email(self, email):
+        username, domain = email.split("@")
+        name_parts = username.split(".")
+        first_name = name_parts[0].capitalize()
+        return first_name
+
+    def get_last_name_from_email(self, email):
+        username, domain = email.split("@")
+        name_parts = username.split(".")
+        last_name = name_parts[-1].capitalize()
+        return last_name
+
+    def save(self, *args, **kwargs):
+        if not self.first_name:
+            self.first_name = self.get_first_name_from_email(self.email)
+        if not self.last_name:
+            self.last_name = self.get_last_name_from_email(self.email)
+        super().save(*args, **kwargs)
+
+    # def get_short_name(self):
+    #     # The user is identified by their email address
+    #     return self.email
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
-        
+
         # Simplest possible answer: Yes, always
         return True
 
@@ -115,6 +130,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     #         [self.email],
     #         fail_silently=False,
     #     )
+
+
 ################################################################################################
 
 

@@ -1,45 +1,30 @@
 {% extends 'base.html' %}
 {% load tailwind_filters %}
-
+{% load crispy_forms_tags %}
 {% block content  %}
 
-<div>
-    Upload file 
-</div>
-    
+
 <div>
     <div>
 
         <form action="{%url 'd_spacing:upload_cif_file'%}" lable="you can upload maximum 10 cof fils" method="POST" enctype="multipart/form-data">
-             {% csrf_token %}     
+             {% csrf_token %}
 
-             <div class="flex  items-center justify-center" >
-                
-                {{ form|crispy }}      
+            <div class="flex  items-center justify-center" >
 
-
-                
-
+                {{form|crispy}}
 
                 <div class= "flex p-28 items-center justify-center " >
-                    <button type="Submit"  class="px-2 py-2  transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Upload           
-                    
-            
-                    
-                    
-                 </button>
+                    <button type="Submit"  class="px-2 py-2  transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none"> Upload
 
+                    </button>
                 </div>
 
             </div>
-    
-    
-            
-    
-            
         </form>
-    
-        
+
+
+
     </div>
 
 </div>
@@ -47,13 +32,4 @@
 
 
 
-
-
-
-
-
 {% endblock %}
-
-
-
-

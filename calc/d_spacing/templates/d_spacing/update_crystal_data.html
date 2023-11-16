@@ -18,37 +18,37 @@ Update page
 <h2>Yes! it is working </h2> -->
 <div class = " flex container justify-center ">
 
-    <div class = " text-2xl text-blue-600 "> 
+    <div class = " text-2xl text-blue-600 ">
 
-        Edit & Update 
+        Edit & Update
     </div>
 
     <div class= "py-20  justify-center " >
-        <form action="" method="POST" enctype="multipart/form-data">        
+        <form action="" method="POST" enctype="multipart/form-data">
 
-            {% csrf_token %}     
+            {% csrf_token %}
 
-            {{ form|crispy }} 
-      
+            {{ form|crispy }}
+
 
             <div class = "flex py-5" >
 
-                    <button type = "submit" action= "" class=" px-2 py-2 justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none "> Update & Save       
-                        <a href ={%url 'd_spacing:database_list'%} ></a>
+                    <button type = "submit" action="" class="px-2 py-2 justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none "> Update & Save
+                        <a href ="{%url 'd_spacing:database_list'%}" ></a>
                     </button>
-            </div>  
+            </div>
         </form>
 
         <div class = "flex  " >
-            <button class=" px-2 py-2  justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">        
+            <button class=" px-2 py-2  justify-items-center text-blue-500 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">
                 <a href = "{%url 'd_spacing:database_list'%}">Cancel </a>
             </button>
-        </div>  
+        </div>
     </div>
 
- 
 
-    
+
+
 </div>
 
 
