@@ -332,6 +332,16 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
 
 
 def dspacing_results_view(request, crystal_id):
+    """
+    View function that calculates and displays the d-spacing results for a given crystal.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        crystal_id (int): The ID of the crystal.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered d-spacing results page.
+    """
     try:
         info = get_object_or_404(CrystalData, id=crystal_id)
 
@@ -384,12 +394,6 @@ def dspacing_results_view(request, crystal_id):
                     )
 
     miller_index_results.sort(key=lambda x: x[3], reverse=True)
-    # print(list_of_results)
-
-    # print(f"The determined crystal structure is: {analyzer.crystal_system}")
-    # print("Miller Index (hkl) - D-spacing results:")
-    # for result in miller_index_results:
-    # print(f"({result[0]}, {result[1]}, {result[2]}) - {result[3]:.4f} Å")
 
     context = {
         "crystal_id": crystal_id,
