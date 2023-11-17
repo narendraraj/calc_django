@@ -1,53 +1,26 @@
 # from django.shortcuts import render
-from inspect import unwrap
-import json
 import os
-import math
-from time import time
-from poplib import CR
-from pyexpat.errors import messages
-import re
-from urllib import response
-from venv import create
 
 # import decimal
-from django.http import JsonResponse
-from django.http import HttpResponse, request, Http404, FileResponse
-from django.views.decorators.http import require_POST
-from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.http import HttpResponseRedirect
-from django.core.files.storage import FileSystemStorage, default_storage
-from django.core.files.base import ContentFile
+from django.http import HttpResponse, FileResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
 from django.views import View
 from django.urls import reverse, reverse_lazy
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.core.paginator import Paginator
+from django.views.generic import ListView, UpdateView, DeleteView
 
-from .models import CrystalData, get_user_model
+from .models import CrystalData
+
 from .forms import CrystalDataForm, CifCrystalDataForm
-from . import readcif
 from .utils import parse_cif_file
 
-# from account.forms import get_first_name_from_email, get_last_name_from_email
-
-from django.template.defaultfilters import lower
-
-from gemmi import cif
-import requests
-import itertools
 import mimetypes
-
-import Dans_Diffraction as dif
 
 from .calculator_dspacing import CrystalAnalyzer
 
-
-MyUser = get_user_model()
 # Create your views here.
 
 
