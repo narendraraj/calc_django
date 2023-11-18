@@ -29,8 +29,10 @@ urlpatterns = [
     #     name="dspacing_results",
     # ),
     path("upload-cif-file/", UploadCifFileView.as_view(), name="upload_cif_file"),
-    path("database/<int:crystal_id>/cif-display/",
-         views.cif_file_display_view,name="cif_file_display",
+    path(
+        "database/<int:crystal_id>/cif-display/",
+        views.cif_file_display_view,
+        name="cif_file_display",
     ),
     path("database-list/", CrystalDataListView.as_view(), name="database_list"),
     path(
@@ -58,5 +60,9 @@ urlpatterns = [
         download_cif_file,
         name="download_cif_file",
     ),
-    path('dspacing_results/<int:pk>/', DSpacingResultsView.as_view(), name='dspacing_results'),
+    path(
+        "database/<int:crystal_id>/dspacing-results/",
+        views.DSpacingResultsView.as_view(),
+        name="dspacing_results",
+    ),
 ]

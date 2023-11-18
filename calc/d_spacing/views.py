@@ -306,82 +306,30 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-class DSpacingResultsView(DetailView):
-    """View for displaying the results of d-spacing calculations for a CrystalData
-    object."""
-
-    model = CrystalData
+class DSpacingResultsView(View):
     template_name = "d_spacing/dspacing_results.html"
-    context_object_name = "info"
+    # success_url = reverse("d_spacing:dspacing_results")
 
-    def get_object(self, queryset=None):
-        """Retrieve the object for this view.
-
-        Args:
-            queryset: The queryset used to retrieve the object.
-
-        Returns:
-            The retrieved object.
-
-        Raises:
-            HttpResponse: If the input data is invalid.
-        """
-        obj = super().get_object(queryset)
+    def get(self, request, crystal_id):
         try:
-            self.analyzer = self.create_analyzer(obj)
+            object = get_object_or_404(CrystalData, id=crystal_id)
+        except CrystalData.DoesNotExist:
+            return HttpResponse("crystal not found", status=404)
+
+        try:
+            unit_cell_length_a = float(object.cell_length_a)
+            unit_cell_length_b = float(object.cell_length_b)
+            unit_cell_length_c = float(object.cell_length_c)
+            unit_cell_angle_alpha = float(object.cell_angle_alpha)
+            unit_cell_angle_beta = float(object.cell_angle_beta)
+            unit_cell_angle_gamma = float(object.cell_angle_gamma)
         except ValueError:
-            raise HttpResponse("Invalid input data", status=400)
-        return obj
+            return HttpResponse("Invalid input data", status=400)
 
-    def create_analyzer(self, info):
-        """Create a CrystalAnalyzer object based on the provided information.
+        crystal_system = object.crystal_system
+        space_group_it_number = object.space_group_it_number
 
-        Args:
-            info (object): An object containing the necessary information
-
-                for creating the analyzer.
-                - cell_length_a (float): Length of the unit cell along the a-axis.
-                - cell_length_b (float): Length of the unit cell along the b-axis.
-                - cell_length_c (float): Length of the unit cell along the c-axis.
-                - cell_angle_alpha (float): Angle between the b-axis and the c-axis.
-                - cell_angle_beta (float): Angle between the a-axis and the c-axis.
-                - cell_angle_gamma (float): Angle between the a-axis and the b-axis.
-                - crystal_system (str): The crystal system of the material.
-                - space_group_it_number (int): The International Tables (IT) number
-
-                    of the space group.
-
-        Returns:
-            return CrystalAnalyzer(
-                unit_cell_length_a,
-                unit_cell_length_b,
-                unit_cell_length_c,
-                unit_cell_angle_alpha,
-                unit_cell_angle_beta,
-                unit_cell_angle_gamma,
-                crystal_system,
-                space_group_it_number,
-            )
-                unit_cell_length_a,
-                unit_cell_length_b,
-                unit_cell_length_c,
-                unit_cell_angle_alpha,
-                unit_cell_angle_beta,
-                unit_cell_angle_gamma,
-                crystal_system,
-                space_group_it_number,
-            )
-        """
-        unit_cell_length_a = float(info.cell_length_a)
-        unit_cell_length_b = float(info.cell_length_b)
-        unit_cell_length_c = float(info.cell_length_c)
-        unit_cell_angle_alpha = float(info.cell_angle_alpha)
-        unit_cell_angle_beta = float(info.cell_angle_beta)
-        unit_cell_angle_gamma = float(info.cell_angle_gamma)
-        crystal_system = info.crystal_system
-        space_group_it_number = info.space_group_it_number
-
-        return CrystalAnalyzer(
+        analyzer = CrystalAnalyzer(
             unit_cell_length_a,
             unit_cell_length_b,
             unit_cell_length_c,
@@ -392,50 +340,37 @@ class DSpacingResultsView(DetailView):
             space_group_it_number,
         )
 
-    def get_context_data(self, **kwargs):
-        """Retrieves the context data for the view.
-
-        This method is called to get the context data for the view. It calls the
-        parent's `get_context_data` method to retrieve the initial context data,
-        and then adds the calculated d-spacing results to the context.
-
-        Returns:
-            dict: The context data for the view.
-        """
-        context = super().get_context_data(**kwargs)
-        context["list_of_results"] = self.calculate_d_spacing()
-        return context
-
-    def calculate_d_spacing(self):
-        """Calculate the d-spacing for different Miller indices.
-
-        Returns a list of tuples containing the Milpipler indices and their
-        corresponding d-spacing values,
-        sorted in descending order based on the d-spacing values.
-
-        :return: List of tuples (miller_index_h, miller_index_k, miller_index_l,
-        d_spacing)
-        """
-        miller_index_results = []
-        for miller_index_h in range(1, 3):
-            for miller_index_k in range(0, 4):
-                for miller_index_l in range(0, 4):
-                    d_spacing = self.analyzer.calculate_d_spacing(
-                        miller_index_h,
-                        miller_index_k,
-                        miller_index_l,
-                    ).__round__(4)
-                    if d_spacing is not None:
-                        miller_index_results.append(
-                            (
-                                miller_index_h,
-                                miller_index_k,
-                                miller_index_l,
-                                d_spacing,
-                            )
-                        )
+        miller_index_results = [
+            (
+                h,
+                k,
+                l,
+                analyzer.calculate_d_spacing(h, k, l).__round__(4),
+            )
+            for h in range(1, 3)
+            for k in range(4)
+            for l in range(4)
+            if analyzer.calculate_d_spacing(h, k, l) is not None
+        ]
         miller_index_results.sort(key=lambda x: x[3], reverse=True)
-        return miller_index_results
+
+        context = {
+            "crystal_id": crystal_id,
+            "crystal_name": object.crystal_name,
+            "crystal_formula": object.crystal_formula,
+            "crystal_system": object.crystal_system,
+            "cell_length_a": object.cell_length_a,
+            "cell_length_b": object.cell_length_b,
+            "cell_length_c": object.cell_length_c,
+            "cell_angle_alpha": object.cell_angle_alpha,
+            "cell_angle_beta": object.cell_angle_beta,
+            "cell_angle_gamma": object.cell_angle_gamma,
+            "space_group_it_number": object.space_group_it_number,
+            "symmetry_space_group_name_H_M": object.symmetry_space_group_name_H_M,
+            "list_of_results": miller_index_results,
+        }
+
+        return render(request, self.template_name, context)
 
 
 class UploadCifFileView(LoginRequiredMixin, View):
@@ -522,8 +457,7 @@ def cif_file_display_view(request, crystal_id):
         "cell_angle_gamma": info.cell_angle_gamma,
         "space_group_it_number": info.space_group_it_number,
         "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
-        "cif_file": info.cif_file,
-        # 'cif_info' : cif_info,
+        # "cif_info": cif_info,
     }
 
     return render(request, "d_spacing/cif_file_display.html", context)
