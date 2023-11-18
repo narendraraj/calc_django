@@ -1,7 +1,6 @@
-# from django.shortcuts import render
 import os
 
-# import decimal
+
 from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
@@ -10,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 
 from .models import CrystalData
 
@@ -33,7 +32,11 @@ def home_view(request):
     #     "id" : 14
     # }
     # request_body = json.dumps(method, indent=4)
-    # response1 = requests.post(url,  headers={'Content-Type': 'application/json'}, data=request_body)
+    # response1 = requests.post(
+    #     url,
+    #     headers={'Content-Type': 'application/json'},
+    #     data=request_body
+    # )
     # print(response1.json())
     # # print('uptime is:', response.json()['result']['info']['up_time'])
 
@@ -46,10 +49,13 @@ def home_view(request):
     #     "jsonrpc": "2.0",
     #     "method": "highVoltage.hv100.voltage.getMeasured",
     #     "id" : 115
-
     # }
     # request_body = json.dumps(method2, indent=4)
-    # response2 = requests.post(url, headers={'Content-Type': 'application/json'}, data=request_body)
+    # response2 = requests.post(
+    #     url,
+    #     headers={'Content-Type': 'application/json'},
+    #     data=request_body
+    # )
     # print(response2.json())
 
     # high_voltatage = response2.json()['result']['voltage']
@@ -64,8 +70,7 @@ def home_view(request):
 
 
 class CrystalDataListView(ListView):
-    """
-    A view that displays a list of CrystalData objects.
+    """A view that displays a list of CrystalData objects.
 
     Attributes:
         model: The model that the view will display.
@@ -83,11 +88,10 @@ class CrystalDataListView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        """
-        Returns the queryset of CrystalData objects to display.
+        """Returns the queryset of CrystalData objects to display.
 
-        If a search query is provided in the request, filters the queryset to include only
-        objects that match the query.
+        If a search query is provided in the request, filters the queryset to include
+        only objects that match the query.
 
         Returns:
             A queryset of CrystalData objects.
@@ -104,13 +108,13 @@ class CrystalDataListView(ListView):
 
 
 class CrystalDataUserListView(LoginRequiredMixin, ListView):
-    """
-    A view that displays a list of CrystalData objects uploaded by the current user.
+    """A view that displays a list of CrystalData objects uploaded by the current user.
 
     Attributes:
         model (CrystalData): The model that this view displays.
         template_name (str): The name of the template to render.
-        context_object_name (str): The name of the context variable to use in the template.
+        context_object_name (str): The name of the context variable to use in the
+        template.
         paginate_by (int): The number of objects to display per page.
 
     Methods:
@@ -123,12 +127,11 @@ class CrystalDataUserListView(LoginRequiredMixin, ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        """
-        Returns the queryset of CrystalData objects to display.
+        """Returns the queryset of CrystalData objects to display.
 
-        If a search query is provided in the request, filters the queryset to include only
-        objects that match the query and were uploaded by the current user. Otherwise, returns
-        all objects uploaded by the current user.
+        If a search query is provided in the request, filters the queryset to include
+        only objects that match the query and were uploaded by the current user.
+        Otherwise, returns all objects uploaded by the current user.
         """
         query = self.request.GET.get("q", "")
         if query:
@@ -143,8 +146,8 @@ class CrystalDataUserListView(LoginRequiredMixin, ListView):
 
 
 class CrystalDataPaginator(Paginator):
-    """
-    A custom paginator class that extends Django's built-in Paginator class.
+    """A custom paginator class that extends Django's built-in Paginator class.
+
     This class adds functionality to handle exceptions when retrieving a page of data.
     """
 
@@ -162,16 +165,18 @@ class CrystalDataPaginator(Paginator):
 
 
 def crystal_data_create_view(request):
-    """
-    View function for creating a new crystal data entry.
+    """View function for creating a new crystal data entry.
 
     Args:
         request: HttpRequest object representing the current request.
 
     Returns:
-        If the request method is GET, returns a rendered HTML template containing a form for creating a new crystal data entry.
-        If the request method is POST and the form is valid, saves the form data to the database and redirects to the database list view.
-        If the request method is POST and the form is invalid, returns a rendered HTML template containing the invalid form.
+        If the request method is GET, returns a rendered HTML template containing a
+        form for creating a new crystal data entry.
+        If the request method is POST and the form is valid, saves the form data to the
+        database and redirects to the database list view.
+        If the request method is POST and the form is invalid, returns a rendered HTML
+        template containing the invalid form.
     """
 
     form = CrystalDataForm(request.FILES)
@@ -186,8 +191,7 @@ def crystal_data_create_view(request):
 
 
 class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
-    """
-    View for updating CrystalData model instance.
+    """View for updating CrystalData model instance.
 
     Attributes:
     - model: CrystalData model
@@ -202,12 +206,13 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("d_spacing:user_database_list")
 
     def get(self, request, *args, **kwargs):
-        """
-        Handles GET requests for the view.
+        """Handles GET requests for the view.
 
         Returns:
-        - If user is authorized to update the material data, returns the view with the form.
-        - If user is not authorized, returns a warning message and redirects to the database list view.
+        - If user is authorized to update the material data, returns the view with the
+        form.
+        - If user is not authorized, returns a warning message and redirects to the
+        database list view.
         """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
@@ -218,12 +223,13 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        """
-        Handles POST requests for the view.
+        """Handles POST requests for the view.
 
         Returns:
-        - If user is authorized to update the material data, saves the form and returns a success message.
-        - If user is not authorized, returns a warning message and redirects to the database list view.
+        - If user is authorized to update the material data, saves the form and returns
+        a success message.
+        - If user is not authorized, returns a warning message and redirects to the
+        database list view.
         """
         crystal_data = self.get_object()
         if crystal_data.uploaded_by != request.user:
@@ -234,8 +240,7 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        """
-        Handles valid form submissions.
+        """Handles valid form submissions.
 
         Returns:
         - Returns a success message and calls the parent form_valid method.
@@ -245,8 +250,7 @@ class UpdateCrystalDataView(LoginRequiredMixin, UpdateView):
 
 
 class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
-    """
-    A view that allows a user to delete a CrystalData object.
+    """A view that allows a user to delete a CrystalData object.
 
     Inherits from Django's built-in DeleteView class and adds authorization checks
     to ensure that only the user who uploaded the CrystalData object can delete it.
@@ -266,8 +270,7 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("d_spacing:user_database_list")
 
     def get(self, request, *args, **kwargs):
-        """
-        Handles GET requests to the view.
+        """Handles GET requests to the view.
 
         Checks if the user is authorized to delete the CrystalData object, and if not,
         redirects them to the database list page with a warning message.
@@ -284,8 +287,7 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        """
-        Handles POST requests to the view.
+        """Handles POST requests to the view.
 
         Checks if the user is authorized to delete the CrystalData object, and if not,
         redirects them to the database list page with a warning message. If the deletion
@@ -304,111 +306,191 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-def dspacing_results_view(request, crystal_id):
-    """
-    View function that calculates and displays the d-spacing results for a given crystal.
+class DSpacingResultsView(DetailView):
+    """View for displaying the results of d-spacing calculations for a CrystalData
+    object."""
 
-    Args:
-        request (HttpRequest): The HTTP request object.
-        crystal_id (int): The ID of the crystal.
+    model = CrystalData
+    template_name = "d_spacing/dspacing_results.html"
+    context_object_name = "info"
 
-    Returns:
-        HttpResponse: The HTTP response object containing the rendered d-spacing results page.
-    """
-    try:
-        info = get_object_or_404(CrystalData, id=crystal_id)
+    def get_object(self, queryset=None):
+        """Retrieve the object for this view.
 
-    except CrystalData.DoesNotExist:
-        return HttpResponse("crystal not found", status=404)
+        Args:
+            queryset: The queryset used to retrieve the object.
 
-    try:
+        Returns:
+            The retrieved object.
+
+        Raises:
+            HttpResponse: If the input data is invalid.
+        """
+        obj = super().get_object(queryset)
+        try:
+            self.analyzer = self.create_analyzer(obj)
+        except ValueError:
+            raise HttpResponse("Invalid input data", status=400)
+        return obj
+
+    def create_analyzer(self, info):
+        """Create a CrystalAnalyzer object based on the provided information.
+
+        Args:
+            info (object): An object containing the necessary information
+
+                for creating the analyzer.
+                - cell_length_a (float): Length of the unit cell along the a-axis.
+                - cell_length_b (float): Length of the unit cell along the b-axis.
+                - cell_length_c (float): Length of the unit cell along the c-axis.
+                - cell_angle_alpha (float): Angle between the b-axis and the c-axis.
+                - cell_angle_beta (float): Angle between the a-axis and the c-axis.
+                - cell_angle_gamma (float): Angle between the a-axis and the b-axis.
+                - crystal_system (str): The crystal system of the material.
+                - space_group_it_number (int): The International Tables (IT) number
+
+                    of the space group.
+
+        Returns:
+            return CrystalAnalyzer(
+                unit_cell_length_a,
+                unit_cell_length_b,
+                unit_cell_length_c,
+                unit_cell_angle_alpha,
+                unit_cell_angle_beta,
+                unit_cell_angle_gamma,
+                crystal_system,
+                space_group_it_number,
+            )
+                unit_cell_length_a,
+                unit_cell_length_b,
+                unit_cell_length_c,
+                unit_cell_angle_alpha,
+                unit_cell_angle_beta,
+                unit_cell_angle_gamma,
+                crystal_system,
+                space_group_it_number,
+            )
+        """
         unit_cell_length_a = float(info.cell_length_a)
         unit_cell_length_b = float(info.cell_length_b)
         unit_cell_length_c = float(info.cell_length_c)
         unit_cell_angle_alpha = float(info.cell_angle_alpha)
         unit_cell_angle_beta = float(info.cell_angle_beta)
         unit_cell_angle_gamma = float(info.cell_angle_gamma)
+        crystal_system = info.crystal_system
+        space_group_it_number = info.space_group_it_number
 
-    except ValueError:
-        return HttpResponse("Invalid input data", staus=400)
+        return CrystalAnalyzer(
+            unit_cell_length_a,
+            unit_cell_length_b,
+            unit_cell_length_c,
+            unit_cell_angle_alpha,
+            unit_cell_angle_beta,
+            unit_cell_angle_gamma,
+            crystal_system,
+            space_group_it_number,
+        )
 
-    crystal_system = info.crystal_system
-    space_group_it_number = info.space_group_it_number
+    def get_context_data(self, **kwargs):
+        """Retrieves the context data for the view.
 
-    analyzer = CrystalAnalyzer(
-        unit_cell_length_a,
-        unit_cell_length_b,
-        unit_cell_length_c,
-        unit_cell_angle_alpha,
-        unit_cell_angle_beta,
-        unit_cell_angle_gamma,
-        crystal_system,
-        space_group_it_number,
-    )
+        This method is called to get the context data for the view. It calls the
+        parent's `get_context_data` method to retrieve the initial context data,
+        and then adds the calculated d-spacing results to the context.
 
-    miller_index_results = []
+        Returns:
+            dict: The context data for the view.
+        """
+        context = super().get_context_data(**kwargs)
+        context["list_of_results"] = self.calculate_d_spacing()
+        return context
 
-    for miller_index_h in range(1, 3):
-        for miller_index_k in range(0, 4):
-            for miller_index_l in range(0, 4):
-                d_spacing = analyzer.calculate_d_spacing(
-                    miller_index_h,
-                    miller_index_k,
-                    miller_index_l,
-                ).__round__(4)
-                if d_spacing is not None:
-                    miller_index_results.append(
-                        (
-                            miller_index_h,
-                            miller_index_k,
-                            miller_index_l,
-                            d_spacing,
+    def calculate_d_spacing(self):
+        """Calculate the d-spacing for different Miller indices.
+
+        Returns a list of tuples containing the Milpipler indices and their
+        corresponding d-spacing values,
+        sorted in descending order based on the d-spacing values.
+
+        :return: List of tuples (miller_index_h, miller_index_k, miller_index_l,
+        d_spacing)
+        """
+        miller_index_results = []
+        for miller_index_h in range(1, 3):
+            for miller_index_k in range(0, 4):
+                for miller_index_l in range(0, 4):
+                    d_spacing = self.analyzer.calculate_d_spacing(
+                        miller_index_h,
+                        miller_index_k,
+                        miller_index_l,
+                    ).__round__(4)
+                    if d_spacing is not None:
+                        miller_index_results.append(
+                            (
+                                miller_index_h,
+                                miller_index_k,
+                                miller_index_l,
+                                d_spacing,
+                            )
                         )
-                    )
-
-    miller_index_results.sort(key=lambda x: x[3], reverse=True)
-
-    context = {
-        "crystal_id": crystal_id,
-        "crystal_name": info.crystal_name,
-        "crystal_formula": info.crystal_formula,
-        "crystal_system": info.crystal_system,
-        "cell_length_a": info.cell_length_a,
-        "cell_length_b": info.cell_length_b,
-        "cell_length_c": info.cell_length_c,
-        "cell_angle_alpha": info.cell_angle_alpha,
-        "cell_angle_beta": info.cell_angle_beta,
-        "cell_angle_gamma": info.cell_angle_gamma,
-        "space_group_it_number": info.space_group_it_number,
-        "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
-        "list_of_results": miller_index_results,
-    }
-
-    return render(request, "d_spacing/dspacing_results.html", context)
+        miller_index_results.sort(key=lambda x: x[3], reverse=True)
+        return miller_index_results
 
 
 class UploadCifFileView(LoginRequiredMixin, View):
+    """
+    View for uploading CIF files and saving them to the database.
+
+    Inherits from LoginRequiredMixin and View.
+    """
+
     form_class = CifCrystalDataForm
     template_name = "d_spacing/upload_cif_file.html"
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests for the upload CIF file view.
+
+        Creates an instance of the form and renders the template with the form.
+
+        Parameters:
+        - request: The HTTP request object.
+
+        Returns:
+        - The rendered template with the form.
+        """
         form = self.form_class()
         context = {"form": form}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests for the upload CIF file view.
+
+        Validates the form and saves the uploaded CIF files to the database.
+        If the form is valid, each file is saved as a CrystalData object and
+        then parsed using the parse_cif_file function. Success or error messages
+        are displayed to the user.
+
+        Parameters:
+        - request: The HTTP request object.
+
+        Returns:
+        - If the form is valid, redirects to the user database list view.
+        - If the form is invalid, renders the template with the form and error message.
+        """
         form = self.form_class(request.POST or None, request.FILES or None)
         files = request.FILES.getlist("cif_file")
         if form.is_valid():
-            total_files = len(files)
+            # total_files = len(files)
             for i, file in enumerate(files):
                 file_instance = CrystalData.objects.create(
                     cif_file=file, uploaded_by=request.user
                 )
                 file_instance.save()
-                # first_name = get_first_name_from_email(request.user.email)
 
-                progress = (i + 1) / total_files * 100
+                # progress = (i + 1) / total_files * 100
 
                 file_path = file_instance.cif_file.path
                 instance_id = file_instance.id
@@ -419,7 +501,7 @@ class UploadCifFileView(LoginRequiredMixin, View):
             return redirect(reverse("d_spacing:user_database_list"))
         else:
             messages.error(request, "Invalid form submission.")
-            context = {"form": form, "first_name": first_name}
+            context = {"form": form}
             return render(request, self.template_name, context)
 
 

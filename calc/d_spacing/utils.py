@@ -1,4 +1,3 @@
-from .forms import CifCrystalDataForm
 from .models import CrystalData
 import Dans_Diffraction as dif
 from gemmi import cif
