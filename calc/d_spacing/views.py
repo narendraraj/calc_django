@@ -307,8 +307,17 @@ class DeleteCrystalDataView(LoginRequiredMixin, DeleteView):
 
 
 class DSpacingResultsView(View):
+    """
+    View class for displaying D-spacing results.
+
+    This view calculates the D-spacing values for a given crystal and renders
+    them in a template along with other relevant information about the crystal.
+
+    Attributes:
+        template_name (str): The name of the template to be rendered.
+    """
+
     template_name = "d_spacing/dspacing_results.html"
-    # success_url = reverse("d_spacing:dspacing_results")
 
     def get(self, request, crystal_id):
         try:
@@ -342,15 +351,20 @@ class DSpacingResultsView(View):
 
         miller_index_results = [
             (
-                h,
-                k,
-                l,
-                analyzer.calculate_d_spacing(h, k, l).__round__(4),
+                miller_index_h,
+                miller_index_k,
+                miller_index_l,
+                analyzer.calculate_d_spacing(
+                    miller_index_h, miller_index_k, miller_index_l
+                ).__round__(4),
             )
-            for h in range(1, 3)
-            for k in range(4)
-            for l in range(4)
-            if analyzer.calculate_d_spacing(h, k, l) is not None
+            for miller_index_h in range(1, 3)
+            for miller_index_k in range(4)
+            for miller_index_l in range(4)
+            if analyzer.calculate_d_spacing(
+                miller_index_h, miller_index_k, miller_index_l
+            )
+            is not None
         ]
         miller_index_results.sort(key=lambda x: x[3], reverse=True)
 
@@ -457,6 +471,7 @@ def cif_file_display_view(request, crystal_id):
         "cell_angle_gamma": info.cell_angle_gamma,
         "space_group_it_number": info.space_group_it_number,
         "symmetry_space_group_name_H_M": info.symmetry_space_group_name_H_M,
+        # "cif_file": info.cif_file,
         # "cif_info": cif_info,
     }
 
