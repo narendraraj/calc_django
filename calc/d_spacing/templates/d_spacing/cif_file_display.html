@@ -1,8 +1,4 @@
-{% extends 'base.html' %}
-
-
-{% block content %}
-
+{% extends 'base.html' %} {% block content %}
 
 <!-- <div class="container mx-auto">
 
@@ -23,138 +19,140 @@
 </div> -->
 
 <div
-    class="inline-block min-w-full px-12 pt-2 overflow-hidden text-blue-600 align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
+  class="inline-block min-w-full px-12 pt-2 overflow-hidden text-blue-600 align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard"
+>
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th
+          class="px-4 py-2 leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300 px-"
+        >
+          ID
+        </th>
 
+        <th
+          class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300"
+        >
+          Crystal Formula
+        </th>
 
+        <th
+          class="text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300 py-42 px-"
+        >
+          Crystal Name
+        </th>
 
+        <th
+          class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300"
+        >
+          Crystal Structure
+        </th>
 
-    <table class="min-w-full bg-white">
-        <thead>
-            <tr>
-                <th class="px-4 py-2 leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300 px-">
-                    ID
-                </th>
+        <th
+          class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300"
+        >
+          Unit cell lengths
+        </th>
 
-                <th
-                    class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300">
-                    Crystal Formula
-                </th>
+        <th
+          class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300"
+        >
+          Unit cell angle
+        </th>
 
-                <th
-                    class="text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300 py-42 px-">
-                    Crystal Name
-                </th>
+        <!-- <th
+          class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300"
+        >
+          Cif file
+        </th> -->
+      </tr>
+    </thead>
 
-                <th
-                    class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300">
-                    Crystal Structure
-                </th>
+    <tbody class="bg-white">
+      <tr>
+        <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+          <!-- <div class="flex items-center"> -->
+          <!-- <div> -->
+          <div class="text-sm leading-4 text-gray-800">
+            <a href="">{{crystal_id}}</a>
+          </div>
+          <!-- </div> -->
+          <!-- </div> -->
+        </td>
 
-                <th
-                    class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300">
-                    Unit cell lengths
-                </th>
+        <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+          <!-- <div class="flex items-center"> -->
+          <!-- <div> -->
+          <div class="text-sm leading-4 text-gray-800">
+            <a href="">{{crystal_formula}}</a>
+          </div>
+          <!-- </div> -->
+          <!-- </div> -->
+        </td>
 
-                <th
-                    class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300">
-                    Unit cell angle
-                </th>
+        <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+          <!-- <div class="flex items-center"> -->
+          <!-- <div> -->
+          <div class="text-sm leading-4 text-gray-800">
+            <a href="">{{crystal_name }}</a>
+          </div>
+          <!-- </div> -->
+          <!-- </div> -->
+        </td>
 
-                <th
-                    class="px-4 py-2 text-sm leading-4 tracking-wider text-left text-blue-700 border-b-2 border-gray-300">
-                    Cif file
-                </th>
+        <td
+          class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500"
+        >
+          <span
+            class="relative inline-block px-3 py-1 font-semibold leading-tight text-red-600"
+          >
+            <span
+              aria-hidden
+              class="absolute inset-0 bg-green-200 rounded-full opacity-50"
+            ></span>
+            <span class="relative text-xs"> {{ crystal_system | upper}}</span>
+          </span>
+        </td>
 
+        <td
+          class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500"
+        >
+          a = {{ cell_length_a}}<br />
+          b = {{ cell_length_b}}<br />
+          c = {{ cell_length_c}}
+        </td>
 
-            </tr>
-        </thead>
+        <td
+          class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500"
+        >
+          &alpha; = {{cell_angle_alpha}}<br />
+          &beta; = {{cell_angle_beta}}<br />
+          &gamma; = {{cell_angle_gamma}}
+        </td>
 
+        <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
+          <div class="text-sm leading-4 text-gray-800">
+            <a href="">{{cif_file}}</a>
+          </div>
+        </td>
 
-
-        <tbody class="bg-white">
-
-
-            <tr>
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500 ">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a href="">{{crystal_id}}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a href="">{{crystal_formula}}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                    <!-- <div class="flex items-center"> -->
-                    <!-- <div> -->
-                    <div class="text-sm leading-4 text-gray-800"><a href="">{{crystal_name }}</a>
-                    </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
-                </td>
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    <span class="relative inline-block px-3 py-1 font-semibold leading-tight text-red-600">
-                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full opacity-50"></span>
-                        <span class="relative text-xs"> {{ crystal_system | upper}}</span>
-                    </span>
-                </td>
-
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    a = {{ cell_length_a}}<br>
-                    b = {{ cell_length_b}}<br>
-                    c = {{ cell_length_c}}
-                </td>
-
-                <td class="px-4 py-2 text-sm leading-4 text-blue-900 whitespace-no-wrap border-b border-gray-500">
-                    &alpha; = {{cell_angle_alpha}}<br>
-                    &beta; = {{cell_angle_beta}}<br>
-                    &gamma; = {{cell_angle_gamma}}
-                </td>
-
-                <td class="px-4 py-2 whitespace-no-wrap border-b border-gray-500">
-                   
-                    <div class="text-sm leading-4 text-gray-800"><a href="">{{cif_file}}</a>
-                    </div>
-                    
-                </td>
-
-
-                <!-- <td
+        <!-- <td
                     class="px-4 py-2 leading-4 text-right whitespace-no-wrap border-b border-gray-500 py- auto textuto-sm py-a">
                     <button
                         class="px-2 py-2 text-blue-700 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-whiteus:outline-none">
                         <a href="">edit</a>
-                        
+
                     </button>
                 </td> -->
-
-            </tr>
-
-        </tbody>
-
-    </table>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div
-    class="inline-block min-w-full px-12 pt-2 overflow-hidden text-purple-600 align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard">
-
-{{cif_info}}
-
-
+  class="inline-block min-w-full px-12 pt-2 overflow-hidden text-purple-600 align-middle bg-white rounded-bl-lg rounded-br-lg shadow shadow-dashboard"
+>
+  {{cif_info}}
 </div>
-
-
 
 {% endblock %}

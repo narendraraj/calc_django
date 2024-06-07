@@ -1,4 +1,4 @@
-from django.urls import path, register_converter
+from django.urls import path
 
 from . import views
 
@@ -10,6 +10,7 @@ from .views import (
     UpdateCrystalDataView,
     DeleteCrystalDataView,
     UploadCifFileView,
+    DSpacingResultsView,
     download_cif_file,
 )
 
@@ -22,11 +23,11 @@ urlpatterns = [
     path("home/", views.home_view, name="home"),
     # path("upload-cif-file/", views.upload_cif_file_view, name="upload_cif_file"),
     path("forms/", views.crystal_data_create_view, name="crystal_data_create"),
-    path(
-        "database/<int:crystal_id>/",
-        views.dspacing_results_view,
-        name="dspacing_results",
-    ),
+    # path(
+    #     "database/<int:crystal_id>/",
+    #     views.dspacing_results_view,
+    #     name="dspacing_results",
+    # ),
     path("upload-cif-file/", UploadCifFileView.as_view(), name="upload_cif_file"),
     path(
         "database/<int:crystal_id>/cif-display/",
@@ -58,5 +59,10 @@ urlpatterns = [
         "database/<int:id>/download-cif-file/",
         download_cif_file,
         name="download_cif_file",
+    ),
+    path(
+        "database/<int:crystal_id>/dspacing-results/",
+        views.DSpacingResultsView.as_view(),
+        name="dspacing_results",
     ),
 ]
