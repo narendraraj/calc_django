@@ -10,7 +10,7 @@
         <form action="{%url 'd_spacing:upload_cif_file'%}" lable="you can upload maximum 10 cof fils" method="POST" enctype="multipart/form-data">
              {% csrf_token %}
 
-            <div class="flex  items-center justify-center" >
+            <!-- <div class="flex  items-center justify-center" >
 
                 {{form|crispy}}
 
@@ -20,6 +20,27 @@
                     </button>
                 </div>
 
+            </div> -->
+
+            <div class="flex items-center justify-center">
+                {{ form|crispy }}
+                {% if form.non_field_errors %}
+                    <div class="text-red-500">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if form.cif_file.errors %}
+                    <div class="text-red-500">
+                        {% for error in form.cif_file.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="flex p-28 items-center justify-center">
+                    <button type="Submit" class="px-2 py-2 transition duration-300 border border-blue-500 rounded hover:bg-blue-700 hover:text-white focus:outline-none">Upload</button>
+                </div>
             </div>
         </form>
 
