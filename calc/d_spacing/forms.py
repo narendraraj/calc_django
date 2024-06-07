@@ -51,3 +51,4 @@ class CifCrystalDataForm(forms.ModelForm):
             "cif_file",
         ]
         widgets = {"cif_file": ClearableFileInput(attrs={"multiple": True})}
+
