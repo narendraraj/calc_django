@@ -449,7 +449,7 @@ class UploadCifFileView(LoginRequiredMixin, View):
             messages.success(request, "CIF file(s) uploaded successfully!")
             return redirect(reverse("d_spacing:user_database_list"))
         else:
-            messages.error(request, "Invalid form submission.")
+            messages.error(request, "Only cif files are allowed.")
             context = {"form": form}
             return render(request, self.template_name, context)
 
